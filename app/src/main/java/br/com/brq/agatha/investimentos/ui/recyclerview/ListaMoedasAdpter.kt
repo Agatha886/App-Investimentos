@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import br.com.brq.agatha.investimentos.R
@@ -37,14 +38,20 @@ class ListaMoedasAdpter(
         return listaDeMoedas.size
     }
 
-    fun adiciona(novaLista:Moeda?) {
-        if (novaLista != null) {
-            listaDeMoedas.add(novaLista)
+    fun adiciona(moeda:Moeda?) {
+        if (moeda != null) {
+            listaDeMoedas.add(moeda)
         } else {
+            verificaSeListaEhNula()
             Log.e("NULL", "MOEDA NULA")
         }
-
         notifyItemRangeInserted(0, listaDeMoedas.size)
+    }
+
+    private fun verificaSeListaEhNula() {
+        if(listaDeMoedas.size == 0){
+                Toast.makeText(context, "Não foi possivel adicionar itens", Toast.LENGTH_LONG).show()
+        }
     }
 
     inner class ListaMoedasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
