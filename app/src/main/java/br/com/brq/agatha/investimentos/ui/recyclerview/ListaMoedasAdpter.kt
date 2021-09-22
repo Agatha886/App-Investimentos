@@ -67,8 +67,8 @@ class ListaMoedasAdpter(
 
         fun vincula(moeda: Moeda) {
             this.moeda = moeda
-            itemView.cardView_nome_moeda.text = moeda.setAbreviacao()
-            setCampoValor(moeda, itemView.cardView_cotacao_moeda)
+            itemView.cardView_home_nome_moeda.text = moeda.setAbreviacao()
+            setCampoValor(moeda, itemView.cardView_home_cotacao_moeda)
         }
 
     }

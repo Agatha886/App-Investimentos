@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cambio_cardView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_paddingBottom="50dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:id="@+id/cardView_cambio_abreviacao_moeda"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                tools:text="USD - Dollar"
+                android:gravity="top"/>
+
+            <TextView
+                android:id="@+id/cardView_cambio_cotacao_moeda"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                app:layout_constraintTop_toBottomOf="@id/cardView_cambio_abreviacao_moeda"
+                app:layout_constraintStart_toStartOf="@id/cardView_cambio_abreviacao_moeda"
+                app:layout_constraintEnd_toEndOf="@id/cardView_cambio_abreviacao_moeda"
+                android:textSize="20sp"
+                tools:text="0,53%"
+                tools:textColor="@color/verde"/>
+
+            <TextView
+                android:id="@+id/cardView_cambio_valor_compra_moeda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                android:layout_marginBottom="15dp"
+                app:layout_constraintTop_toBottomOf="@id/cardView_cambio_cotacao_moeda"
+                app:layout_constraintStart_toStartOf="@id/cardView_cambio_abreviacao_moeda"
+                android:textSize="16sp"
+                tools:text="Compra: R$ 5,175"
+                tools:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/cardView_cambio_valor_venda_moeda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintTop_toBottomOf="@id/cardView_cambio_valor_compra_moeda"
+                app:layout_constraintStart_toStartOf="@id/cardView_cambio_abreviacao_moeda"
+                android:textSize="16sp"
+                tools:text="Compra: R$ 5,175"
+                tools:textColor="@color/white"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/cambio_textView_saldo_disponivel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@id/cambio_cardView"
+        app:layout_constraintStart_toStartOf="@id/cambio_cardView"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:text="Saldo disponível: "
+        />
+
+    <TextView
+        android:id="@+id/cambio_saldo_reais"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/cambio_textView_saldo_disponivel"
+        app:layout_constraintStart_toEndOf="@id/cambio_textView_saldo_disponivel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="24dp"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        tools:text="R$ 0"
+        />
+
+    <TextView
+        android:id="@+id/cambio_saldo_moeda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/cambio_saldo_reais"
+        app:layout_constraintStart_toStartOf="@id/cambio_textView_saldo_disponivel"
+        android:layout_marginEnd="24dp"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        tools:text="7 Dollar"
+        />
+
+    <TextView
+        android:id="@+id/cambio_textView_em_caixa"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/cambio_saldo_moeda"
+        app:layout_constraintStart_toEndOf="@id/cambio_saldo_moeda"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="24dp"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:text="@string/cambio_em_caixa"
+        />
+
+    <EditText
+        android:id="@+id/cambio_quantidade"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        app:layout_constraintTop_toBottomOf="@id/cambio_saldo_moeda"
+        android:layout_marginTop="32dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="0dp"
+        android:hint="@string/cambio_quantidade"
+        android:textColorHint="@color/cinza"
+        app:layout_constraintStart_toStartOf="@id/cambio_cardView"
+        app:layout_constraintEnd_toEndOf="@id/cambio_cardView"/>
+
+    <Button
+        android:id="@+id/cambio_button_vender"
+        android:layout_width="157dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="137dp"
+        app:layout_constraintStart_toStartOf="@id/cambio_cardView"
+        app:layout_constraintTop_toBottomOf="@id/cambio_quantidade"
+        android:text="Vender"
+        android:textSize="22sp"
+        android:theme="@style/TemaButtonCambio"
+        android:background="@drawable/button_valido_cambio"
+        android:textColor="@color/white"/>
+
+    <Button
+        android:id="@+id/cambio_button_comprar"
+        android:layout_width="157dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="137dp"
+        android:layout_marginLeft="25dp"
+        app:layout_constraintStart_toEndOf="@id/cambio_button_vender"
+        app:layout_constraintTop_toBottomOf="@id/cambio_quantidade"
+        app:layout_constraintEnd_toEndOf="@id/cambio_cardView"
+        android:text="Comprar"
+        android:textSize="22sp"
+        android:theme="@style/TemaButtonCambio"
+        android:background="@drawable/button_valido_cambio"
+        android:textColor="@color/white"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

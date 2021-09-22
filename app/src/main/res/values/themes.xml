@@ -13,12 +13,23 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
         <!-- Customize your theme here. -->
         <item name="cardViewStyle">@style/TemaCardModedas</item>
+        <item name="editTextStyle">@style/TemaEditTextCambio</item>
     </style>
 
     <style name="TemaCardModedas" parent="CardView" >
         <item name="cardBackgroundColor">@android:color/transparent</item>
         <item name="android:foreground">@drawable/card_moedas</item>
     </style>
+
+    <style name="TemaEditTextCambio" parent="Widget.AppCompat.EditText" >
+        <item name="background">@android:color/transparent</item>
+        <item name="android:foreground">@drawable/edit_text_moedas</item>
+    </style>
+
+    <style name="TemaButtonCambio" parent="TextAppearance.AppCompat.Button" >
+        <item name="colorPrimary">@color/azul</item>
+    </style>
+
 
 
 </resources>

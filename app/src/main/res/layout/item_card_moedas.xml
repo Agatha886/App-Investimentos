@@ -16,7 +16,7 @@
         android:layout_marginTop="24dp">
 
         <TextView
-            android:id="@+id/cardView_nome_moeda"
+            android:id="@+id/cardView_home_nome_moeda"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -29,7 +29,7 @@
             />
 
         <TextView
-            android:id="@+id/cardView_cotacao_moeda"
+            android:id="@+id/cardView_home_cotacao_moeda"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="21dp"
