@@ -26,7 +26,7 @@
         <item name="android:foreground">@drawable/edit_text_moedas</item>
     </style>
 
-    <style name="TemaButtonCambio" parent="TextAppearance.AppCompat.Button" >
+    <style name="TemaButtonCambio" parent="Theme.Investimento">
         <item name="colorPrimary">@color/azul</item>
     </style>
 

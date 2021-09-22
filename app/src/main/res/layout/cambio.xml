@@ -15,8 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_paddingBottom="50dp">
+        android:layout_marginTop="24dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -139,34 +138,35 @@
         android:hint="@string/cambio_quantidade"
         android:textColorHint="@color/cinza"
         app:layout_constraintStart_toStartOf="@id/cambio_cardView"
-        app:layout_constraintEnd_toEndOf="@id/cambio_cardView"/>
+        app:layout_constraintEnd_toEndOf="@id/cambio_cardView"
+        android:autofillHints="Quantidade"
+        android:inputType="number" />
 
     <Button
         android:id="@+id/cambio_button_vender"
-        android:layout_width="157dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="137dp"
         app:layout_constraintStart_toStartOf="@id/cambio_cardView"
         app:layout_constraintTop_toBottomOf="@id/cambio_quantidade"
+        app:layout_constraintEnd_toStartOf="@id/cambio_button_comprar"
         android:text="Vender"
         android:textSize="22sp"
-        android:theme="@style/TemaButtonCambio"
-        android:background="@drawable/button_valido_cambio"
-        android:textColor="@color/white"/>
+        android:background="@drawable/button_cambio"
+        android:theme="@style/TemaButtonCambio"/>
 
     <Button
         android:id="@+id/cambio_button_comprar"
-        android:layout_width="157dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="137dp"
-        android:layout_marginLeft="25dp"
-        app:layout_constraintStart_toEndOf="@id/cambio_button_vender"
         app:layout_constraintTop_toBottomOf="@id/cambio_quantidade"
+        app:layout_constraintStart_toEndOf="@id/cambio_button_vender"
+        android:layout_marginLeft="25dp"
         app:layout_constraintEnd_toEndOf="@id/cambio_cardView"
         android:text="Comprar"
         android:textSize="22sp"
         android:theme="@style/TemaButtonCambio"
-        android:background="@drawable/button_valido_cambio"
-        android:textColor="@color/white"/>
+        android:background="@drawable/button_cambio"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
