@@ -24,9 +24,28 @@ class HomeMoedasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_moedas_home)
         setTitulo("Home/Moeda")
+        configuraViewModel()
+        configuraAdapter()
+    }
 
-        viewModel.quandoFalha ={
-            Toast.makeText(this@HomeMoedasActivity, "Não foi possível buscar moedas", Toast.LENGTH_LONG).show()
+    private fun configuraAdapter() {
+        home_recyclerView.adapter = adapter
+        adapter.quandoMoedaClicado = {
+            Toast.makeText(
+                this@HomeMoedasActivity,
+                it.name,
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    private fun configuraViewModel() {
+        viewModel.quandoFalha = {
+            Toast.makeText(
+                this@HomeMoedasActivity,
+                "Não foi possível buscar moedas",
+                Toast.LENGTH_LONG
+            ).show()
         }
         viewModel.retornaFinance().observe(this, Observer {
             adapter.adiciona(it?.results?.currencies?.usd)
@@ -39,18 +58,6 @@ class HomeMoedasActivity : AppCompatActivity() {
             adapter.adiciona(it?.results?.currencies?.aud)
             adapter.adiciona(it?.results?.currencies?.ars)
         })
-
-
-
-        home_recyclerView.adapter = adapter
-
-        adapter.quandoMoedaClicado = {
-            Toast.makeText(
-                this@HomeMoedasActivity,
-                it.name,
-                Toast.LENGTH_LONG
-            ).show()
-        }
     }
 
 }
