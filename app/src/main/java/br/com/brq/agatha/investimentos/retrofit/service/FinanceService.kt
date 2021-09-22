@@ -5,6 +5,8 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface FinanceService {
+
     @GET("finance")
     fun buscaFinance(): Call<Finance>
+
 }

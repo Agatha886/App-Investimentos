@@ -38,7 +38,7 @@
             android:textAlignment="textEnd"
             android:layout_gravity="end"
             android:textSize="20sp"
-            android:textColor="@android:color/holo_green_dark"
+            tools:textColor="@android:color/holo_green_dark"
             tools:text="0,53%"
             />
     </androidx.cardview.widget.CardView>

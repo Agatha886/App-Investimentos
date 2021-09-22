@@ -37,11 +37,12 @@ android {
 
 dependencies {
 
-    def koin_version = "3.1.2"
+    def corotines_version = "1.1.1"
     def lifecycle_version = "2.0.0"
 
-    // Koin:
-    implementation "io.insert-koin:koin-android:$koin_version"
+    // Corotines:
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core: $corotines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$corotines_version"
 
     //View Model
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"

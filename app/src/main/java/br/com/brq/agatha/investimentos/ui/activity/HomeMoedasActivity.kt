@@ -3,19 +3,21 @@ package br.com.brq.agatha.investimentos.ui.activity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.model.Moeda
-import br.com.brq.agatha.investimentos.setTitulo
+import br.com.brq.agatha.investimentos.extension.setTitulo
 import br.com.brq.agatha.investimentos.ui.recyclerview.ListaMoedasAdpter
+import br.com.brq.agatha.investimentos.viewModel.ListaDeMoedasViewModel
 import kotlinx.android.synthetic.main.activity_moedas_home.*
-import java.math.BigDecimal
 
 class HomeMoedasActivity : AppCompatActivity() {
 
-    val listaTeste: MutableList<Moeda> = mutableListOf<Moeda>()
-
     private val adapter: ListaMoedasAdpter by lazy {
-        ListaMoedasAdpter(this@HomeMoedasActivity, listaTeste)
+        ListaMoedasAdpter(this@HomeMoedasActivity)
+    }
+
+    private val viewModel: ListaDeMoedasViewModel by lazy {
+        ListaDeMoedasViewModel()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,27 +25,33 @@ class HomeMoedasActivity : AppCompatActivity() {
         setContentView(R.layout.activity_moedas_home)
         setTitulo("Home/Moeda")
 
-        listaTeste.add(
-            Moeda(
-                name = "Dolar",
-                buy = BigDecimal(5.251),
-                abreviacao = "USD",
-                sell = BigDecimal(5.2522),
-                variation = "2.64%"
-            )
+        viewModel.quandoFalha ={
+            Toast.makeText(this@HomeMoedasActivity, "Não foi possível buscar moedas", Toast.LENGTH_LONG).show()
+        }
+        viewModel.retornaFinance().observe(this, Observer {
+            adapter.adiciona(it?.results?.currencies?.usd)
+            adapter.adiciona(it?.results?.currencies?.jpy)
+            adapter.adiciona(it?.results?.currencies?.gbp)
+            adapter.adiciona(it?.results?.currencies?.eur)
+            adapter.adiciona(it?.results?.currencies?.cny)
+            adapter.adiciona(it?.results?.currencies?.cad)
+            adapter.adiciona(it?.results?.currencies?.btc)
+            adapter.adiciona(it?.results?.currencies?.aud)
+            adapter.adiciona(it?.results?.currencies?.ars)
+        })
 
-        )
+
+
         home_recyclerView.adapter = adapter
+
         adapter.quandoMoedaClicado = {
             Toast.makeText(
                 this@HomeMoedasActivity,
-                it.abreviacao,
+                it.name,
                 Toast.LENGTH_LONG
             ).show()
         }
-
     }
-
 
 }
 
