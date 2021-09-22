@@ -1,11 +1,14 @@
 package br.com.brq.agatha.investimentos.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
+import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
 import br.com.brq.agatha.investimentos.extension.setTitulo
+import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.ui.recyclerview.ListaMoedasAdpter
 import br.com.brq.agatha.investimentos.viewModel.ListaDeMoedasViewModel
 import kotlinx.android.synthetic.main.activity_moedas_home.*
@@ -30,13 +33,13 @@ class HomeMoedasActivity : AppCompatActivity() {
 
     private fun configuraAdapter() {
         home_recyclerView.adapter = adapter
-        adapter.quandoMoedaClicado = {
-            Toast.makeText(
-                this@HomeMoedasActivity,
-                it.name,
-                Toast.LENGTH_LONG
-            ).show()
-        }
+        adapter.quandoMoedaClicado = this::vaiParaActivityCambio
+    }
+
+    private fun vaiParaActivityCambio(moeda: Moeda) {
+        val intent = Intent(this@HomeMoedasActivity, CambioActivity::class.java)
+        intent.putExtra(CHAVE_MOEDA, moeda)
+        startActivity(intent)
     }
 
     private fun configuraViewModel() {
