@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
-import br.com.brq.agatha.investimentos.extension.setTitulo
+import br.com.brq.agatha.investimentos.extension.setMyActionBar
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.ui.recyclerview.ListaMoedasAdpter
 import br.com.brq.agatha.investimentos.viewModel.ListaDeMoedasViewModel
@@ -26,7 +26,7 @@ class HomeMoedasActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_moedas_home)
-        setTitulo("Home/Moeda")
+        setMyActionBar("Home/Moeda", false)
         configuraViewModel()
         configuraAdapter()
     }
@@ -37,9 +37,17 @@ class HomeMoedasActivity : AppCompatActivity() {
     }
 
     private fun vaiParaActivityCambio(moeda: Moeda) {
-        val intent = Intent(this@HomeMoedasActivity, CambioActivity::class.java)
-        intent.putExtra(CHAVE_MOEDA, moeda)
-        startActivity(intent)
+        if (moeda.sell == null || moeda.buy == null) {
+            Toast.makeText(
+                this,
+                "Moeda com valor de compra ou venda inválido",
+                Toast.LENGTH_LONG
+            ).show()
+        } else {
+            val intent = Intent(this@HomeMoedasActivity, CambioActivity::class.java)
+            intent.putExtra(CHAVE_MOEDA, moeda)
+            startActivity(intent)
+        }
     }
 
     private fun configuraViewModel() {

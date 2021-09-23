@@ -30,6 +30,10 @@
         <item name="colorPrimary">@color/azul</item>
     </style>
 
+    <style name="TemaButtonToolBar" parent="Theme.Investimento">
+        <item name="colorPrimary">@color/white</item>
+    </style>
+
 
 
 </resources>

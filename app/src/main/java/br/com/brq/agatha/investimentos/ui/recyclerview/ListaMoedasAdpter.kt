@@ -5,16 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.R.color.*
 import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
 import kotlinx.android.synthetic.main.item_card_moedas.view.*
-import java.math.BigDecimal
 
 
 class ListaMoedasAdpter(
@@ -68,25 +64,12 @@ class ListaMoedasAdpter(
         fun vincula(moeda: Moeda) {
             this.moeda = moeda
             itemView.cardView_home_nome_moeda.text = moeda.setAbreviacao()
-            setCampoValor(moeda, itemView.cardView_home_cotacao_moeda)
+            setCampoVariation(moeda)
         }
 
-    }
-
-    fun setCampoValor(moeda: Moeda, campoValor: TextView){
-        campoValor.text = moeda.variation.formatoPorcentagem()
-        val valor = moeda.variation
-
-        when {
-            valor< BigDecimal.ZERO -> {
-                campoValor.setTextColor(ContextCompat.getColor(context, red))
-            }
-            valor == BigDecimal.ZERO -> {
-                campoValor.setTextColor(ContextCompat.getColor(context, white))
-            }
-            else -> {
-                campoValor.setTextColor(ContextCompat.getColor(context, verde))
-            }
+        private fun setCampoVariation(moeda: Moeda) {
+            itemView.cardView_home_variation_moeda.text = moeda.variation.formatoPorcentagem()
+            itemView.cardView_home_variation_moeda.setTextColor(moeda.retornaCor(context))
         }
 
     }

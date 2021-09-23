@@ -1,5 +1,10 @@
 package br.com.brq.agatha.investimentos.model
 
+import android.content.Context
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import br.com.brq.agatha.investimentos.R
+import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import java.io.Serializable
 import java.math.BigDecimal
 
@@ -26,6 +31,20 @@ class Moeda(
         }
         this.abreviacao = abreviacao
         return abreviacao
+    }
+
+    fun retornaCor(context: Context): Int {
+        return when {
+            variation < BigDecimal.ZERO -> {
+                ContextCompat.getColor(context, R.color.red)
+            }
+            variation == BigDecimal.ZERO -> {
+                ContextCompat.getColor(context, R.color.white)
+            }
+            else -> {
+                ContextCompat.getColor(context, R.color.verde)
+            }
+        }
     }
 }
 
