@@ -33,6 +33,17 @@ class ListaMoedasAdpter(
     override fun getItemCount(): Int {
         return listaDeMoedas.size
     }
+    fun atualiza(moedasNovas: List<Moeda>?) {
+        notifyItemRangeRemoved(0, listaDeMoedas.size)
+        listaDeMoedas.clear()
+        if (moedasNovas != null) {
+            listaDeMoedas.addAll(moedasNovas)
+        } else {
+            Log.e("NULL", "FILMES NULOS")
+        }
+
+        notifyItemRangeInserted(0, listaDeMoedas.size)
+    }
 
     fun adiciona(moeda:Moeda?) {
         if (moeda != null) {

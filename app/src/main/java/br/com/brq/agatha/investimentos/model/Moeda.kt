@@ -1,14 +1,13 @@
 package br.com.brq.agatha.investimentos.model
 
 import android.content.Context
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import java.io.Serializable
 import java.math.BigDecimal
+
 @Entity
 class Moeda(
     @PrimaryKey(autoGenerate = true)
@@ -17,7 +16,7 @@ class Moeda(
     var buy: BigDecimal,
     var sell: BigDecimal,
     var variation: BigDecimal,
-    var abreviacao: String,
+    var abreviacao: String? = "SemValor",
 ) : Serializable {
 
     fun setAbreviacao(): String {
@@ -31,7 +30,7 @@ class Moeda(
             "Japanese Yen" -> "JPY"
             "Renminbi" -> "CNY"
             "Bitcoin" -> "BTC"
-            else -> "indefinido"
+            else -> "SemValor"
         }
         this.abreviacao = abreviacao
         return abreviacao

@@ -1,9 +1,7 @@
 package br.com.brq.agatha.investimentos.database.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import br.com.brq.agatha.investimentos.model.Moeda
 
 @Dao
@@ -13,5 +11,14 @@ interface MoedaDao {
     fun buscaMoedas(): LiveData<List<Moeda>>
 
     @Insert
-    fun salva(moeda: Moeda)
+    fun adiciona(moeda: Moeda)
+
+    @Update
+    fun modifica(moeda: Moeda)
+
+    @Delete
+    fun deletaMoeda(moeda: Moeda)
+
+    @Query("DELETE FROM moeda")
+    fun deletaTodasMoedas()
 }

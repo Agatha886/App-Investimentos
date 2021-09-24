@@ -12,7 +12,7 @@ class BigDecimalConverter {
 
     @TypeConverter
     fun paraString(valor: String?): BigDecimal {
-        return valor?.let { BigDecimal(it) } ?: BigDecimal.ZERO
+        return if(valor.isNullOrBlank()) BigDecimal.ZERO else BigDecimal(valor)
     }
 
 }

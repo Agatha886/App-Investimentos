@@ -12,7 +12,7 @@ import br.com.brq.agatha.investimentos.database.converter.ConversorTipoTransfere
 import br.com.brq.agatha.investimentos.database.dao.TransferenciaDao
 import br.com.brq.agatha.investimentos.model.Transferencia
 
-@Database(entities = [Moeda::class, Usuario::class, Transferencia::class], version = 1, exportSchema = false)
+@Database(entities = [Moeda::class, Usuario::class, Transferencia::class], version = 2, exportSchema = false)
 @TypeConverters(BigDecimalConverter::class, ConversorTipoTransferencia::class)
 abstract class InvestimentosDataBase :RoomDatabase(){
     abstract fun getMoedaDao(): MoedaDao
