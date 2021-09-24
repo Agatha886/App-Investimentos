@@ -16,7 +16,7 @@ class Moeda(
     var buy: BigDecimal,
     var sell: BigDecimal,
     var variation: BigDecimal,
-    var abreviacao: String? = "SemValor",
+    var abreviacao: String?,
 ) : Serializable {
 
     fun setAbreviacao(): String {
