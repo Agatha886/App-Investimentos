@@ -4,6 +4,7 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentTransaction
@@ -30,4 +31,12 @@ fun AppCompatActivity.transacaoFragment(executa: FragmentTransaction.() -> Unit)
     val transacao = supportFragmentManager.beginTransaction()
     executa(transacao)
     transacao.commit()
+}
+
+fun AppCompatActivity.mensagem(texto: String) {
+    Toast.makeText(
+        this,
+        texto,
+        Toast.LENGTH_LONG
+    ).show()
 }

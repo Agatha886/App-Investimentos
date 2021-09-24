@@ -13,8 +13,8 @@ class Moeda(
     @PrimaryKey(autoGenerate = true)
     var id : Int = 0,
     var name: String,
-    var buy: BigDecimal,
-    var sell: BigDecimal,
+    var buy: BigDecimal?,
+    var sell: BigDecimal?,
     var variation: BigDecimal,
     var abreviacao: String?,
 ) : Serializable {

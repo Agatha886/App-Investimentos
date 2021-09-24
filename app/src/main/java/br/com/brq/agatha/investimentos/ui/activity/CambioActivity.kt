@@ -11,16 +11,35 @@ import br.com.brq.agatha.investimentos.extension.setMyActionBar
 import br.com.brq.agatha.investimentos.extension.transacaoFragment
 import br.com.brq.agatha.investimentos.fragment.CambioFragment
 import br.com.brq.agatha.investimentos.model.Moeda
+import br.com.brq.agatha.investimentos.model.Usuario
+import br.com.brq.agatha.investimentos.viewModel.UsuarioViewModel
 import java.io.Serializable
+import java.math.BigDecimal
 
+@Suppress("DEPRECATION")
 class CambioActivity : AppCompatActivity() {
+
+    private val viewModel:UsuarioViewModel by lazy {
+        UsuarioViewModel(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cambio)
         setMyActionBar("Câmbio", true, setOnClickButtonVoltar = {
-            VoltaParaTelaDeMoedas()
+            voltaParaTelaDeMoedas()
         })
         iniciaComFragmentCambio()
+//        viewModel.adicionaUsuario(Usuario(
+//            saldoDisponivel = BigDecimal(1000)))
+    }
+
+    private fun iniciaComFragmentCambio() {
+        val cambioFragment = CambioFragment()
+        setArgumentsDadosMoedas(cambioFragment)
+        transacaoFragment {
+            replace(R.id.activity_cambio_container, cambioFragment)
+        }
     }
 
     override fun onAttachFragment(fragment: Fragment) {
@@ -34,7 +53,7 @@ class CambioActivity : AppCompatActivity() {
 
     private fun configuraFragmentsCambio(fragment: CambioFragment) {
         fragment.quandoDarIllegalArgumentException = {
-            VoltaParaTelaDeMoedas()
+            voltaParaTelaDeMoedas()
             Toast.makeText(
                 this,
                 it,
@@ -42,19 +61,12 @@ class CambioActivity : AppCompatActivity() {
             ).show()
         }
     }
-    private fun VoltaParaTelaDeMoedas() {
+
+    private fun voltaParaTelaDeMoedas() {
         val intent = Intent(this, HomeMoedasActivity::class.java)
         intent.flags =
             Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
-    }
-
-    private fun iniciaComFragmentCambio() {
-        val cambioFragment = CambioFragment()
-        setArgumentsDadosMoedas(cambioFragment)
-        transacaoFragment {
-            replace(R.id.activity_cambio_container, cambioFragment)
-        }
     }
 
     private fun setArgumentsDadosMoedas(cambioFragment: CambioFragment) {

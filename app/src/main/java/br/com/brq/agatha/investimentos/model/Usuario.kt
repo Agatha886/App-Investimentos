@@ -6,17 +6,8 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.math.BigDecimal
 
-@Entity(
-    indices = [Index(value = arrayOf("idTransferencia"), unique = true)],
-    foreignKeys =
-    [ForeignKey(
-        entity = Transferencia::class,
-        parentColumns = arrayOf("id"),
-        childColumns = arrayOf("idTransferencia")
-    )]
-)
+@Entity()
 class Usuario(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
-    val saldoDisponivel: BigDecimal,
-    val idTransferencia: Int)
+    val saldoDisponivel: BigDecimal)

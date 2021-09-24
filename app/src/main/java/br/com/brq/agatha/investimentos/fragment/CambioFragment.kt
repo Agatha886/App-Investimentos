@@ -60,8 +60,8 @@ class CambioFragment : Fragment() {
 
     private fun setCampos() {
         val formatoNomeMoeda = moeda.abreviacao + " - " + moeda.name
-        val formatoValorVenda = "Venda: " + moeda.sell.formatoMoedaBrasileira()
-        val formatoValorCompra = "Compra: " + moeda.buy.formatoMoedaBrasileira()
+        val formatoValorVenda = "Venda: " + moeda.sell?.formatoMoedaBrasileira()
+        val formatoValorCompra = "Compra: " + moeda.buy?.formatoMoedaBrasileira()
 
         cardView_cambio_abreviacao_nome_moeda.text = formatoNomeMoeda
         setCampoVariation()

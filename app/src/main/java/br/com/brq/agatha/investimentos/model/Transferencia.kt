@@ -4,16 +4,16 @@ import androidx.room.*
 import java.math.BigDecimal
 @Entity(
     indices = [Index(value = arrayOf("idMoeda"), unique = true)],
-    foreignKeys =
-    [ForeignKey(
+    foreignKeys = [ForeignKey(
         entity = Moeda::class,
         parentColumns = arrayOf("id"),
         childColumns = arrayOf("idMoeda")
     )]
 )
+
 class Transferencia (
     @PrimaryKey(autoGenerate = true)
     var id:Int = 0,
-    val valor: BigDecimal,
+    val valor: BigDecimal = BigDecimal.ZERO,
     var idMoeda:Int,
-    var tipo:TipoTransferencia)
+    var tipo:TipoTransferencia = TipoTransferencia.INDEFINIDO)

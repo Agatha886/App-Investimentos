@@ -17,6 +17,36 @@ class ListaMoedasRepository(private val daoMoeda: MoedaDao) {
     var quandoConexaoFalha: (lista: LiveData<List<Moeda>>) -> Unit = {}
     var quandoSucesso: (finance: LiveData<Finance>) -> Unit = {}
 
+   fun finance(){
+        val scope = CoroutineScope(Dispatchers.IO)
+        scope.launch {
+            try {
+                val call = MoedasRetrofit().retornaFinance()
+                val resposta = call.execute()
+                val finance: Finance? = resposta.body()
+                quandoBuscaDaAPI(finance)
+            } catch (e: Exception) {
+                quandoDarErroAoBuscar(e)
+            }
+        }
+    }
+
+    private suspend fun quandoDarErroAoBuscar(e: Exception) {
+        Log.e("ERRO RETROFIT", "financeErro: ${e.message}")
+        withContext(Dispatchers.Main) {
+            quandoConexaoFalha(daoMoeda.buscaMoedas())
+        }
+    }
+
+    private suspend fun quandoBuscaDaAPI(finance: Finance?) {
+        val liveDataFinance = MutableLiveData<Finance>()
+        modificaBanco(finance)
+        withContext(Dispatchers.Main) {
+            liveDataFinance.value = finance
+            quandoSucesso(liveDataFinance)
+        }
+    }
+
     private fun modificaBanco(finance: Finance?) {
         daoMoeda.deletaTodasMoedas()
         finance?.results?.currencies?.usd?.let { daoMoeda.adiciona(it) }
@@ -28,29 +58,5 @@ class ListaMoedasRepository(private val daoMoeda: MoedaDao) {
         finance?.results?.currencies?.btc?.let { daoMoeda.adiciona(it) }
         finance?.results?.currencies?.aud?.let { daoMoeda.adiciona(it) }
         finance?.results?.currencies?.ars?.let { daoMoeda.adiciona(it) }
-    }
-
-   fun finance(){
-        val liveDataFinance = MutableLiveData<Finance>()
-        val scope = CoroutineScope(Dispatchers.IO)
-
-        scope.launch {
-            try {
-                val call = MoedasRetrofit().retornaFinance()
-                val resposta = call.execute()
-                val finance: Finance? = resposta.body()
-                modificaBanco(finance)
-                withContext(Dispatchers.Main) {
-                   liveDataFinance.value = finance
-                    quandoSucesso(liveDataFinance)
-                }
-
-            } catch (e: Exception) {
-                Log.e("ERRO RETROFIT", "financeErro: ${e.message}")
-                withContext(Dispatchers.Main) {
-                    quandoConexaoFalha(daoMoeda.buscaMoedas())
-                }
-            }
-        }
     }
 }

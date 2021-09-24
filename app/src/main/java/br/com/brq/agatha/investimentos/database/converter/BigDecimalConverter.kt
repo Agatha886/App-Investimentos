@@ -11,8 +11,8 @@ class BigDecimalConverter {
     }
 
     @TypeConverter
-    fun paraString(valor: String?): BigDecimal {
-        return if(valor.isNullOrBlank()) BigDecimal.ZERO else BigDecimal(valor)
+    fun paraString(valor: String?): BigDecimal? {
+        return if(valor.isNullOrBlank()) null else BigDecimal(valor)
     }
 
 }
