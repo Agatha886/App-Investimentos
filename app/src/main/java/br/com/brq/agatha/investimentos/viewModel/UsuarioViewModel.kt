@@ -31,23 +31,10 @@ class UsuarioViewModel(context: Context) : ViewModel() {
         usuarioRepository.compra(idUsuario,moeda, valor)
     }
 
-<<<<<<< HEAD
-    fun calculaTotalMoedaAposVenda(moeda: Moeda, valor: String) {
-        usuarioRepository.quandoVendaFalha = quandoFalha
-        usuarioRepository.quandoVendaSucesso = quandoVendaSucesso
-        usuarioRepository.venda(moeda, valor)
+    fun setSaldoCompra(idUsuario: Int, valorComprado: BigDecimal){
+       usuarioRepository.setSaldo(idUsuario, valorComprado)
     }
 
-    fun setSaldoCompra(idUsuario: Int, novoSaldo: BigDecimal){
-       usuarioRepository.setSaldoAposCompra(idUsuario, novoSaldo)
-    }
-
-    fun setSaldoVenda(idUsuario: Int, valor: String, moeda: Moeda){
-        usuarioRepository.setSaldoAposVenda(idUsuario, valor, moeda)
-    }
-
-=======
->>>>>>> parent of c4f28a0 (criação Fragment resposta)
     fun modificaUsuario(usuario: Usuario){
         usuarioRepository.modificaUsuario(usuario)
     }

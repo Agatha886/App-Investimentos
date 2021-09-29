@@ -19,11 +19,6 @@ import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.viewModel.MoedaViewModel
 import br.com.brq.agatha.investimentos.viewModel.UsuarioViewModel
 import kotlinx.android.synthetic.main.cambio.*
-<<<<<<< HEAD
-=======
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
->>>>>>> parent of c4f28a0 (criação Fragment resposta)
 import java.math.BigDecimal
 import java.text.DecimalFormat
 
@@ -35,10 +30,8 @@ class CambioFragment : Fragment() {
         moedaSerializable as Moeda
     }
 
-<<<<<<< HEAD
     var quandoCompraOuVendaSucesso: (mensagem: String) -> Unit = {}
-=======
->>>>>>> parent of c4f28a0 (criação Fragment resposta)
+
     var quandoDarIllegalArgumentException: (mensagem: String?) -> Unit = {}
 
     private val usuarioViewModel: UsuarioViewModel by lazy {
@@ -67,18 +60,11 @@ class CambioFragment : Fragment() {
         cambio_quantidade.doAfterTextChanged { valorDigitado ->
             val texto = valorDigitado.toString()
             if (texto.isBlank()) {
-                SetCliqueBotoesQuandoNulo()
+
             } else {
                 calculaCompra(texto)
-                calculaVenda(texto)
             }
         }
-    }
-
-<<<<<<< HEAD
-    private fun calculaVenda(texto: String) {
-        configuraSucessoEFalhaVenda()
-        usuarioViewModel.calculaTotalMoedaAposVenda(moeda, texto)
     }
 
     private fun configuraSucessoEFalhaVenda() {
@@ -109,33 +95,17 @@ class CambioFragment : Fragment() {
             "Valor nulo",
             Toast.LENGTH_SHORT
         ).show()
-=======
-    private fun SetCliqueBotoesQuandoNulo() {
-        cambio_button_comprar.setOnClickListener {
-            Toast.makeText(
-                requireContext(),
-                "Valor nulo",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
->>>>>>> parent of c4f28a0 (criação Fragment resposta)
     }
 
     private fun calculaCompra(texto: String) {
-        configuraSucessoEFalha()
+        configuraSucessoEFalhaCompra()
         usuarioViewModel.calculaSaldoAposCompra(1, moeda, texto)
     }
 
-<<<<<<< HEAD
+
     private fun configuraSucessoEFalhaCompra() {
         usuarioViewModel.quandoCompraSucesso = { saldoRestante ->
             setClickComprar(saldoRestante)
-=======
-    private fun configuraSucessoEFalha() {
-        usuarioViewModel.quandoSucesso = { saldo ->
-            setClickComprar(saldo)
-            Log.i("TAG", "calculaCompra: ${saldo}")
->>>>>>> parent of c4f28a0 (criação Fragment resposta)
             cambio_button_comprar.visibility = VISIBLE
         }
 
@@ -147,11 +117,10 @@ class CambioFragment : Fragment() {
 
     private fun setClickComprar(valor: BigDecimal) {
         cambio_button_comprar.setOnClickListener {
-<<<<<<< HEAD
             moeda.setTotalMoeda(cambio_quantidade.text.toString().toDouble())
-            usuarioViewModel.setSaldoCompra(1, saldoRestante)
+            usuarioViewModel.setSaldoCompra(1, valor)
             moedaViewModel.modifica(moeda)
-            quandoCompraOuVendaSucesso(mensagemFuncaoSucesso(saldoRestante, "comprar "))
+            quandoCompraOuVendaSucesso(mensagemFuncaoSucesso(valor, "comprar "))
         }
     }
 
@@ -159,42 +128,13 @@ class CambioFragment : Fragment() {
         val saldoFormatado = saldoRestante.formatoMoedaBrasileira()
         val resposta = StringBuilder()
         resposta.append("Parabéns! \n Você acabou de ").append(nomeFuncao)
-            .append(cambio_quantidade.text.toString()).append(" ").append(moeda.abreviacao).append(" - ")
+            .append(cambio_quantidade.text.toString()).append(" ").append(moeda.abreviacao)
+            .append(" - ")
             .append(moeda.name).append(", totalizando \n").append(saldoFormatado)
 
         return resposta.toString()
     }
 
-=======
-            setDadosAposCompra(valor)
-        }
-    }
-
-    private fun setDadosAposCompra(valor: BigDecimal) {
-        setSaldoDoUsuario(valor)
-        setSaldoMoeda()
-    }
-
-    private fun setSaldoMoeda() {
-        moeda.setTotal(cambio_quantidade.text.toString())
-        moedaViewModel.modifica(moeda)
-    }
-
-    private fun setSaldoDoUsuario(valor: BigDecimal) {
-        usuarioViewModel.usuario(1).observe(viewLifecycleOwner, Observer {
-            it.saldoDisponivel = valor
-            usuarioViewModel.modificaUsuario(it)
-        })
-    }
-
-    private fun setvenda() {
-        cambio_button_vender.setOnClickListener {
-            Toast.makeText(activity?.baseContext!!, "Clicou no botão de venda", Toast.LENGTH_LONG)
-                .show()
-        }
-    }
-
->>>>>>> parent of c4f28a0 (criação Fragment resposta)
     private fun inicializaCampos() {
         try {
             setCampos()
@@ -220,15 +160,11 @@ class CambioFragment : Fragment() {
         setCampoVariation()
         cardView_cambio_valor_venda_moeda.text = formatoValorVenda
         cardView_cambio_valor_compra_moeda.text = formatoValorCompra
-<<<<<<< HEAD
         cambio_saldo_moeda.text = "$formatoTotalMoeda "
 
         usuarioViewModel.usuario(1).observe(viewLifecycleOwner, Observer {
             cambio_saldo_disponivel.text = it.saldoDisponivel.formatoMoedaBrasileira()
         })
-=======
-        cambio_saldo_moeda.text = "0 "
->>>>>>> parent of c4f28a0 (criação Fragment resposta)
     }
 
     private fun setCampoVariation() {

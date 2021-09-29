@@ -26,12 +26,12 @@ class Moeda(
             "Dollar" -> "USD"
             "Euro" -> "EUR"
             "Pound Sterling" -> "GBP"
-            "Argentine Peso" -> "ARS"
             "Canadian Dollar" -> "CAD"
             "Australian Dollar" -> "AUD"
             "Japanese Yen" -> "JPY"
             "Renminbi" -> "CNY"
             "Bitcoin" -> "BTC"
+            "Argentine Peso" -> "ARS"
             else -> "SemValor"
         }
         this.abreviacao = abreviacao

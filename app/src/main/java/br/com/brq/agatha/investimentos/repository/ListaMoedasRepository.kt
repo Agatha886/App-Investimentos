@@ -9,7 +9,7 @@ import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.retrofit.MoedasRetrofit
 import kotlinx.coroutines.*
 
-class ListaMoedasRepository(daoMoeda: MoedaDao): MoedaRepository(daoMoeda){
+class ListaMoedasRepository(daoMoeda: MoedaDao) : MoedaRepository(daoMoeda) {
 
     var quandoConexaoFalha: (lista: LiveData<List<Moeda>>) -> Unit = {}
     var quandoSucesso: (finance: LiveData<Finance>) -> Unit = {}
@@ -21,13 +21,12 @@ class ListaMoedasRepository(daoMoeda: MoedaDao): MoedaRepository(daoMoeda){
                 val call = MoedasRetrofit().retornaFinance()
                 val resposta = call.execute()
                 val finance: Finance? = resposta.body()
-                async {
-                    quandoBuscaNaAPI(finance)
-                }
+
+                Log.i("TAG", "finance: ${finance}")
+
+                quandoBuscaNaAPI(finance)
             } catch (e: Exception) {
-                async {
-                    quandoDarErroAoBuscar(e)
-                }
+                quandoDarErroAoBuscar(e)
             }
         }
     }
@@ -54,9 +53,6 @@ class ListaMoedasRepository(daoMoeda: MoedaDao): MoedaRepository(daoMoeda){
             liveDataFinance.value = finance
             quandoSucesso(liveDataFinance)
         }
-        io.async {
-            atualizaListaMoedas(finance)
-        }
+        atualizaListaMoedas(finance)
     }
-
 }

@@ -16,17 +16,12 @@ import java.math.BigDecimal
 class Usuario(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
-    var saldoDisponivel: BigDecimal = BigDecimal.ZERO,
-    var idMoeda: Int? = null
+    var idMoeda: Int? = null,
+    var saldoDisponivel: BigDecimal = BigDecimal.ZERO
 ): Serializable{
 
-    fun setIdMoeda(idMoeda: Int){
-        this.idMoeda = idMoeda
-    }
-
-    fun setSaldoAposCompra(valorComprado: String, moeda: Moeda): BigDecimal{
-        val valorSaldoAdicionado = BigDecimal(valorComprado).multiply(moeda.sell)
-        return saldoDisponivel.add(valorSaldoAdicionado)
+    fun setSaldo(novoSaldo: BigDecimal){
+        this.saldoDisponivel = novoSaldo
     }
 
 }

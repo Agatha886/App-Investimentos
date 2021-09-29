@@ -2,25 +2,18 @@ package br.com.brq.agatha.investimentos.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
-import br.com.brq.agatha.investimentos.constantes.CHAVE_USUARIO
+import br.com.brq.agatha.investimentos.constantes.CHAVE_RESPOSTA
 import br.com.brq.agatha.investimentos.extension.setMyActionBar
 import br.com.brq.agatha.investimentos.extension.transacaoFragment
-import br.com.brq.agatha.investimentos.ui.fragment.CambioFragment
 import br.com.brq.agatha.investimentos.model.Moeda
-import br.com.brq.agatha.investimentos.model.Usuario
-import br.com.brq.agatha.investimentos.viewModel.UsuarioViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import br.com.brq.agatha.investimentos.ui.fragment.CambioFragment
+import br.com.brq.agatha.investimentos.ui.fragment.RespostaFragment
 import java.io.Serializable
-import java.math.BigDecimal
 
 @Suppress("DEPRECATION")
 class CambioActivity : AppCompatActivity() {
@@ -53,6 +46,23 @@ class CambioActivity : AppCompatActivity() {
     }
 
     private fun configuraFragmentsCambio(fragment: CambioFragment) {
+        val respostaFragment = RespostaFragment()
+
+        setAcaoQuandoMoedaInvalida(fragment)
+        fragment.quandoCompraOuVendaSucesso ={ mensagem ->
+            val dados = Bundle()
+            dados.putString(CHAVE_RESPOSTA, mensagem)
+            respostaFragment.arguments = dados
+
+            transacaoFragment {
+                replace(R.id.activity_cambio_container, respostaFragment)
+            }
+        }
+
+    }
+
+
+    private fun setAcaoQuandoMoedaInvalida(fragment: CambioFragment) {
         fragment.quandoDarIllegalArgumentException = {
             voltaParaTelaDeMoedas()
             Toast.makeText(

@@ -73,15 +73,15 @@ class HomeMoedasActivity : AppCompatActivity() {
         {
             it.observe(this, Observer { finance ->
                 Log.i("TAG", "setAdapterComDadosDaApi: ${finance?.results?.currencies?.usd}")
-//                adapter.adiciona(finance?.results?.currencies?.usd)
-//                adapter.adiciona(finance?.results?.currencies?.jpy)
-//                adapter.adiciona(finance?.results?.currencies?.gbp)
-//                adapter.adiciona(finance?.results?.currencies?.eur)
-//                adapter.adiciona(finance?.results?.currencies?.cny)
-//                adapter.adiciona(finance?.results?.currencies?.cad)
-//                adapter.adiciona(finance?.results?.currencies?.btc)
-//                adapter.adiciona(finance?.results?.currencies?.aud)
-//                adapter.adiciona(finance?.results?.currencies?.ars)
+                adapter.adiciona(finance?.results?.currencies?.usd)
+                adapter.adiciona(finance?.results?.currencies?.jpy)
+                adapter.adiciona(finance?.results?.currencies?.gbp)
+                adapter.adiciona(finance?.results?.currencies?.eur)
+                adapter.adiciona(finance?.results?.currencies?.cny)
+                adapter.adiciona(finance?.results?.currencies?.cad)
+                adapter.adiciona(finance?.results?.currencies?.btc)
+                adapter.adiciona(finance?.results?.currencies?.aud)
+                adapter.adiciona(finance?.results?.currencies?.ars)
             })
         }
 
