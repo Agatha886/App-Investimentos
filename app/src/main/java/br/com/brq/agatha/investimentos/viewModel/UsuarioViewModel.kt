@@ -31,6 +31,7 @@ class UsuarioViewModel(context: Context) : ViewModel() {
         usuarioRepository.compra(idUsuario,moeda, valor)
     }
 
+<<<<<<< HEAD
     fun calculaTotalMoedaAposVenda(moeda: Moeda, valor: String) {
         usuarioRepository.quandoVendaFalha = quandoFalha
         usuarioRepository.quandoVendaSucesso = quandoVendaSucesso
@@ -45,6 +46,8 @@ class UsuarioViewModel(context: Context) : ViewModel() {
         usuarioRepository.setSaldoAposVenda(idUsuario, valor, moeda)
     }
 
+=======
+>>>>>>> parent of c4f28a0 (criação Fragment resposta)
     fun modificaUsuario(usuario: Usuario){
         usuarioRepository.modificaUsuario(usuario)
     }

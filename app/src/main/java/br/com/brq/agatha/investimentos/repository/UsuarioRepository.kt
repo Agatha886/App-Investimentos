@@ -30,6 +30,7 @@ class UsuarioRepository(private val daoUsuario: UsuarioDao) {
         return liveData
     }
 
+<<<<<<< HEAD
     fun setSaldoAposCompra(idUsuario: Int, novoSaldo: BigDecimal) {
         io.launch {
             val retornaUsuario = daoUsuario.retornaUsuario(idUsuario)
@@ -52,6 +53,8 @@ class UsuarioRepository(private val daoUsuario: UsuarioDao) {
         }
     }
 
+=======
+>>>>>>> parent of c4f28a0 (criação Fragment resposta)
     fun adicionaUsuario(usuario: Usuario) {
         io.launch {
             daoUsuario.adiciona(usuario)

@@ -8,10 +8,6 @@ import androidx.room.PrimaryKey
 import br.com.brq.agatha.investimentos.R
 import java.io.Serializable
 import java.math.BigDecimal
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.text.NumberFormat
-import java.util.*
 
 @Entity
 class Moeda(
