@@ -1,6 +1,5 @@
 package br.com.brq.agatha.investimentos.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.brq.agatha.investimentos.database.dao.UsuarioDao
@@ -16,22 +15,38 @@ class UsuarioRepository(private val daoUsuario: UsuarioDao) {
 
     private val io = CoroutineScope(Dispatchers.IO)
     var quandoCompraFalha: (mensagem: String) -> Unit = {}
+    var quandoVendaFalha: (mensagem: String) -> Unit = {}
     var quandoCompraSucesso: (saldoRestante: BigDecimal) -> Unit = {}
+    var quandoVendaSucesso: (totalDeMoeda: Double) -> Unit = {}
 
     fun usuario(id: Int): LiveData<Usuario> {
         val liveData = MutableLiveData<Usuario>()
         io.launch {
             val usuario = daoUsuario.retornaUsuario(id)
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 liveData.value = usuario
             }
         }
         return liveData
     }
 
-    fun setSaldo(idUsuario: Int, novoSaldo: BigDecimal){
+    fun setSaldoAposCompra(idUsuario: Int, novoSaldo: BigDecimal) {
         io.launch {
-            val usuario = daoUsuario.retornaUsuario(idUsuario)
+            val retornaUsuario = daoUsuario.retornaUsuario(idUsuario)
+            setSaldo(retornaUsuario, novoSaldo)
+        }
+    }
+
+    fun setSaldoAposVenda(idUsuario: Int, valorComprado: String, moeda: Moeda) {
+        io.launch {
+            val retornaUsuario = daoUsuario.retornaUsuario(idUsuario)
+            val novoSaldo = retornaUsuario.setSaldoAposCompra(valorComprado, moeda)
+            setSaldo(retornaUsuario, novoSaldo)
+        }
+    }
+
+    fun setSaldo(usuario: Usuario, novoSaldo: BigDecimal) {
+        io.launch {
             usuario.saldoDisponivel = novoSaldo
             daoUsuario.modificaUsuario(usuario)
         }
@@ -46,13 +61,13 @@ class UsuarioRepository(private val daoUsuario: UsuarioDao) {
     fun compra(idUsuario: Int, moeda: Moeda, valor: String) {
         io.launch {
             val usuario: Usuario = daoUsuario.retornaUsuario(idUsuario)
-            val novoSaldo = calculaSaldo(moeda, valor, usuario)
+            val novoSaldo = calculaSaldoCompra(moeda, valor, usuario)
 
-            if (novoSaldo > BigDecimal.ZERO && novoSaldo!= null) {
+            if (novoSaldo > BigDecimal.ZERO && novoSaldo != null) {
                 withContext(Dispatchers.Main) {
-                    quandoCompraSucesso.invoke(novoSaldo)
+                    quandoCompraSucesso(novoSaldo)
                 }
-            }else {
+            } else {
                 withContext(Dispatchers.Main) {
                     quandoCompraFalha("Valor de Compra Inválido")
                 }
@@ -60,17 +75,29 @@ class UsuarioRepository(private val daoUsuario: UsuarioDao) {
         }
     }
 
-   private fun calculaSaldo(moeda: Moeda, valor: String, usuario: Usuario): BigDecimal{
+    private fun calculaSaldoCompra(moeda: Moeda, valor: String, usuario: Usuario): BigDecimal {
         val valorDaCompra = BigDecimal(valor).multiply(moeda.buy)
         val saldoAposCompra = usuario.saldoDisponivel.subtract(valorDaCompra)
         return saldoAposCompra
     }
 
-    fun modificaUsuario(usuario: Usuario){
+    fun venda(moeda: Moeda, valor: String) {
+        io.launch {
+            val valorMoedaAposVenda = moeda.totalDeMoeda.minus(BigDecimal(valor).toDouble())
+            if (valorMoedaAposVenda > 00.0 && valorMoedaAposVenda != null) {
+                withContext(Dispatchers.Main) {
+                    quandoVendaSucesso(valorMoedaAposVenda)
+                }
+            } else {
+                quandoVendaFalha("Valor inválido")
+            }
+        }
+    }
+
+    fun modificaUsuario(usuario: Usuario) {
         io.launch {
             daoUsuario.modificaUsuario(usuario)
         }
     }
-
 
 }

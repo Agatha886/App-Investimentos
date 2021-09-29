@@ -24,5 +24,9 @@ class Usuario(
         this.idMoeda = idMoeda
     }
 
+    fun setSaldoAposCompra(valorComprado: String, moeda: Moeda): BigDecimal{
+        val valorSaldoAdicionado = BigDecimal(valorComprado).multiply(moeda.sell)
+        return saldoDisponivel.add(valorSaldoAdicionado)
+    }
 
 }

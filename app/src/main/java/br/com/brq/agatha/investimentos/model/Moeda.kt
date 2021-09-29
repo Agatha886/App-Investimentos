@@ -56,9 +56,9 @@ class Moeda(
         }
     }
 
-    fun setTotal(novoTotal: String) {
-        if (!novoTotal.isNullOrBlank())
-            this.totalDeMoeda = totalDeMoeda + novoTotal.toDouble()
+    fun setTotalMoeda(novoTotal: Double) {
+        if (novoTotal>=0.00)
+            this.totalDeMoeda = totalDeMoeda + novoTotal
     }
 
 }

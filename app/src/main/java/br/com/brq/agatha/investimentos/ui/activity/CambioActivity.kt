@@ -57,7 +57,7 @@ class CambioActivity : AppCompatActivity() {
             ).show()
         }
 
-        fragment.quandoCompraSucesso ={ mensagem ->
+        fragment.quandoCompraOuVendaSucesso ={ mensagem ->
             val dados = Bundle()
             dados.putString(CHAVE_RESPOSTA, mensagem)
             respostaFragment.arguments = dados

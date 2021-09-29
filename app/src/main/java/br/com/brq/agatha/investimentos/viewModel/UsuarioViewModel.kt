@@ -14,7 +14,8 @@ class UsuarioViewModel(context: Context) : ViewModel() {
     private val usuarioRepository = UsuarioRepository(usuarioDao)
 
     var quandoFalha: (mensagem: String) -> Unit = {}
-    var quandoSucesso: (valor: BigDecimal) -> Unit = {}
+    var quandoCompraSucesso: (valor: BigDecimal) -> Unit = {}
+    var quandoVendaSucesso: (totalDeMoeda: Double) -> Unit = {}
 
     fun adicionaUsuario(usuario: Usuario) {
         usuarioRepository.adicionaUsuario(usuario)
@@ -26,12 +27,22 @@ class UsuarioViewModel(context: Context) : ViewModel() {
 
     fun calculaSaldoAposCompra(idUsuario: Int, moeda: Moeda, valor: String) {
         usuarioRepository.quandoCompraFalha = quandoFalha
-        usuarioRepository.quandoCompraSucesso = quandoSucesso
+        usuarioRepository.quandoCompraSucesso = quandoCompraSucesso
         usuarioRepository.compra(idUsuario,moeda, valor)
     }
 
-    fun setSaldo(idUsuario: Int, novoSaldo: BigDecimal){
-        usuarioRepository.setSaldo(idUsuario, novoSaldo)
+    fun calculaTotalMoedaAposVenda(moeda: Moeda, valor: String) {
+        usuarioRepository.quandoVendaFalha = quandoFalha
+        usuarioRepository.quandoVendaSucesso = quandoVendaSucesso
+        usuarioRepository.venda(moeda, valor)
+    }
+
+    fun setSaldoCompra(idUsuario: Int, novoSaldo: BigDecimal){
+       usuarioRepository.setSaldoAposCompra(idUsuario, novoSaldo)
+    }
+
+    fun setSaldoVenda(idUsuario: Int, valor: String, moeda: Moeda){
+        usuarioRepository.setSaldoAposVenda(idUsuario, valor, moeda)
     }
 
     fun modificaUsuario(usuario: Usuario){
