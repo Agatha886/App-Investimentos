@@ -25,9 +25,9 @@ class UsuarioViewModel(context: Context) : ViewModel() {
     }
 
     fun calculaSaldoAposCompra(idUsuario: Int, moeda: Moeda, valor: String) {
-        usuarioRepository.compra(idUsuario,moeda, valor)
         usuarioRepository.quandoCompraFalha = quandoFalha
         usuarioRepository.quandoCompraSucesso = quandoSucesso
+        usuarioRepository.compra(idUsuario,moeda, valor)
     }
 
     fun modificaUsuario(usuario: Usuario){

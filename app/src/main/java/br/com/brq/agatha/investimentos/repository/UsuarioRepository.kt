@@ -39,9 +39,10 @@ class UsuarioRepository(private val daoUsuario: UsuarioDao) {
         io.launch {
             val usuario: Usuario = daoUsuario.retornaUsuario(idUsuario)
             val novoSaldo = calculaSaldo(moeda, valor, usuario)
+
             if (novoSaldo > BigDecimal.ZERO && novoSaldo!= null) {
                 withContext(Dispatchers.Main) {
-                    quandoCompraSucesso(novoSaldo)
+                    quandoCompraSucesso.invoke(novoSaldo)
                 }
             }else {
                 withContext(Dispatchers.Main) {
@@ -54,7 +55,6 @@ class UsuarioRepository(private val daoUsuario: UsuarioDao) {
    private fun calculaSaldo(moeda: Moeda, valor: String, usuario: Usuario): BigDecimal{
         val valorDaCompra = BigDecimal(valor).multiply(moeda.buy)
         val saldoAposCompra = usuario.saldoDisponivel.subtract(valorDaCompra)
-        Log.i("TAG", "calculaCompra: $saldoAposCompra")
         return saldoAposCompra
     }
 

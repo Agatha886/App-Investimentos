@@ -50,28 +50,45 @@ class CambioFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         inicializaCampos()
+        setCampoQuantidadeMoeda()
+    }
 
+    private fun setCampoQuantidadeMoeda() {
         cambio_quantidade.doAfterTextChanged { valorDigitado ->
             val texto = valorDigitado.toString()
             if (texto.isBlank()) {
-              Toast.makeText(requireContext(), "Valor nulo", Toast.LENGTH_SHORT).show()
-              cambio_button_comprar.setOnClickListener { Toast.makeText(requireContext(), "Valor nulo", Toast.LENGTH_SHORT).show() }
+                SetCliqueBotoesQuandoNulo()
             } else {
                 calculaCompra(texto)
             }
         }
+    }
 
+    private fun SetCliqueBotoesQuandoNulo() {
+        cambio_button_comprar.setOnClickListener {
+            Toast.makeText(
+                requireContext(),
+                "Valor nulo",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun calculaCompra(texto: String) {
+        configuraSucessoEFalha()
         usuarioViewModel.calculaSaldoAposCompra(1, moeda, texto)
+    }
+
+    private fun configuraSucessoEFalha() {
         usuarioViewModel.quandoSucesso = { saldo ->
-            cambio_button_comprar.visibility = VISIBLE
             setClickComprar(saldo)
+            Log.i("TAG", "calculaCompra: ${saldo}")
+            cambio_button_comprar.visibility = VISIBLE
         }
+
         usuarioViewModel.quandoFalha = { erro ->
             cambio_button_comprar.visibility = INVISIBLE
-            Log.e("VALOR INVÁLIDO", "calculaCompra: $erro", )
+            Log.e("VALOR INVÁLIDO", "calculaCompra: $erro")
         }
     }
 
@@ -82,12 +99,20 @@ class CambioFragment : Fragment() {
     }
 
     private fun setDadosAposCompra(valor: BigDecimal) {
+        setSaldoDoUsuario(valor)
+        setSaldoMoeda()
+    }
+
+    private fun setSaldoMoeda() {
+        moeda.setTotal(cambio_quantidade.text.toString())
+        moedaViewModel.modifica(moeda)
+    }
+
+    private fun setSaldoDoUsuario(valor: BigDecimal) {
         usuarioViewModel.usuario(1).observe(viewLifecycleOwner, Observer {
             it.saldoDisponivel = valor
             usuarioViewModel.modificaUsuario(it)
         })
-        moeda.setTotal(cambio_quantidade.text.toString())
-        moedaViewModel.modifica(moeda)
     }
 
     private fun setvenda() {
@@ -96,7 +121,6 @@ class CambioFragment : Fragment() {
                 .show()
         }
     }
-
 
     private fun inicializaCampos() {
         try {

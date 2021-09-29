@@ -12,7 +12,7 @@ import java.math.BigDecimal
 @Entity
 class Moeda(
     @PrimaryKey(autoGenerate = true)
-    var id : Int = 0,
+    var id: Int = 0,
     var name: String,
     var buy: BigDecimal?,
     var sell: BigDecimal?,
@@ -52,8 +52,9 @@ class Moeda(
         }
     }
 
-    fun setTotal(novoTotal: String){
-        this.totalDeMoeda = totalDeMoeda + novoTotal.toDouble()
+    fun setTotal(novoTotal: String) {
+        if (!novoTotal.isNullOrBlank())
+            this.totalDeMoeda = totalDeMoeda + novoTotal.toDouble()
     }
 
 }
