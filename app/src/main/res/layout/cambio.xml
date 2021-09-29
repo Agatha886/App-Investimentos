@@ -87,7 +87,7 @@
         />
 
     <TextView
-        android:id="@+id/cambio_saldo_reais"
+        android:id="@+id/cambio_saldo_disponivel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/cambio_textView_saldo_disponivel"
@@ -104,7 +104,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/cambio_saldo_reais"
+        app:layout_constraintTop_toBottomOf="@id/cambio_saldo_disponivel"
         app:layout_constraintStart_toStartOf="@id/cambio_textView_saldo_disponivel"
         android:layout_marginEnd="24dp"
         android:textSize="24sp"

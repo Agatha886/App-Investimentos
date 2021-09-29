@@ -8,7 +8,7 @@ import br.com.brq.agatha.investimentos.model.Moeda
 interface MoedaDao {
 
     @Query("SELECT * FROM moeda")
-    fun buscaMoedas(): LiveData<List<Moeda>>
+    fun buscaMoedas(): List<Moeda>
 
     @Insert
     fun adiciona(moeda: Moeda)

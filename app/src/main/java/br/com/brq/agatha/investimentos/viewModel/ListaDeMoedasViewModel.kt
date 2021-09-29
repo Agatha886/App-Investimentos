@@ -20,5 +20,4 @@ class ListaDeMoedasViewModel(context: Context): ViewModel() {
         repository.quandoConexaoFalha = quandoConexaoFalha
     }
 
-
 }

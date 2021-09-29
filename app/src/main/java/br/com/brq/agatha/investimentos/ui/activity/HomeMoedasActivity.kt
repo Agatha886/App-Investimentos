@@ -65,7 +65,6 @@ class HomeMoedasActivity : AppCompatActivity() {
             it.observe(this, Observer { moedas ->
                 adapter.atualiza(moedas)
             })
-
             mensagem(MENSAGEM_FALHA_API)
         }
 

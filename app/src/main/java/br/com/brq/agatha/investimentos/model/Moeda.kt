@@ -1,6 +1,7 @@
 package br.com.brq.agatha.investimentos.model
 
 import android.content.Context
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -17,6 +18,7 @@ class Moeda(
     var sell: BigDecimal?,
     var variation: BigDecimal,
     var abreviacao: String?,
+    var totalDeMoeda: Double = 0.00
 ) : Serializable {
 
     fun setAbreviacao(): String {
@@ -49,6 +51,11 @@ class Moeda(
             }
         }
     }
+
+    fun setTotal(novoTotal: String){
+        this.totalDeMoeda = totalDeMoeda + novoTotal.toDouble()
+    }
+
 }
 
 
