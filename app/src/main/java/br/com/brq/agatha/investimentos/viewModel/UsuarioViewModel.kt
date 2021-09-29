@@ -30,6 +30,10 @@ class UsuarioViewModel(context: Context) : ViewModel() {
         usuarioRepository.compra(idUsuario,moeda, valor)
     }
 
+    fun setSaldo(idUsuario: Int, novoSaldo: BigDecimal){
+        usuarioRepository.setSaldo(idUsuario, novoSaldo)
+    }
+
     fun modificaUsuario(usuario: Usuario){
         usuarioRepository.modificaUsuario(usuario)
     }

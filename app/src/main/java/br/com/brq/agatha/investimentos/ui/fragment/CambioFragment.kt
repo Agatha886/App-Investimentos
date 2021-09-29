@@ -19,6 +19,7 @@ import br.com.brq.agatha.investimentos.viewModel.UsuarioViewModel
 import kotlinx.android.synthetic.main.cambio.*
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import java.lang.StringBuilder
 import java.math.BigDecimal
 
 class CambioFragment : Fragment() {
@@ -29,6 +30,7 @@ class CambioFragment : Fragment() {
         moedaSerializable as Moeda
     }
 
+    var quandoCompraSucesso: (mensagem: String) -> Unit = {}
     var quandoDarIllegalArgumentException: (mensagem: String?) -> Unit = {}
 
     private val usuarioViewModel: UsuarioViewModel by lazy {
@@ -50,39 +52,42 @@ class CambioFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         inicializaCampos()
-        setCampoQuantidadeMoeda()
+        setEditTextQuantidadeMoeda()
     }
 
-    private fun setCampoQuantidadeMoeda() {
+    private fun setEditTextQuantidadeMoeda() {
         cambio_quantidade.doAfterTextChanged { valorDigitado ->
             val texto = valorDigitado.toString()
             if (texto.isBlank()) {
-                SetCliqueBotoesQuandoNulo()
+                setCliqueBotoesQuandoNulo()
             } else {
                 calculaCompra(texto)
             }
         }
     }
 
-    private fun SetCliqueBotoesQuandoNulo() {
-        cambio_button_comprar.setOnClickListener {
-            Toast.makeText(
-                requireContext(),
-                "Valor nulo",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+    private fun setCliqueBotoesQuandoNulo() {
+        cambio_button_comprar.setOnClickListener { mensagemQuandoNulo() }
+        cambio_button_vender.setOnClickListener { mensagemQuandoNulo() }
+    }
+
+    private fun mensagemQuandoNulo() {
+        Toast.makeText(
+            requireContext(),
+            "Valor nulo",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun calculaCompra(texto: String) {
-        configuraSucessoEFalha()
+        configuraSucessoEFalhaCompra()
         usuarioViewModel.calculaSaldoAposCompra(1, moeda, texto)
     }
 
-    private fun configuraSucessoEFalha() {
-        usuarioViewModel.quandoSucesso = { saldo ->
-            setClickComprar(saldo)
-            Log.i("TAG", "calculaCompra: ${saldo}")
+    private fun configuraSucessoEFalhaCompra() {
+        usuarioViewModel.quandoSucesso = { saldoRestante ->
+            setClickComprar(saldoRestante)
+            Log.i("TAG", "calculaCompra: ${saldoRestante}")
             cambio_button_comprar.visibility = VISIBLE
         }
 
@@ -92,15 +97,26 @@ class CambioFragment : Fragment() {
         }
     }
 
-    private fun setClickComprar(valor: BigDecimal) {
+    private fun setClickComprar(saldoRestante: BigDecimal) {
         cambio_button_comprar.setOnClickListener {
-            setDadosAposCompra(valor)
+            setDadosAposCompra(saldoRestante)
         }
     }
 
-    private fun setDadosAposCompra(valor: BigDecimal) {
-        setSaldoDoUsuario(valor)
+    private fun setDadosAposCompra(saldoRestante: BigDecimal) {
+        setSaldoDoUsuario(saldoRestante)
         setSaldoMoeda()
+        quandoCompraSucesso(mensagemCompraSucesso(saldoRestante))
+    }
+
+    private fun mensagemCompraSucesso(saldoRestante: BigDecimal): String {
+        val saldoFormatado = saldoRestante.formatoMoedaBrasileira()
+        val resposta = StringBuilder()
+        resposta.append("Parabéns! \n Você acabou de comprar ")
+            .append(cambio_quantidade.text.toString()).append(" ").append(moeda.abreviacao).append(" - ")
+            .append(moeda.name).append(", totalizando \n").append(saldoFormatado)
+
+        return resposta.toString()
     }
 
     private fun setSaldoMoeda() {
@@ -108,11 +124,8 @@ class CambioFragment : Fragment() {
         moedaViewModel.modifica(moeda)
     }
 
-    private fun setSaldoDoUsuario(valor: BigDecimal) {
-        usuarioViewModel.usuario(1).observe(viewLifecycleOwner, Observer {
-            it.saldoDisponivel = valor
-            usuarioViewModel.modificaUsuario(it)
-        })
+    private fun setSaldoDoUsuario(saldoRestante: BigDecimal) {
+        usuarioViewModel.setSaldo(1, saldoRestante)
     }
 
     private fun setvenda() {
@@ -145,7 +158,11 @@ class CambioFragment : Fragment() {
         setCampoVariation()
         cardView_cambio_valor_venda_moeda.text = formatoValorVenda
         cardView_cambio_valor_compra_moeda.text = formatoValorCompra
-        cambio_saldo_moeda.text = "0 "
+        cambio_saldo_moeda.text = moeda.totalDeMoeda.toString() + " "
+
+        usuarioViewModel.usuario(1).observe(viewLifecycleOwner, Observer {
+            cambio_saldo_disponivel.text = it.saldoDisponivel.formatoMoedaBrasileira()
+        })
     }
 
     private fun setCampoVariation() {

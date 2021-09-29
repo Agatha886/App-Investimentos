@@ -29,6 +29,14 @@ class UsuarioRepository(private val daoUsuario: UsuarioDao) {
         return liveData
     }
 
+    fun setSaldo(idUsuario: Int, novoSaldo: BigDecimal){
+        io.launch {
+            val usuario = daoUsuario.retornaUsuario(idUsuario)
+            usuario.saldoDisponivel = novoSaldo
+            daoUsuario.modificaUsuario(usuario)
+        }
+    }
+
     fun adicionaUsuario(usuario: Usuario) {
         io.launch {
             daoUsuario.adiciona(usuario)
