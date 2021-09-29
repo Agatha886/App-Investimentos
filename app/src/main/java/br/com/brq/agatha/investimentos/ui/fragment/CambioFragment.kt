@@ -17,6 +17,8 @@ import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.viewModel.MoedaViewModel
 import br.com.brq.agatha.investimentos.viewModel.UsuarioViewModel
 import kotlinx.android.synthetic.main.cambio.*
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import java.math.BigDecimal
 
 class CambioFragment : Fragment() {
@@ -56,34 +58,37 @@ class CambioFragment : Fragment() {
                     Toast.makeText(requireContext(), "Valor inválido", Toast.LENGTH_LONG).show()
                 }
             } else {
-                ConfiguraCompra(texto)
+                calculaCompra(texto)
             }
         }
 
     }
 
-    private fun ConfiguraCompra(texto: String) {
-        usuarioViewModel.CalculaSaldoAposCompra(1, moeda, texto)
+    private fun calculaCompra(texto: String) {
+        usuarioViewModel.calculaSaldoAposCompra(1, moeda, texto)
         usuarioViewModel.quandoSucesso = { saldo ->
+            cambio_button_comprar.visibility = VISIBLE
             setClickComprar(saldo)
         }
         usuarioViewModel.quandoFalha = { erro ->
-            cambio_button_comprar.isEnabled
-            Log.e("TAG", "onViewCreated: ${erro}")
+            cambio_button_comprar.visibility = INVISIBLE
+            Log.e("VALOR INVÁLIDO", "calculaCompra: $erro", )
         }
     }
 
     private fun setClickComprar(valor: BigDecimal) {
         cambio_button_comprar.setOnClickListener {
-           usuarioViewModel.usuario(1).observe(viewLifecycleOwner, Observer {
-               it.saldoDisponivel = valor
-               usuarioViewModel.modificaUsuario(it)
-           })
-               moeda.setTotal(cambio_quantidade.text.toString())
-               Log.i("TAG", "setClickComprar: ${moeda.totalDeMoeda}")
-               Log.i("TAG", "setClickComprar: ${cambio_quantidade.text}")
-               moedaViewModel.modifica(moeda)
+            setDadosAposCompra(valor)
         }
+    }
+
+    private fun setDadosAposCompra(valor: BigDecimal) {
+        usuarioViewModel.usuario(1).observe(viewLifecycleOwner, Observer {
+            it.saldoDisponivel = valor
+            usuarioViewModel.modificaUsuario(it)
+        })
+        moeda.setTotal(cambio_quantidade.text.toString())
+        moedaViewModel.modifica(moeda)
     }
 
     private fun setvenda() {
