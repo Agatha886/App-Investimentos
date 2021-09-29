@@ -39,7 +39,7 @@ class UsuarioRepository(private val daoUsuario: UsuarioDao) {
         io.launch {
             val usuario: Usuario = daoUsuario.retornaUsuario(idUsuario)
             val novoSaldo = calculaSaldo(moeda, valor, usuario)
-            if (novoSaldo > BigDecimal.ZERO) {
+            if (novoSaldo > BigDecimal.ZERO && novoSaldo!= null) {
                 withContext(Dispatchers.Main) {
                     quandoCompraSucesso(novoSaldo)
                 }

@@ -54,9 +54,8 @@ class CambioFragment : Fragment() {
         cambio_quantidade.doAfterTextChanged { valorDigitado ->
             val texto = valorDigitado.toString()
             if (texto.isBlank()) {
-                cambio_button_comprar.setOnClickListener {
-                    Toast.makeText(requireContext(), "Valor inválido", Toast.LENGTH_LONG).show()
-                }
+              Toast.makeText(requireContext(), "Valor nulo", Toast.LENGTH_SHORT).show()
+              cambio_button_comprar.setOnClickListener { Toast.makeText(requireContext(), "Valor nulo", Toast.LENGTH_SHORT).show() }
             } else {
                 calculaCompra(texto)
             }
