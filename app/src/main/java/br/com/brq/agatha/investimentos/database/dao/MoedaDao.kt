@@ -8,7 +8,7 @@ import br.com.brq.agatha.investimentos.model.Moeda
 interface MoedaDao {
 
     @Query("SELECT * FROM moeda")
-    fun buscaMoedas(): List<Moeda>
+    fun buscaTodasAsMoedas(): List<Moeda>
 
     @Query("SELECT * FROM moeda WHERE name = :name")
     fun buscaMoeda(name: String): Moeda
@@ -20,8 +20,8 @@ interface MoedaDao {
     fun modifica(moeda: Moeda)
 
     @Delete
-    fun deletaMoeda(moeda: Moeda)
+    fun deleta(moeda: Moeda)
 
     @Query("DELETE FROM moeda")
-    fun deletaTodasMoedas()
+    fun deletaTodasAsMoedas()
 }

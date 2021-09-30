@@ -18,7 +18,7 @@ class UsuarioRepository(private val daoUsuario: UsuarioDao){
     var quandoFalhaCompra: (mensagem: String) -> Unit = {}
 
 
-    fun usuario(id: Int): LiveData<BigDecimal> {
+    fun getSaldoDisponivel(id: Int): LiveData<BigDecimal> {
         val liveData = MutableLiveData<BigDecimal>()
         io.launch {
             val usuario = daoUsuario.retornaUsuario(id)
@@ -35,17 +35,17 @@ class UsuarioRepository(private val daoUsuario: UsuarioDao){
         }
     }
 
-    fun calculaSaldoVenda(idUsuario: Int, moeda: Moeda, valorCompraMoeda: String): LiveData<BigDecimal>{
-        val saldoAposSet = MutableLiveData<BigDecimal>()
+    fun getSaldoVenda(idUsuario: Int, moeda: Moeda, valorCompraMoeda: String): LiveData<BigDecimal>{
+        val saldoAposVenda = MutableLiveData<BigDecimal>()
         io.launch {
             val retornaUsuario = daoUsuario.retornaUsuario(idUsuario)
             val novoSaldo = retornaUsuario.calculaSaldoVenda(moeda, valorCompraMoeda)
             setSaldo(idUsuario, novoSaldo)
             withContext(Dispatchers.Main){
-                saldoAposSet.value = novoSaldo
+                saldoAposVenda.value = novoSaldo
             }
         }
-        return saldoAposSet
+        return saldoAposVenda
     }
 
     fun setSaldo(idUsuario: Int, novoSaldo: BigDecimal){
@@ -58,7 +58,7 @@ class UsuarioRepository(private val daoUsuario: UsuarioDao){
 
     private fun modificaUsuario(usuario: Usuario) {
         io.launch {
-            daoUsuario.modificaUsuario(usuario)
+            daoUsuario.modifica(usuario)
         }
     }
 

@@ -16,7 +16,6 @@ import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
 import br.com.brq.agatha.investimentos.extension.formatoMoedaBrasileira
 import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
-import br.com.brq.agatha.investimentos.model.Usuario
 import br.com.brq.agatha.investimentos.viewModel.MoedaViewModel
 import br.com.brq.agatha.investimentos.viewModel.UsuarioViewModel
 import kotlinx.android.synthetic.main.cambio.*
@@ -33,7 +32,7 @@ class CambioFragment : Fragment() {
 
     var quandoCompraOuVendaSucesso: (mensagem: String, tituloAppBar: String) -> Unit = {_:String, _:String ->}
 
-    var quandoDarIllegalArgumentException: (mensagem: String?) -> Unit = {}
+    var quandoRecebidaMoedaInvalida: (mensagem: String?) -> Unit = {}
 
     private val usuarioViewModel: UsuarioViewModel by lazy {
         UsuarioViewModel(requireContext())
@@ -56,7 +55,6 @@ class CambioFragment : Fragment() {
         inicializaCampos()
         setCliqueBotoesQuandoNulo()
         setCampoQuantidadeMoeda()
-        usuarioViewModel.adicionaUsuario(Usuario(saldoDisponivel = BigDecimal(1000)))
     }
 
     private fun setCampoQuantidadeMoeda() {
@@ -87,7 +85,7 @@ class CambioFragment : Fragment() {
     private fun setCliqueBotaoVender(totalMoeda: Double) {
         cambio_button_vender.setOnClickListener {
             val saldoVenda = usuarioViewModel.setSaldoVenda(1, moeda, cambio_quantidade.text.toString())
-            moedaViewModel.calculaToltalMoedaVenda(moeda.name, totalMoeda)
+            moedaViewModel.setTotalMoedaVenda(moeda.name, totalMoeda)
             saldoVenda.observe(viewLifecycleOwner, Observer {
                 quandoCompraOuVendaSucesso(mensagemOperacaoSucesso(it, "vender "), "Vender")
             })
@@ -130,19 +128,20 @@ class CambioFragment : Fragment() {
     private fun setClickComprar(valor: BigDecimal) {
         cambio_button_comprar.setOnClickListener {
             usuarioViewModel.setSaldoCompra(1, valor)
-            moedaViewModel.calculaToltalMoedaCompra(moeda.name, cambio_quantidade.text.toString().toDouble())
+            moedaViewModel.setToltalMoedaCompra(moeda.name, cambio_quantidade.text.toString().toDouble())
             quandoCompraOuVendaSucesso(mensagemOperacaoSucesso(valor, "comprar "), "Comprar")
         }
     }
 
     private fun mensagemOperacaoSucesso(saldo: BigDecimal, nomeOperacao: String): String {
-        val saldoFormatado = saldo.formatoMoedaBrasileira()
-        val resposta = StringBuilder()
+        var saldoFormatado = saldo.formatoMoedaBrasileira()
+        var resposta = StringBuilder()
         resposta.append("Parabéns! \n Você acabou de ").append(nomeOperacao)
             .append(cambio_quantidade.text.toString()).append(" ").append(moeda.abreviacao)
             .append(" - ")
             .append(moeda.name).append(", totalizando \n").append(saldoFormatado)
 
+        Log.i("TAG", resposta.toString())
         return resposta.toString()
     }
 
@@ -152,13 +151,12 @@ class CambioFragment : Fragment() {
         } catch (e: Exception) {
             when (e) {
                 is java.lang.IllegalArgumentException -> {
-                    quandoDarIllegalArgumentException(e.message)
+                    quandoRecebidaMoedaInvalida(e.message)
                 }
             }
             Log.e("ERRO MOEDA", "onViewCreated: ${e.message}")
         }
     }
-
 
     private fun setCampos() {
         val decimalFormat = DecimalFormat("#0.00")

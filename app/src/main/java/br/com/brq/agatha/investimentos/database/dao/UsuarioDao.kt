@@ -17,7 +17,7 @@ interface UsuarioDao {
     fun retornaUsuario(id: Int): Usuario
 
     @Update
-    fun modificaUsuario(usuario: Usuario)
+    fun modifica(usuario: Usuario)
 
 
 }

@@ -17,7 +17,7 @@ open class MoedaRepository(val daoMoeda: MoedaDao){
     var quandoSucessoVenda: (totalDeMoeda: Double) -> Unit = {}
 
 
-    fun totalMoeda(nameMoeda: String): LiveData<Double>{
+    fun getTotalMoeda(nameMoeda: String): LiveData<Double>{
         var liveDate = MutableLiveData<Double>()
         io.launch {
             val moeda = daoMoeda.buscaMoeda(nameMoeda)
@@ -29,12 +29,12 @@ open class MoedaRepository(val daoMoeda: MoedaDao){
         return liveDate
     }
 
-    fun modifica(valorMoedaNova: Moeda){
+    fun modifica(moedaNova: Moeda){
         io.launch {
-            var moeda = daoMoeda.buscaMoeda(valorMoedaNova.name)
-            valorMoedaNova.id = moeda.id
-            valorMoedaNova.totalDeMoeda = moeda.totalDeMoeda
-            daoMoeda.modifica(valorMoedaNova)
+            var moeda = daoMoeda.buscaMoeda(moedaNova.name)
+            moedaNova.id = moeda.id
+            moedaNova.totalDeMoeda = moeda.totalDeMoeda
+            daoMoeda.modifica(moedaNova)
         }
     }
 
@@ -46,10 +46,10 @@ open class MoedaRepository(val daoMoeda: MoedaDao){
         }
     }
 
-    fun setTotalMoedaAposVenda(nameMoeda: String, valorDaCompra: Double){
+    fun setTotalMoedaAposVenda(nameMoeda: String, valorTotalAposVenda: Double){
         io.launch {
             val moeda = daoMoeda.buscaMoeda(nameMoeda)
-            moeda.setTotalMoedaVenda(valorDaCompra)
+            moeda.setTotalMoedaVenda(valorTotalAposVenda)
             daoMoeda.modifica(moeda)
         }
     }

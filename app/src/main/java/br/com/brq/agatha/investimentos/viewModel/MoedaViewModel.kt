@@ -14,14 +14,14 @@ class MoedaViewModel(context: Context) : ViewModel() {
     var quandoVendaFalha: (mensagem: String) -> Unit = {}
 
     fun getTotalMoeda(nameMoeda: String): LiveData<Double> {
-        return repository.totalMoeda(nameMoeda)
+        return repository.getTotalMoeda(nameMoeda)
     }
 
-    fun calculaToltalMoedaCompra(nameMoeda: String, valorDaCompra: Double) {
+    fun setToltalMoedaCompra(nameMoeda: String, valorDaCompra: Double) {
         repository.setTotalMoedaAposCompra(nameMoeda, valorDaCompra)
     }
 
-    fun calculaToltalMoedaVenda(nameMoeda: String, valorDaCompra: Double) {
+    fun setTotalMoedaVenda(nameMoeda: String, valorDaCompra: Double) {
         repository.setTotalMoedaAposVenda(nameMoeda, valorDaCompra)
     }
 

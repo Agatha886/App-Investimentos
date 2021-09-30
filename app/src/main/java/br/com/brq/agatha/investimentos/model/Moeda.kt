@@ -1,7 +1,6 @@
 package br.com.brq.agatha.investimentos.model
 
 import android.content.Context
-import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -52,9 +51,9 @@ class Moeda(
         }
     }
 
-    fun setTotalMoedaCompra(novoTotal: Double) {
-        if (novoTotal>= 0.00)
-            this.totalDeMoeda = totalDeMoeda + novoTotal
+    fun setTotalMoedaCompra(valorComprado: Double) {
+        if (valorComprado>= 0.00)
+            this.totalDeMoeda = totalDeMoeda + valorComprado
     }
 
     fun setTotalMoedaVenda(novoTotal: Double) {

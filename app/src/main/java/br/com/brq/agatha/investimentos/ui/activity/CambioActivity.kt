@@ -25,37 +25,47 @@ class CambioActivity : AppCompatActivity() {
         iniciaComFragmentCambio()
     }
 
-    private fun iniciaComFragmentCambio() {
-        val cambioFragment = CambioFragment()
-
-        setArgumentsDadosMoedas(cambioFragment)
-        transacaoFragment {
-            replace(R.id.activity_cambio_container, cambioFragment, "CAMBIO")
-        }
-    }
-
     override fun onAttachFragment(fragment: Fragment) {
         super.onAttachFragment(fragment)
         when (fragment) {
             is CambioFragment -> {
                 configuraFragmentsCambio(fragment)
             }
-            is RespostaFragment ->{
-                configuraFragmentsResposta(fragment)
+            is RespostaFragment -> {
+                configuraFragmentResposta(fragment)
             }
         }
     }
 
-    private fun configuraFragmentsResposta(fragment: RespostaFragment) {
+    private fun iniciaComFragmentCambio() {
+        val cambioFragment = CambioFragment()
+        setArgumentsDadosMoedas(cambioFragment)
+        transacaoFragment {
+            replace(R.id.activity_cambio_container, cambioFragment, "CAMBIO")
+        }
+    }
+
+    private fun setArgumentsDadosMoedas(cambioFragment: CambioFragment) {
+        if (intent.hasExtra(CHAVE_MOEDA)) {
+            val serializableExtra: Serializable? = intent.getSerializableExtra(CHAVE_MOEDA)
+            if (serializableExtra != null) {
+                val moedaRecebida = serializableExtra as Moeda
+                val moedaBundle = Bundle()
+                moedaBundle.putSerializable(CHAVE_MOEDA, moedaRecebida)
+                cambioFragment.arguments = moedaBundle
+            }
+        }
+    }
+
+    private fun configuraFragmentResposta(fragment: RespostaFragment) {
         setMyActionBar(fragment.tituloAppBar, true, setOnClickButtonVoltar = {
             onBackPressed()
         })
-
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-        if(supportFragmentManager.backStackEntryCount >1){
+        if (supportFragmentManager.backStackEntryCount > 1) {
             supportFragmentManager.popBackStack()
         }
     }
@@ -77,7 +87,7 @@ class CambioActivity : AppCompatActivity() {
             respostaFragment.arguments = dados
 
             transacaoFragment {
-                replace(R.id.activity_cambio_container, respostaFragment)
+                replace(R.id.activity_cambio_container, respostaFragment, "RESPOSTA")
                 addToBackStack("CAMBIO")
             }
         }
@@ -85,7 +95,7 @@ class CambioActivity : AppCompatActivity() {
 
 
     private fun setAcaoQuandoMoedaInvalida(fragment: CambioFragment) {
-        fragment.quandoDarIllegalArgumentException = {
+        fragment.quandoRecebidaMoedaInvalida = {
             voltaParaTelaDeMoedas()
             Toast.makeText(
                 this,
@@ -102,15 +112,4 @@ class CambioActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun setArgumentsDadosMoedas(cambioFragment: CambioFragment) {
-        if (intent.hasExtra(CHAVE_MOEDA)) {
-            val serializableExtra: Serializable? = intent.getSerializableExtra(CHAVE_MOEDA)
-            if (serializableExtra != null) {
-                val moedaRecebida = serializableExtra as Moeda
-                val moedaBundle = Bundle()
-                moedaBundle.putSerializable(CHAVE_MOEDA, moedaRecebida)
-                cambioFragment.arguments = moedaBundle
-            }
-        }
-    }
 }

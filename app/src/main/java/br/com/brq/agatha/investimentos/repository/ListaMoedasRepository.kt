@@ -36,7 +36,7 @@ class ListaMoedasRepository(daoMoeda: MoedaDao) : MoedaRepository(daoMoeda) {
     private fun buscaNoBancoDedados() {
         val liveData = MutableLiveData<List<Moeda>>()
         io.launch {
-            val buscaMoedas = daoMoeda.buscaMoedas()
+            val buscaMoedas = daoMoeda.buscaTodasAsMoedas()
             withContext(Dispatchers.Main) {
                 liveData.value = buscaMoedas
                 quandoConexaoFalha(liveData)
@@ -46,15 +46,15 @@ class ListaMoedasRepository(daoMoeda: MoedaDao) : MoedaRepository(daoMoeda) {
 
     private suspend fun quandoBuscaNaAPI(finance: Finance?) {
         val liveDataFinance = MutableLiveData<Finance>()
-        atualizaListaMoedas(finance)
+        atualizaListaMoedasDoBanco(finance)
         withContext(Dispatchers.Main) {
             liveDataFinance.value = finance
             quandoSucesso(liveDataFinance)
         }
     }
 
-    private fun atualizaListaMoedas(finance: Finance?) {
-        if (daoMoeda.buscaMoedas().isNullOrEmpty()) {
+    private fun atualizaListaMoedasDoBanco(finance: Finance?) {
+        if (daoMoeda.buscaTodasAsMoedas().isNullOrEmpty()) {
             adicionaTodasAsMoedas(finance)
         } else {
             modificaTotasAsMoedas(finance)

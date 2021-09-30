@@ -13,12 +13,6 @@ import kotlinx.android.synthetic.main.fragment_resposta.*
 
 class RespostaFragment : Fragment() {
 
-    private val resposta: String by lazy {
-        val mensagemSerializable = arguments?.getSerializable(CHAVE_RESPOSTA_MENSAGEM)
-            ?: throw IllegalArgumentException("Mensagem Inválida")
-        mensagemSerializable as String
-    }
-
      val tituloAppBar: String by lazy {
         val mensagemSerializable = arguments?.getSerializable(CHAVE_RESPOSTA_TITULO)
             ?:"Título Inválido"
@@ -34,6 +28,12 @@ class RespostaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val mensagemSerializable = arguments?.getSerializable(CHAVE_RESPOSTA_MENSAGEM)
+            ?: throw IllegalArgumentException("Mensagem Inválida")
+
+        val resposta: String  = mensagemSerializable as String
+
         try {
             resposta_mensagem.text = resposta
         }catch (e: Exception){
