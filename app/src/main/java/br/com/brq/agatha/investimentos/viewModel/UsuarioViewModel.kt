@@ -25,7 +25,7 @@ class UsuarioViewModel(context: Context) : ViewModel() {
         return usuarioRepository.usuario(id)
     }
 
-    fun validaSaldoDaCompra(idUsuario: Int, moeda: Moeda, valor: String) {
+    fun validaSaldoUsuarioCompra(idUsuario: Int, moeda: Moeda, valor: String) {
         usuarioRepository.quandoFalhaCompra = quandoFalha
         usuarioRepository.quandoCompraSucesso = quandoCompraSucesso
         usuarioRepository.compra(idUsuario,moeda, valor)
@@ -42,10 +42,6 @@ class UsuarioViewModel(context: Context) : ViewModel() {
     }
     fun setSaldoVenda(idUsuario: Int, moeda: Moeda, valorMoedaComprado: String): LiveData<BigDecimal>{
         return usuarioRepository.calculaSaldoVenda(idUsuario, moeda, valorMoedaComprado)
-    }
-
-    fun modificaUsuario(usuario: Usuario){
-        usuarioRepository.modificaUsuario(usuario)
     }
 
 }

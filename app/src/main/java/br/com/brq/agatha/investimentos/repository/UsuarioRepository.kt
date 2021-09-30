@@ -1,6 +1,5 @@
 package br.com.brq.agatha.investimentos.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.brq.agatha.investimentos.database.dao.UsuarioDao
@@ -54,7 +53,7 @@ class UsuarioRepository(private val daoUsuario: UsuarioDao): TransacaoRepository
         }
     }
 
-    fun modificaUsuario(usuario: Usuario) {
+    private fun modificaUsuario(usuario: Usuario) {
         io.launch {
             daoUsuario.modificaUsuario(usuario)
         }

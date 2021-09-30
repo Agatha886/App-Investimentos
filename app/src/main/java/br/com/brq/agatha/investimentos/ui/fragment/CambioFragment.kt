@@ -88,7 +88,7 @@ class CambioFragment : Fragment() {
             moeda.setTotalMoedaVenda(totalMoeda)
             moedaViewModel.modifica(moeda)
             saldoVenda.observe(viewLifecycleOwner, Observer {
-                quandoCompraOuVendaSucesso(mensagemFuncaoSucesso(it, "vender "))
+                quandoCompraOuVendaSucesso(mensagemOperacaoSucesso(it, "vender "))
             })
         }
     }
@@ -108,7 +108,7 @@ class CambioFragment : Fragment() {
 
     private fun calculaCompra(texto: String) {
         configuraSucessoEFalhaCompra()
-        usuarioViewModel.validaSaldoDaCompra(1, moeda, texto)
+        usuarioViewModel.validaSaldoUsuarioCompra(1, moeda, texto)
     }
 
 
@@ -129,14 +129,14 @@ class CambioFragment : Fragment() {
             moeda.setTotalMoedaCompra(cambio_quantidade.text.toString().toDouble())
             usuarioViewModel.setSaldoCompra(1, valor)
             moedaViewModel.modifica(moeda)
-            quandoCompraOuVendaSucesso(mensagemFuncaoSucesso(valor, "comprar "))
+            quandoCompraOuVendaSucesso(mensagemOperacaoSucesso(valor, "comprar "))
         }
     }
 
-    private fun mensagemFuncaoSucesso(saldoRestante: BigDecimal, nomeFuncao: String): String {
-        val saldoFormatado = saldoRestante.formatoMoedaBrasileira()
+    private fun mensagemOperacaoSucesso(saldo: BigDecimal, nomeOperacao: String): String {
+        val saldoFormatado = saldo.formatoMoedaBrasileira()
         val resposta = StringBuilder()
-        resposta.append("Parabéns! \n Você acabou de ").append(nomeFuncao)
+        resposta.append("Parabéns! \n Você acabou de ").append(nomeOperacao)
             .append(cambio_quantidade.text.toString()).append(" ").append(moeda.abreviacao)
             .append(" - ")
             .append(moeda.name).append(", totalizando \n").append(saldoFormatado)

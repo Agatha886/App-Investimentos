@@ -37,8 +37,7 @@ open class TransacaoRepository(private val daoUsuario: UsuarioDao) {
 
     private fun calculaSaldoCompra(moeda: Moeda, valor: String, usuario: Usuario): BigDecimal {
         val valorDaCompra = BigDecimal(valor).multiply(moeda.buy)
-        val saldoAposCompra = usuario.saldoDisponivel.subtract(valorDaCompra)
-        return saldoAposCompra
+        return usuario.saldoDisponivel.subtract(valorDaCompra)
     }
 
     fun venda(moeda: Moeda, valorDeVenda: String) {
@@ -47,7 +46,7 @@ open class TransacaoRepository(private val daoUsuario: UsuarioDao) {
             if (valorTotalMoeda > 00.0) {
                 withContext(Dispatchers.Main) {
                     quandoVendaSucesso(valorTotalMoeda)
-                    Log.i("TAG", "venda: ${valorTotalMoeda}")
+                    Log.i("TAG", "venda: $valorTotalMoeda")
                 }
             } else {
                 quandoFalhaVenda("Valor inválido")
