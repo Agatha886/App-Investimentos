@@ -1,10 +1,8 @@
 package br.com.brq.agatha.investimentos.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.brq.agatha.investimentos.database.dao.MoedaDao
-import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -63,7 +61,6 @@ open class MoedaRepository(val daoMoeda: MoedaDao){
             if (valorTotalMoeda > 00.0) {
                 withContext(Dispatchers.Main) {
                     quandoSucessoVenda(valorTotalMoeda)
-                    Log.i("TAG", "venda: $valorTotalMoeda")
                 }
             } else {
                 quandoFalhaVenda("Valor inválido")

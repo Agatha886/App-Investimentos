@@ -78,7 +78,7 @@ class CambioFragment : Fragment() {
         }
         moedaViewModel.quandoVendaFalha = { erro ->
             cambio_button_vender.visibility = INVISIBLE
-            Log.e("VALOR INVÁLIDO", "calculaCompra: $erro")
+            Log.e("VALOR INVÁLIDO", "Venda não autorizada, motivo: $erro")
         }
 
         moedaViewModel.validaTotalMoedaVenda(moeda.name, valorDeVenda)
@@ -86,8 +86,7 @@ class CambioFragment : Fragment() {
 
     private fun setCliqueBotaoVender(totalMoeda: Double) {
         cambio_button_vender.setOnClickListener {
-            val saldoVenda =
-                usuarioViewModel.setSaldoVenda(1, moeda, cambio_quantidade.text.toString())
+            val saldoVenda = usuarioViewModel.setSaldoVenda(1, moeda, cambio_quantidade.text.toString())
             moedaViewModel.calculaToltalMoedaVenda(moeda.name, totalMoeda)
             saldoVenda.observe(viewLifecycleOwner, Observer {
                 quandoCompraOuVendaSucesso(mensagemOperacaoSucesso(it, "vender "), "Vender")
@@ -119,12 +118,13 @@ class CambioFragment : Fragment() {
     private fun configuraSucessoEFalhaCompra() {
         usuarioViewModel.quandoCompraSucesso = { saldoRestante ->
             cambio_button_comprar.visibility = VISIBLE
+            Log.i("TAG", "configuraVenda: ${saldoRestante}")
             setClickComprar(saldoRestante)
         }
 
         usuarioViewModel.quandoCompraFalha = { erro ->
             cambio_button_comprar.visibility = INVISIBLE
-            Log.e("VALOR INVÁLIDO", "calculaCompra: $erro")
+            Log.e("VALOR INVÁLIDO", "Compra não autorizada, motivo: $erro")
         }
     }
 
