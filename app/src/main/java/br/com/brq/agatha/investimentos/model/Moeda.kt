@@ -53,14 +53,13 @@ class Moeda(
     }
 
     fun setTotalMoedaCompra(novoTotal: Double) {
-        if (novoTotal>=0.00)
+        if (novoTotal>= 0.00)
             this.totalDeMoeda = totalDeMoeda + novoTotal
     }
 
     fun setTotalMoedaVenda(novoTotal: Double) {
         if (novoTotal>=0.00)
             this.totalDeMoeda = novoTotal
-        Log.i("TAG", "setTotalMoedaVenda: $novoTotal")
     }
 
 }

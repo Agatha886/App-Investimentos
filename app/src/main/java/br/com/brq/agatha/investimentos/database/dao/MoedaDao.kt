@@ -10,6 +10,9 @@ interface MoedaDao {
     @Query("SELECT * FROM moeda")
     fun buscaMoedas(): List<Moeda>
 
+    @Query("SELECT * FROM moeda WHERE name = :name")
+    fun buscaMoeda(name: String): Moeda
+
     @Insert
     fun adiciona(moeda: Moeda)
 

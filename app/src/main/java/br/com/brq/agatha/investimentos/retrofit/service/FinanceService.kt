@@ -6,7 +6,7 @@ import retrofit2.http.GET
 
 interface FinanceService {
 
-    @GET("finance")
+    @GET("finance?key=835f00d7")
     fun buscaFinance(): Call<Finance>
 
 }

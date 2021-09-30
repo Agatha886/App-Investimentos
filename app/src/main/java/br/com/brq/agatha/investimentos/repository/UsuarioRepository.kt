@@ -11,16 +11,19 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
-class UsuarioRepository(private val daoUsuario: UsuarioDao): TransacaoRepository(daoUsuario) {
+class UsuarioRepository(private val daoUsuario: UsuarioDao){
 
     private val io = CoroutineScope(Dispatchers.IO)
+    var quandoCompraSucesso: (saldoRestante: BigDecimal) -> Unit = {}
+    var quandoFalhaCompra: (mensagem: String) -> Unit = {}
 
-    fun usuario(id: Int): LiveData<Usuario> {
-        val liveData = MutableLiveData<Usuario>()
+
+    fun usuario(id: Int): LiveData<BigDecimal> {
+        val liveData = MutableLiveData<BigDecimal>()
         io.launch {
             val usuario = daoUsuario.retornaUsuario(id)
             withContext(Dispatchers.Main) {
-                liveData.value = usuario
+                liveData.value = usuario.saldoDisponivel
             }
         }
         return liveData
@@ -57,6 +60,28 @@ class UsuarioRepository(private val daoUsuario: UsuarioDao): TransacaoRepository
         io.launch {
             daoUsuario.modificaUsuario(usuario)
         }
+    }
+
+    fun compra(idUsuario: Int, moeda: Moeda, valor: String) {
+        io.launch {
+            val usuario: Usuario = daoUsuario.retornaUsuario(idUsuario)
+            val novoSaldo = calculaSaldoCompra(moeda, valor, usuario)
+
+            if (novoSaldo > BigDecimal.ZERO) {
+                withContext(Dispatchers.Main) {
+                    quandoCompraSucesso(novoSaldo)
+                }
+            } else {
+                withContext(Dispatchers.Main) {
+                    quandoFalhaCompra("Valor de Compra Inválido")
+                }
+            }
+        }
+    }
+
+    private fun calculaSaldoCompra(moeda: Moeda, valor: String, usuario: Usuario): BigDecimal {
+        val valorDaCompra = BigDecimal(valor).multiply(moeda.buy)
+        return usuario.saldoDisponivel.subtract(valorDaCompra)
     }
 
 }

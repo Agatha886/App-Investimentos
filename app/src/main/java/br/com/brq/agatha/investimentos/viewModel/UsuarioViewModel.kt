@@ -13,28 +13,21 @@ class UsuarioViewModel(context: Context) : ViewModel() {
     private val usuarioDao = getBatadaBase(context).getUsuarioDao()
     private val usuarioRepository = UsuarioRepository(usuarioDao)
 
-    var quandoFalha: (mensagem: String) -> Unit = {}
+    var quandoCompraFalha: (mensagem: String) -> Unit = {}
     var quandoCompraSucesso: (valor: BigDecimal) -> Unit = {}
-    var quandoVendaSucesso: (totalDeMoeda: Double) -> Unit = {}
 
     fun adicionaUsuario(usuario: Usuario) {
         usuarioRepository.adicionaUsuario(usuario)
     }
 
-    fun usuario(id: Int): LiveData<Usuario> {
+    fun getSaldoDisponivel(id: Int): LiveData<BigDecimal> {
         return usuarioRepository.usuario(id)
     }
 
     fun validaSaldoUsuarioCompra(idUsuario: Int, moeda: Moeda, valor: String) {
-        usuarioRepository.quandoFalhaCompra = quandoFalha
+        usuarioRepository.quandoFalhaCompra = quandoCompraFalha
         usuarioRepository.quandoCompraSucesso = quandoCompraSucesso
         usuarioRepository.compra(idUsuario,moeda, valor)
-    }
-
-    fun validaTotalMoedaVenda(moeda: Moeda, valorDeVenda: String){
-        usuarioRepository.quandoFalhaVenda = quandoFalha
-        usuarioRepository.quandoVendaSucesso = quandoVendaSucesso
-        usuarioRepository.venda(moeda, valorDeVenda)
     }
 
     fun setSaldoCompra(idUsuario: Int, valorComprado: BigDecimal){

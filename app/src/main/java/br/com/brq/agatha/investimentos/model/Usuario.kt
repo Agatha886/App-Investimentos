@@ -6,17 +6,10 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 import java.math.BigDecimal
 
-@Entity(
-    foreignKeys = [ForeignKey(
-        entity = Moeda::class,
-        parentColumns = arrayOf("id"),
-        childColumns = arrayOf("idMoeda")
-    )]
-)
+@Entity()
 class Usuario(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
-    var idMoeda: Int? = null,
     var saldoDisponivel: BigDecimal = BigDecimal.ZERO
 ): Serializable{
 

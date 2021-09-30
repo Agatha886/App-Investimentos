@@ -21,9 +21,6 @@ class ListaMoedasRepository(daoMoeda: MoedaDao) : MoedaRepository(daoMoeda) {
                 val call = MoedasRetrofit().retornaFinance()
                 val resposta = call.execute()
                 val finance: Finance? = resposta.body()
-
-                Log.i("TAG", "finance: ${finance}")
-
                 quandoBuscaNaAPI(finance)
             } catch (e: Exception) {
                 quandoDarErroAoBuscar(e)
@@ -49,10 +46,19 @@ class ListaMoedasRepository(daoMoeda: MoedaDao) : MoedaRepository(daoMoeda) {
 
     private suspend fun quandoBuscaNaAPI(finance: Finance?) {
         val liveDataFinance = MutableLiveData<Finance>()
+        atualizaListaMoedas(finance)
         withContext(Dispatchers.Main) {
             liveDataFinance.value = finance
             quandoSucesso(liveDataFinance)
         }
-        atualizaListaMoedas(finance)
     }
+
+    fun atualizaListaMoedas(finance: Finance?) {
+        if (daoMoeda.buscaMoedas().isNullOrEmpty()) {
+            adicionaListaMoedas(finance)
+        } else {
+            modificaListaMoedas(finance)
+        }
+    }
+
 }
