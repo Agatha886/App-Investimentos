@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.brq.agatha.investimentos.database.dao.MoedaDao
 import br.com.brq.agatha.investimentos.model.Finance
+import br.com.brq.agatha.investimentos.model.Moeda
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,6 +31,15 @@ open class MoedaRepository(val daoMoeda: MoedaDao){
         return liveDate
     }
 
+    fun modifica(valorMoedaNova: Moeda){
+        io.launch {
+            var moeda = daoMoeda.buscaMoeda(valorMoedaNova.name)
+            valorMoedaNova.id = moeda.id
+            valorMoedaNova.totalDeMoeda = moeda.totalDeMoeda
+            daoMoeda.modifica(valorMoedaNova)
+        }
+    }
+
     fun setTotalMoedaAposCompra(nameMoeda: String, valorDaCompra: Double){
         io.launch {
             val moeda = daoMoeda.buscaMoeda(nameMoeda)
@@ -44,31 +54,6 @@ open class MoedaRepository(val daoMoeda: MoedaDao){
             moeda.setTotalMoedaVenda(valorDaCompra)
             daoMoeda.modifica(moeda)
         }
-    }
-
-    protected fun modificaListaMoedas(finance: Finance?){
-        Log.i("TAG", "modificaListaMoedas: Pasou no modifica ${finance}")
-        finance?.results?.currencies?.usd?.let { daoMoeda.modifica(it) }
-        finance?.results?.currencies?.jpy?.let { daoMoeda.modifica(it) }
-        finance?.results?.currencies?.gbp?.let { daoMoeda.modifica(it) }
-        finance?.results?.currencies?.eur?.let { daoMoeda.modifica(it) }
-        finance?.results?.currencies?.cny?.let { daoMoeda.modifica(it) }
-        finance?.results?.currencies?.cad?.let { daoMoeda.modifica(it) }
-        finance?.results?.currencies?.btc?.let { daoMoeda.modifica(it) }
-        finance?.results?.currencies?.aud?.let { daoMoeda.modifica(it) }
-        finance?.results?.currencies?.ars?.let { daoMoeda.modifica(it) }
-    }
-
-    protected fun adicionaListaMoedas(finance: Finance?){
-        finance?.results?.currencies?.usd?.let { daoMoeda.adiciona(it) }
-        finance?.results?.currencies?.jpy?.let { daoMoeda.adiciona(it) }
-        finance?.results?.currencies?.gbp?.let { daoMoeda.adiciona(it) }
-        finance?.results?.currencies?.eur?.let { daoMoeda.adiciona(it) }
-        finance?.results?.currencies?.cny?.let { daoMoeda.adiciona(it) }
-        finance?.results?.currencies?.cad?.let { daoMoeda.adiciona(it) }
-        finance?.results?.currencies?.btc?.let { daoMoeda.adiciona(it) }
-        finance?.results?.currencies?.aud?.let { daoMoeda.adiciona(it) }
-        finance?.results?.currencies?.ars?.let { daoMoeda.adiciona(it) }
     }
 
     fun venda(nameMoeda: String, valorDeVenda: String) {

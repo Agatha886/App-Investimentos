@@ -53,12 +53,36 @@ class ListaMoedasRepository(daoMoeda: MoedaDao) : MoedaRepository(daoMoeda) {
         }
     }
 
-    fun atualizaListaMoedas(finance: Finance?) {
+    private fun atualizaListaMoedas(finance: Finance?) {
         if (daoMoeda.buscaMoedas().isNullOrEmpty()) {
-            adicionaListaMoedas(finance)
+            adicionaTodasAsMoedas(finance)
         } else {
-            modificaListaMoedas(finance)
+            modificaTotasAsMoedas(finance)
         }
+    }
+
+    private fun modificaTotasAsMoedas(finance: Finance?){
+        finance?.results?.currencies?.usd?.let { modifica(it) }
+        finance?.results?.currencies?.jpy?.let { modifica(it) }
+        finance?.results?.currencies?.gbp?.let { modifica(it) }
+        finance?.results?.currencies?.eur?.let { modifica(it) }
+        finance?.results?.currencies?.cny?.let { modifica(it) }
+        finance?.results?.currencies?.cad?.let { modifica(it) }
+        finance?.results?.currencies?.btc?.let { modifica(it) }
+        finance?.results?.currencies?.aud?.let { modifica(it) }
+        finance?.results?.currencies?.ars?.let { modifica(it) }
+    }
+
+    private fun adicionaTodasAsMoedas(finance: Finance?){
+        finance?.results?.currencies?.usd?.let { daoMoeda.adiciona(it) }
+        finance?.results?.currencies?.jpy?.let { daoMoeda.adiciona(it) }
+        finance?.results?.currencies?.gbp?.let { daoMoeda.adiciona(it) }
+        finance?.results?.currencies?.eur?.let { daoMoeda.adiciona(it) }
+        finance?.results?.currencies?.cny?.let { daoMoeda.adiciona(it) }
+        finance?.results?.currencies?.cad?.let { daoMoeda.adiciona(it) }
+        finance?.results?.currencies?.btc?.let { daoMoeda.adiciona(it) }
+        finance?.results?.currencies?.aud?.let { daoMoeda.adiciona(it) }
+        finance?.results?.currencies?.ars?.let { daoMoeda.adiciona(it) }
     }
 
 }

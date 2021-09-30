@@ -37,6 +37,6 @@ fun AppCompatActivity.mensagem(texto: String) {
     Toast.makeText(
         this,
         texto,
-        Toast.LENGTH_LONG
+        Toast.LENGTH_SHORT
     ).show()
 }
