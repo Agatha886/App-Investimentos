@@ -1,5 +1,6 @@
 package br.com.brq.agatha.investimentos.repository
 
+import android.util.Log
 import br.com.brq.agatha.investimentos.database.dao.UsuarioDao
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.model.Usuario
@@ -12,8 +13,8 @@ import java.math.BigDecimal
 open class TransacaoRepository(private val daoUsuario: UsuarioDao) {
 
     private val io = CoroutineScope(Dispatchers.IO)
-    var quandoCompraFalha: (mensagem: String) -> Unit = {}
-    var quandoVendaFalha: (mensagem: String) -> Unit = {}
+    var quandoFalhaCompra: (mensagem: String) -> Unit = {}
+    var quandoFalhaVenda: (mensagem: String) -> Unit = {}
     var quandoCompraSucesso: (saldoRestante: BigDecimal) -> Unit = {}
     var quandoVendaSucesso: (totalDeMoeda: Double) -> Unit = {}
 
@@ -22,13 +23,13 @@ open class TransacaoRepository(private val daoUsuario: UsuarioDao) {
             val usuario: Usuario = daoUsuario.retornaUsuario(idUsuario)
             val novoSaldo = calculaSaldoCompra(moeda, valor, usuario)
 
-            if (novoSaldo > BigDecimal.ZERO && novoSaldo != null) {
+            if (novoSaldo > BigDecimal.ZERO) {
                 withContext(Dispatchers.Main) {
                     quandoCompraSucesso(novoSaldo)
                 }
             } else {
                 withContext(Dispatchers.Main) {
-                    quandoCompraFalha("Valor de Compra Inválido")
+                    quandoFalhaCompra("Valor de Compra Inválido")
                 }
             }
         }
@@ -40,16 +41,16 @@ open class TransacaoRepository(private val daoUsuario: UsuarioDao) {
         return saldoAposCompra
     }
 
-    fun venda(moeda: Moeda, valor: String) {
+    fun venda(moeda: Moeda, valorDeVenda: String) {
         io.launch {
-            val valorTotalMoeda = moeda.totalDeMoeda.minus(BigDecimal(valor).toDouble())
-
-            if (valorTotalMoeda > 00.0 && valorTotalMoeda != null) {
+            val valorTotalMoeda = moeda.totalDeMoeda.minus(BigDecimal(valorDeVenda).toDouble())
+            if (valorTotalMoeda > 00.0) {
                 withContext(Dispatchers.Main) {
                     quandoVendaSucesso(valorTotalMoeda)
+                    Log.i("TAG", "venda: ${valorTotalMoeda}")
                 }
             } else {
-                quandoVendaFalha("Valor inválido")
+                quandoFalhaVenda("Valor inválido")
             }
         }
     }

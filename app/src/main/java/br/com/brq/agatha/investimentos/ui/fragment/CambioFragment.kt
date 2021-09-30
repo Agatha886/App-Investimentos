@@ -60,14 +60,15 @@ class CambioFragment : Fragment() {
         cambio_quantidade.doAfterTextChanged { valorDigitado ->
             val texto = valorDigitado.toString()
             if (texto.isBlank()) {
-
+                setCliqueBotoesQuandoNulo()
             } else {
                 calculaCompra(texto)
+                configuraVenda(texto)
             }
         }
     }
 
-    private fun configuraSucessoEFalhaVenda() {
+    private fun configuraVenda(valorDeVenda: String) {
         usuarioViewModel.quandoVendaSucesso = { totalMoeda ->
             cambio_button_vender.visibility = VISIBLE
             setCliqueBotaoVender(totalMoeda)
@@ -76,11 +77,19 @@ class CambioFragment : Fragment() {
             cambio_button_vender.visibility = INVISIBLE
             Log.e("VALOR INVÁLIDO", "calculaCompra: $erro")
         }
+
+        usuarioViewModel.validaTotalMoedaVenda(moeda, valorDeVenda)
     }
 
     private fun setCliqueBotaoVender(totalMoeda: Double) {
         cambio_button_vender.setOnClickListener {
-            moeda.setTotalMoeda(totalMoeda)
+            val saldoVenda =
+                usuarioViewModel.setSaldoVenda(1, moeda, cambio_quantidade.text.toString())
+            moeda.setTotalMoedaVenda(totalMoeda)
+            moedaViewModel.modifica(moeda)
+            saldoVenda.observe(viewLifecycleOwner, Observer {
+                quandoCompraOuVendaSucesso(mensagemFuncaoSucesso(it, "vender "))
+            })
         }
     }
 
@@ -99,14 +108,14 @@ class CambioFragment : Fragment() {
 
     private fun calculaCompra(texto: String) {
         configuraSucessoEFalhaCompra()
-        usuarioViewModel.calculaSaldoAposCompra(1, moeda, texto)
+        usuarioViewModel.validaSaldoDaCompra(1, moeda, texto)
     }
 
 
     private fun configuraSucessoEFalhaCompra() {
         usuarioViewModel.quandoCompraSucesso = { saldoRestante ->
-            setClickComprar(saldoRestante)
             cambio_button_comprar.visibility = VISIBLE
+            setClickComprar(saldoRestante)
         }
 
         usuarioViewModel.quandoFalha = { erro ->
@@ -117,7 +126,7 @@ class CambioFragment : Fragment() {
 
     private fun setClickComprar(valor: BigDecimal) {
         cambio_button_comprar.setOnClickListener {
-            moeda.setTotalMoeda(cambio_quantidade.text.toString().toDouble())
+            moeda.setTotalMoedaCompra(cambio_quantidade.text.toString().toDouble())
             usuarioViewModel.setSaldoCompra(1, valor)
             moedaViewModel.modifica(moeda)
             quandoCompraOuVendaSucesso(mensagemFuncaoSucesso(valor, "comprar "))

@@ -24,4 +24,8 @@ class Usuario(
         this.saldoDisponivel = novoSaldo
     }
 
+    fun calculaSaldoVenda(moeda: Moeda, valorVendaMoeda: String): BigDecimal{
+        return saldoDisponivel.add(BigDecimal(valorVendaMoeda).multiply(moeda.sell))
+    }
+
 }
