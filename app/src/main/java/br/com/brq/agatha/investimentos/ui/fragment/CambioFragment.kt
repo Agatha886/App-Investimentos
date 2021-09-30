@@ -54,8 +54,8 @@ class CambioFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         inicializaCampos()
+        setCliqueBotoesQuandoNulo()
         setCampoQuantidadeMoeda()
-
         usuarioViewModel.adicionaUsuario(Usuario(saldoDisponivel = BigDecimal(1000)))
     }
 
@@ -118,7 +118,6 @@ class CambioFragment : Fragment() {
     private fun configuraSucessoEFalhaCompra() {
         usuarioViewModel.quandoCompraSucesso = { saldoRestante ->
             cambio_button_comprar.visibility = VISIBLE
-            Log.i("TAG", "configuraVenda: ${saldoRestante}")
             setClickComprar(saldoRestante)
         }
 
