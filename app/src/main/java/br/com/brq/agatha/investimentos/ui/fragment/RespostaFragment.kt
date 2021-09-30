@@ -8,16 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.constantes.CHAVE_RESPOSTA_MENSAGEM
-import br.com.brq.agatha.investimentos.constantes.CHAVE_RESPOSTA_TITULO
 import kotlinx.android.synthetic.main.fragment_resposta.*
 
 class RespostaFragment : Fragment() {
 
-     val tituloAppBar: String by lazy {
-        val mensagemSerializable = arguments?.getSerializable(CHAVE_RESPOSTA_TITULO)
-            ?:"Título Inválido"
-        mensagemSerializable as String
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

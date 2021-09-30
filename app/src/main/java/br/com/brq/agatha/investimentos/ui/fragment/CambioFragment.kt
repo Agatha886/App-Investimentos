@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
+import br.com.brq.agatha.investimentos.constantes.TipoTranferencia
 import br.com.brq.agatha.investimentos.extension.formatoMoedaBrasileira
 import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
@@ -30,7 +31,7 @@ class CambioFragment : Fragment() {
         moedaSerializable as Moeda
     }
 
-    var quandoCompraOuVendaSucesso: (mensagem: String, tituloAppBar: String) -> Unit = {_:String, _:String ->}
+    var quandoCompraOuVendaSucesso: (mensagem: String, tipoTranferencia: TipoTranferencia) -> Unit = {_:String, _:TipoTranferencia ->}
 
     var quandoRecebidaMoedaInvalida: (mensagem: String?) -> Unit = {}
 
@@ -87,7 +88,7 @@ class CambioFragment : Fragment() {
             val saldoVenda = usuarioViewModel.setSaldoVenda(1, moeda, cambio_quantidade.text.toString())
             moedaViewModel.setTotalMoedaVenda(moeda.name, totalMoeda)
             saldoVenda.observe(viewLifecycleOwner, Observer {
-                quandoCompraOuVendaSucesso(mensagemOperacaoSucesso(it, "vender "), "Vender")
+                quandoCompraOuVendaSucesso(mensagemOperacaoSucesso(it, "vender "), TipoTranferencia.VENDA)
             })
         }
     }
@@ -129,7 +130,7 @@ class CambioFragment : Fragment() {
         cambio_button_comprar.setOnClickListener {
             usuarioViewModel.setSaldoCompra(1, valor)
             moedaViewModel.setToltalMoedaCompra(moeda.name, cambio_quantidade.text.toString().toDouble())
-            quandoCompraOuVendaSucesso(mensagemOperacaoSucesso(valor, "comprar "), "Comprar")
+            quandoCompraOuVendaSucesso(mensagemOperacaoSucesso(valor, "comprar "), TipoTranferencia.COMPRA)
         }
     }
 
