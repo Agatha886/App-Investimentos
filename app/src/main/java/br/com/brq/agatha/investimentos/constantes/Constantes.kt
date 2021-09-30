@@ -2,7 +2,9 @@ package br.com.brq.agatha.investimentos.constantes
 
 const val CHAVE_MOEDA = "MoedaMandada"
 
-const val CHAVE_RESPOSTA = "Resposta"
+const val CHAVE_RESPOSTA_MENSAGEM = "RespostaMensagem"
+
+const val CHAVE_RESPOSTA_TITULO = "RespostaTitulo"
 
 const val NOME_BANCO = "investimentos.db"
 

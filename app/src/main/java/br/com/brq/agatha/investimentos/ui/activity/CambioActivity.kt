@@ -7,7 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
-import br.com.brq.agatha.investimentos.constantes.CHAVE_RESPOSTA
+import br.com.brq.agatha.investimentos.constantes.CHAVE_RESPOSTA_MENSAGEM
+import br.com.brq.agatha.investimentos.constantes.CHAVE_RESPOSTA_TITULO
 import br.com.brq.agatha.investimentos.extension.setMyActionBar
 import br.com.brq.agatha.investimentos.extension.transacaoFragment
 import br.com.brq.agatha.investimentos.model.Moeda
@@ -21,9 +22,6 @@ class CambioActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cambio)
-        setMyActionBar("Câmbio", true, setOnClickButtonVoltar = {
-            voltaParaTelaDeMoedas()
-        })
         iniciaComFragmentCambio()
     }
 
@@ -32,7 +30,7 @@ class CambioActivity : AppCompatActivity() {
 
         setArgumentsDadosMoedas(cambioFragment)
         transacaoFragment {
-            replace(R.id.activity_cambio_container, cambioFragment)
+            replace(R.id.activity_cambio_container, cambioFragment, "CAMBIO")
         }
     }
 
@@ -42,23 +40,47 @@ class CambioActivity : AppCompatActivity() {
             is CambioFragment -> {
                 configuraFragmentsCambio(fragment)
             }
+            is RespostaFragment ->{
+                configuraFragmentsResposta(fragment)
+            }
+        }
+    }
+
+    private fun configuraFragmentsResposta(fragment: RespostaFragment) {
+        setMyActionBar(fragment.tituloAppBar, true, setOnClickButtonVoltar = {
+            onBackPressed()
+        })
+
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if(supportFragmentManager.backStackEntryCount >1){
+            supportFragmentManager.popBackStack()
         }
     }
 
     private fun configuraFragmentsCambio(fragment: CambioFragment) {
-        val respostaFragment = RespostaFragment()
-
+        setMyActionBar("Câmbio", true, setOnClickButtonVoltar = {
+            voltaParaTelaDeMoedas()
+        })
         setAcaoQuandoMoedaInvalida(fragment)
-        fragment.quandoCompraOuVendaSucesso ={ mensagem ->
+        vaiParaFragmentRespostaQuandoCompraOuVenda(fragment)
+    }
+
+    private fun vaiParaFragmentRespostaQuandoCompraOuVenda(fragment: CambioFragment) {
+        val respostaFragment = RespostaFragment()
+        fragment.quandoCompraOuVendaSucesso = { mensagem, tituloAppBar ->
             val dados = Bundle()
-            dados.putString(CHAVE_RESPOSTA, mensagem)
+            dados.putString(CHAVE_RESPOSTA_MENSAGEM, mensagem)
+            dados.putString(CHAVE_RESPOSTA_TITULO, tituloAppBar)
             respostaFragment.arguments = dados
 
             transacaoFragment {
                 replace(R.id.activity_cambio_container, respostaFragment)
+                addToBackStack("CAMBIO")
             }
         }
-
     }
 
 

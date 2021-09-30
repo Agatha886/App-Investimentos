@@ -7,14 +7,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.constantes.CHAVE_RESPOSTA
+import br.com.brq.agatha.investimentos.constantes.CHAVE_RESPOSTA_MENSAGEM
+import br.com.brq.agatha.investimentos.constantes.CHAVE_RESPOSTA_TITULO
 import kotlinx.android.synthetic.main.fragment_resposta.*
 
 class RespostaFragment : Fragment() {
 
     private val resposta: String by lazy {
-        val mensagemSerializable = arguments?.getSerializable(CHAVE_RESPOSTA)
+        val mensagemSerializable = arguments?.getSerializable(CHAVE_RESPOSTA_MENSAGEM)
             ?: throw IllegalArgumentException("Mensagem Inválida")
+        mensagemSerializable as String
+    }
+
+     val tituloAppBar: String by lazy {
+        val mensagemSerializable = arguments?.getSerializable(CHAVE_RESPOSTA_TITULO)
+            ?:"Título Inválido"
         mensagemSerializable as String
     }
 
@@ -33,4 +40,5 @@ class RespostaFragment : Fragment() {
             Log.e("ERRO MENSAGEM", "onViewCreated: ${e.message}")
         }
     }
+
 }

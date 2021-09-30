@@ -31,7 +31,7 @@ class CambioFragment : Fragment() {
         moedaSerializable as Moeda
     }
 
-    var quandoCompraOuVendaSucesso: (mensagem: String) -> Unit = {}
+    var quandoCompraOuVendaSucesso: (mensagem: String, tituloAppBar: String) -> Unit = {_:String, _:String ->}
 
     var quandoDarIllegalArgumentException: (mensagem: String?) -> Unit = {}
 
@@ -90,7 +90,7 @@ class CambioFragment : Fragment() {
                 usuarioViewModel.setSaldoVenda(1, moeda, cambio_quantidade.text.toString())
             moedaViewModel.calculaToltalMoedaVenda(moeda.name, totalMoeda)
             saldoVenda.observe(viewLifecycleOwner, Observer {
-                quandoCompraOuVendaSucesso(mensagemOperacaoSucesso(it, "vender "))
+                quandoCompraOuVendaSucesso(mensagemOperacaoSucesso(it, "vender "), "Vender")
             })
         }
     }
@@ -132,7 +132,7 @@ class CambioFragment : Fragment() {
         cambio_button_comprar.setOnClickListener {
             usuarioViewModel.setSaldoCompra(1, valor)
             moedaViewModel.calculaToltalMoedaCompra(moeda.name, cambio_quantidade.text.toString().toDouble())
-            quandoCompraOuVendaSucesso(mensagemOperacaoSucesso(valor, "comprar "))
+            quandoCompraOuVendaSucesso(mensagemOperacaoSucesso(valor, "comprar "), "Comprar")
         }
     }
 
