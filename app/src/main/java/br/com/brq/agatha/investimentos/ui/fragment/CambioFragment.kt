@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import br.com.brq.agatha.investimentos.constantes.TipoTranferencia
 import br.com.brq.agatha.investimentos.extension.formatoMoedaBrasileira
 import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
+import br.com.brq.agatha.investimentos.model.Usuario
 import br.com.brq.agatha.investimentos.viewModel.MoedaViewModel
 import br.com.brq.agatha.investimentos.viewModel.UsuarioViewModel
 import kotlinx.android.synthetic.main.cambio.*
@@ -72,15 +74,26 @@ class CambioFragment : Fragment() {
 
     private fun configuraVenda(valorDeVenda: String) {
         moedaViewModel.quandoVendaSucesso = { totalMoeda ->
-            cambio_button_vender.visibility = VISIBLE
+            estilizaBotaoValido(cambio_button_vender)
             setCliqueBotaoVender(totalMoeda)
         }
         moedaViewModel.quandoVendaFalha = { erro ->
-            cambio_button_vender.visibility = INVISIBLE
+            estilizaBotaoInvalido(cambio_button_vender)
             Log.e("VALOR INVÁLIDO", "Venda não autorizada, motivo: $erro")
         }
 
         moedaViewModel.validaTotalMoedaVenda(moeda.name, valorDeVenda)
+    }
+
+    private fun estilizaBotaoInvalido(button: Button) {
+        button.setBackgroundResource(R.drawable.button_cambio_apagado)
+        button.setTextColor(resources.getColor(R.color.cinza))
+        button.setOnClickListener {Toast.makeText(requireContext(), "Não foi possível realizar a operação", Toast.LENGTH_SHORT).show() }
+    }
+
+    private fun estilizaBotaoValido(button: Button) {
+        button.setBackgroundResource(R.drawable.button_cambio)
+        button.setTextColor(resources.getColor(R.color.white))
     }
 
     private fun setCliqueBotaoVender(totalMoeda: Double) {
@@ -116,12 +129,12 @@ class CambioFragment : Fragment() {
 
     private fun configuraSucessoEFalhaCompra() {
         usuarioViewModel.quandoCompraSucesso = { saldoRestante ->
-            cambio_button_comprar.visibility = VISIBLE
+            estilizaBotaoValido(cambio_button_comprar)
             setClickComprar(saldoRestante)
         }
 
         usuarioViewModel.quandoCompraFalha = { erro ->
-            cambio_button_comprar.visibility = INVISIBLE
+            estilizaBotaoInvalido(cambio_button_comprar)
             Log.e("VALOR INVÁLIDO", "Compra não autorizada, motivo: $erro")
         }
     }

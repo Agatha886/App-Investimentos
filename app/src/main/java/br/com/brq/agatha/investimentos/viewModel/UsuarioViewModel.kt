@@ -24,6 +24,10 @@ class UsuarioViewModel(context: Context) : ViewModel() {
         return usuarioRepository.getSaldoDisponivel(id)
     }
 
+    fun apagaTodos(){
+        usuarioRepository.apagaTodos()
+    }
+
     fun validaSaldoUsuarioCompra(idUsuario: Int, moeda: Moeda, valor: String) {
         usuarioRepository.quandoFalhaCompra = quandoCompraFalha
         usuarioRepository.quandoCompraSucesso = quandoCompraSucesso

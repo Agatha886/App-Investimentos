@@ -1,9 +1,6 @@
 package br.com.brq.agatha.investimentos.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.model.Usuario
 
@@ -19,5 +16,10 @@ interface UsuarioDao {
     @Update
     fun modifica(usuario: Usuario)
 
+    @Query("SELECT * FROM usuario")
+    fun todos(): List<Usuario>
+
+    @Delete
+    fun delete(list: List<Usuario>)
 
 }

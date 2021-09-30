@@ -35,6 +35,13 @@ class UsuarioRepository(private val daoUsuario: UsuarioDao){
         }
     }
 
+    fun apagaTodos(){
+        io.launch {
+            val todos = daoUsuario.todos()
+            daoUsuario.delete(todos)
+        }
+    }
+
     fun getSaldoVenda(idUsuario: Int, moeda: Moeda, valorCompraMoeda: String): LiveData<BigDecimal>{
         val saldoAposVenda = MutableLiveData<BigDecimal>()
         io.launch {
