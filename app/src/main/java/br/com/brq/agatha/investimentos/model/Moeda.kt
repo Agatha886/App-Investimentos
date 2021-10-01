@@ -6,7 +6,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.brq.agatha.investimentos.R
 import java.io.Serializable
+import java.lang.StringBuilder
 import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.util.*
 
 @Entity
 class Moeda(
@@ -59,6 +62,19 @@ class Moeda(
     fun setTotalMoedaVenda(novoTotal: Double) {
         if (novoTotal>=0.00)
             this.totalDeMoeda = novoTotal
+    }
+
+    fun setMoedaSimbulo(valorMoeda: BigDecimal): String{
+        Currency.getInstance(Locale(name))
+
+        val decimalFormat = DecimalFormat("#0.00")
+        val string = StringBuilder()
+        if(abreviacao == "BTC"){
+            string.append("₿ ").append(decimalFormat.format(valorMoeda))
+        }
+        val instance: Currency = Currency.getInstance(abreviacao)
+        string.append(instance.symbol).append(" ").append(decimalFormat.format(valorMoeda))
+        return string.toString()
     }
 
 }

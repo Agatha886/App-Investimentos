@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
@@ -18,7 +17,6 @@ import br.com.brq.agatha.investimentos.constantes.TipoTranferencia
 import br.com.brq.agatha.investimentos.extension.formatoMoedaBrasileira
 import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
-import br.com.brq.agatha.investimentos.model.Usuario
 import br.com.brq.agatha.investimentos.viewModel.MoedaViewModel
 import br.com.brq.agatha.investimentos.viewModel.UsuarioViewModel
 import kotlinx.android.synthetic.main.cambio.*
@@ -175,8 +173,8 @@ class CambioFragment : Fragment() {
     private fun setCampos() {
         val decimalFormat = DecimalFormat("#0.00")
         val formatoNomeMoeda = moeda.abreviacao + " - " + moeda.name
-        val formatoValorVenda = "Venda: " + moeda.sell?.formatoMoedaBrasileira()
-        val formatoValorCompra = "Compra: " + moeda.buy?.formatoMoedaBrasileira()
+        val formatoValorVenda = "Venda: " + moeda.setMoedaSimbulo(moeda.sell?: BigDecimal.ZERO)
+        val formatoValorCompra = "Compra: " + moeda.setMoedaSimbulo(moeda.buy?: BigDecimal.ZERO)
 
         cardView_cambio_abreviacao_nome_moeda.text = formatoNomeMoeda
         setCampoVariation()
@@ -185,7 +183,7 @@ class CambioFragment : Fragment() {
 
         moedaViewModel.getTotalMoeda(moeda.name).observe(viewLifecycleOwner, Observer {
             val formatoTotalMoeda = decimalFormat.format(it)
-            cambio_saldo_moeda.text = "$formatoTotalMoeda "
+            cambio_saldo_moeda.text = ("$formatoTotalMoeda ${moeda.name} ")
         })
 
         usuarioViewModel.getSaldoDisponivel(1).observe(viewLifecycleOwner, Observer {
