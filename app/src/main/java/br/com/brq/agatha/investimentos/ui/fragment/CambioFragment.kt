@@ -67,8 +67,8 @@ class CambioFragment : Fragment() {
     private fun setCampoQuantidadeMoeda() {
         cambio_quantidade.doAfterTextChanged { valorDigitado ->
             val texto = valorDigitado.toString()
-            if (texto.isBlank()) {
-                setCliqueBotoesQuandoInvalidos("Valor nulo")
+            if (texto.isBlank() || texto[0]== '0') {
+                setCliqueBotoesQuandoInvalidos("Valor Inválido")
             } else {
                 calculaCompra(texto)
                 configuraVenda(texto)
@@ -152,7 +152,7 @@ class CambioFragment : Fragment() {
     }
 
     private fun mensagemOperacaoSucesso(saldo: BigDecimal, nomeOperacao: String): String {
-        var saldoFormatado = saldo.formatoMoedaBrasileira()
+        val saldoFormatado = saldo.formatoMoedaBrasileira()
         var resposta = StringBuilder()
         resposta.append("Parabéns! \n Você acabou de ").append(nomeOperacao)
             .append(cambio_quantidade.text.toString()).append(" ").append(moeda.abreviacao)
