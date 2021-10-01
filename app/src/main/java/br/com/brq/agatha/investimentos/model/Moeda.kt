@@ -65,8 +65,6 @@ class Moeda(
     }
 
     fun setMoedaSimbulo(valorMoeda: BigDecimal): String{
-        Currency.getInstance(Locale(name))
-
         val decimalFormat = DecimalFormat("#0.00")
         val string = StringBuilder()
         if(abreviacao == "BTC"){

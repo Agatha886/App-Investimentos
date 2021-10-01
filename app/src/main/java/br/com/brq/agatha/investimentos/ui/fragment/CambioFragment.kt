@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
 import br.com.brq.agatha.investimentos.constantes.TipoTranferencia
+import br.com.brq.agatha.investimentos.constantes.VALIDA_BUSCA_API
 import br.com.brq.agatha.investimentos.extension.formatoMoedaBrasileira
 import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
@@ -54,15 +55,20 @@ class CambioFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         inicializaCampos()
-        setCliqueBotoesQuandoNulo()
-        setCampoQuantidadeMoeda()
+        setCliqueBotoesQuandoInvalidos("Valor nulo")
+        if(VALIDA_BUSCA_API){
+            setCampoQuantidadeMoeda()
+        }else{
+            setCliqueBotoesQuandoInvalidos("Não é foi possível realizar a operação, dados de compra e venda não atualizados")
+        }
+
     }
 
     private fun setCampoQuantidadeMoeda() {
         cambio_quantidade.doAfterTextChanged { valorDigitado ->
             val texto = valorDigitado.toString()
             if (texto.isBlank()) {
-                setCliqueBotoesQuandoNulo()
+                setCliqueBotoesQuandoInvalidos("Valor nulo")
             } else {
                 calculaCompra(texto)
                 configuraVenda(texto)
@@ -86,7 +92,7 @@ class CambioFragment : Fragment() {
     private fun estilizaBotaoInvalido(button: Button) {
         button.setBackgroundResource(R.drawable.button_cambio_apagado)
         button.setTextColor(resources.getColor(R.color.cinza))
-        button.setOnClickListener {Toast.makeText(requireContext(), "Não foi possível realizar a operação", Toast.LENGTH_SHORT).show() }
+        button.setOnClickListener {toastMensagem("Operação Inválida")}
     }
 
     private fun estilizaBotaoValido(button: Button) {
@@ -104,17 +110,17 @@ class CambioFragment : Fragment() {
         }
     }
 
-    private fun setCliqueBotoesQuandoNulo() {
+    private fun setCliqueBotoesQuandoInvalidos(mensgem: String) {
         cambio_button_comprar.visibility = VISIBLE
         cambio_button_vender.visibility = VISIBLE
-        cambio_button_comprar.setOnClickListener { mensagemQuandoNulo() }
-        cambio_button_vender.setOnClickListener { mensagemQuandoNulo() }
+        cambio_button_comprar.setOnClickListener {toastMensagem(mensgem)}
+        cambio_button_vender.setOnClickListener { toastMensagem(mensgem)}
     }
 
-    private fun mensagemQuandoNulo() {
+    private fun toastMensagem(mensgem: String) {
         Toast.makeText(
             requireContext(),
-            "Valor nulo",
+            mensgem,
             Toast.LENGTH_SHORT
         ).show()
     }

@@ -86,7 +86,7 @@ class CambioActivity : AppCompatActivity() {
 
     private fun vaiParaFragmentRespostaQuandoCompraOuVenda(fragment: CambioFragment) {
         val respostaFragment = RespostaFragment()
-        fragment.quandoCompraOuVendaSucesso = { mensagem, tituloAppBar ->
+        fragment.quandoCompraOuVendaSucesso = { mensagem, tipoTranferencia ->
             val dados = Bundle()
             dados.putString(CHAVE_RESPOSTA_MENSAGEM, mensagem)
             respostaFragment.arguments = dados
@@ -94,7 +94,7 @@ class CambioActivity : AppCompatActivity() {
                 replace(R.id.activity_cambio_container, respostaFragment, "RESPOSTA")
                 addToBackStack("CAMBIO")
             }
-            tipoTransferencia = tituloAppBar
+            tipoTransferencia = tipoTranferencia
         }
     }
 

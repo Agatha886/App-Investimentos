@@ -58,7 +58,7 @@ open class MoedaRepository(val daoMoeda: MoedaDao){
         io.launch {
             val moeda = daoMoeda.buscaMoeda(nameMoeda)
             val valorTotalMoeda = moeda.totalDeMoeda.minus(BigDecimal(valorDeVenda).toDouble())
-            if (valorTotalMoeda > 00.0) {
+            if (valorTotalMoeda >= 00.0) {
                 withContext(Dispatchers.Main) {
                     quandoSucessoVenda(valorTotalMoeda)
                 }

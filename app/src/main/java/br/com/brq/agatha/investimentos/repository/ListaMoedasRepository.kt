@@ -3,6 +3,7 @@ package br.com.brq.agatha.investimentos.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import br.com.brq.agatha.investimentos.constantes.VALIDA_BUSCA_API
 import br.com.brq.agatha.investimentos.database.dao.MoedaDao
 import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
@@ -18,6 +19,7 @@ class ListaMoedasRepository(daoMoeda: MoedaDao) : MoedaRepository(daoMoeda) {
     fun finance() {
         io.launch {
             try {
+                VALIDA_BUSCA_API = true
                 val call = MoedasRetrofit().retornaFinance()
                 val resposta = call.execute()
                 val finance: Finance? = resposta.body()
@@ -29,6 +31,7 @@ class ListaMoedasRepository(daoMoeda: MoedaDao) : MoedaRepository(daoMoeda) {
     }
 
     private fun quandoDarErroAoBuscar(e: Exception) {
+        VALIDA_BUSCA_API = false
         Log.e("ERRO RETROFIT", "financeErro: ${e.message}")
         buscaNoBancoDedados()
     }

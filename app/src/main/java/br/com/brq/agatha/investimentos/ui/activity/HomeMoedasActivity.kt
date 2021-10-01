@@ -33,10 +33,15 @@ class HomeMoedasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_moedas_home)
         setMyActionBar("Home/Moeda", false)
-        home_recyclerView.adapter = adapter
+        configuraAdapter()
         if (savedInstanceState == null) {
             configuraViewModel()
         }
+    }
+
+    private fun configuraAdapter() {
+        home_recyclerView.adapter = adapter
+        adapter.quandoMoedaClicado = this::vaiParaActivityCambio
     }
 
     private fun vaiParaActivityCambio(moeda: Moeda) {
@@ -62,7 +67,6 @@ class HomeMoedasActivity : AppCompatActivity() {
                 adapter.atualiza(moedas)
             })
             mensagem(MENSAGEM_FALHA_API)
-            adapter.quandoMoedaClicado = {mensagem("Valor não atualizado para função de compra ou venda")}
         }
 
     private fun setAdapterComDadosDaApi(): (finance: LiveData<Finance>) -> Unit =
@@ -79,8 +83,6 @@ class HomeMoedasActivity : AppCompatActivity() {
                 adapter.adiciona(finance?.results?.currencies?.aud)
                 adapter.adiciona(finance?.results?.currencies?.ars)
             })
-
-            adapter.quandoMoedaClicado = this::vaiParaActivityCambio
         }
 
 }
