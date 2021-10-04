@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.brq.agatha.investimentos.constantes.VALIDA_BUSCA_API
 import br.com.brq.agatha.investimentos.database.dao.MoedaDao
+import br.com.brq.agatha.investimentos.model.Currencies
 import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.retrofit.MoedasRetrofit
@@ -23,6 +24,8 @@ class ListaMoedasRepository(daoMoeda: MoedaDao) : MoedaRepository(daoMoeda) {
                 val call = MoedasRetrofit().retornaFinance()
                 val resposta = call.execute()
                 val finance: Finance? = resposta.body()
+                val currencies = finance?.results?.currencies
+                Log.i("TAG", "teste chamou no finance: $currencies")
                 quandoBuscaNaAPI(finance)
             } catch (e: Exception) {
                 quandoDarErroAoBuscar(e)

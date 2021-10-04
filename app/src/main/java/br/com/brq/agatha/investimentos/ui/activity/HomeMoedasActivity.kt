@@ -2,7 +2,6 @@ package br.com.brq.agatha.investimentos.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -17,7 +16,6 @@ import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.ui.recyclerview.ListaMoedasAdpter
 import br.com.brq.agatha.investimentos.viewModel.ListaDeMoedasViewModel
 import kotlinx.android.synthetic.main.activity_moedas_home.*
-import java.math.BigDecimal
 
 class HomeMoedasActivity : AppCompatActivity() {
 
@@ -72,7 +70,6 @@ class HomeMoedasActivity : AppCompatActivity() {
     private fun setAdapterComDadosDaApi(): (finance: LiveData<Finance>) -> Unit =
         {
             it.observe(this, Observer { finance ->
-                Log.i("TAG", "setAdapterComDadosDaApi: ${finance?.results?.currencies?.usd}")
                 adapter.adiciona(finance?.results?.currencies?.usd)
                 adapter.adiciona(finance?.results?.currencies?.jpy)
                 adapter.adiciona(finance?.results?.currencies?.gbp)

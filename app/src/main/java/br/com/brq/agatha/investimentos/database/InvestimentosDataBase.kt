@@ -12,7 +12,7 @@ import br.com.brq.agatha.investimentos.database.dao.UsuarioDao
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.model.Usuario
 
-@Database(entities = [Moeda::class, Usuario::class], version = 9, exportSchema = false)
+@Database(entities = [Moeda::class, Usuario::class], version = 10, exportSchema = false)
 @TypeConverters(BigDecimalConverter::class)
 abstract class InvestimentosDataBase :RoomDatabase(){
     abstract fun getMoedaDao(): MoedaDao
@@ -20,6 +20,7 @@ abstract class InvestimentosDataBase :RoomDatabase(){
     companion object{
         fun getBatadaBase(context: Context): InvestimentosDataBase {
             return Room.databaseBuilder(context, InvestimentosDataBase::class.java, NOME_BANCO)
+                .fallbackToDestructiveMigration()
                 .build()
         }
     }

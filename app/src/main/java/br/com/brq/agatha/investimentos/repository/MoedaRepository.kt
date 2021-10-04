@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
-open class MoedaRepository(val daoMoeda: MoedaDao){
+open class MoedaRepository(protected val daoMoeda: MoedaDao){
 
     private val io = CoroutineScope(Dispatchers.IO)
     var quandoFalhaVenda: (mensagem: String) -> Unit = {}

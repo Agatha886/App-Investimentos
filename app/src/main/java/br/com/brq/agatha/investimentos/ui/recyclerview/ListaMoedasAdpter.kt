@@ -12,7 +12,7 @@ import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
 import kotlinx.android.synthetic.main.item_card_moedas.view.*
 
-class ListaMoedasAdpter(
+open class ListaMoedasAdpter(
     private val context: Context) :
     RecyclerView.Adapter<ListaMoedasAdpter.ListaMoedasViewHolder>() {
 
@@ -32,6 +32,7 @@ class ListaMoedasAdpter(
     override fun getItemCount(): Int {
         return listaDeMoedas.size
     }
+
     fun atualiza(moedasNovas: List<Moeda>?) {
         notifyItemRangeRemoved(0, listaDeMoedas.size)
         listaDeMoedas.clear()
@@ -41,7 +42,7 @@ class ListaMoedasAdpter(
             Log.e("NULL", "FILMES NULOS")
         }
 
-        notifyItemRangeInserted(0, listaDeMoedas.size)
+       atualizaAoAdicionar()
     }
 
     fun adiciona(moeda:Moeda?) {
@@ -51,6 +52,10 @@ class ListaMoedasAdpter(
             verificaSeListaEhNula()
             Log.e("NULL", "MOEDA NULA")
         }
+        atualizaAoAdicionar()
+    }
+
+    fun atualizaAoAdicionar() {
         notifyItemRangeInserted(0, listaDeMoedas.size)
     }
 

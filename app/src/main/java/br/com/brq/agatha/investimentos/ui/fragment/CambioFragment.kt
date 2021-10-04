@@ -18,6 +18,7 @@ import br.com.brq.agatha.investimentos.constantes.VALIDA_BUSCA_API
 import br.com.brq.agatha.investimentos.extension.formatoMoedaBrasileira
 import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
+import br.com.brq.agatha.investimentos.model.Usuario
 import br.com.brq.agatha.investimentos.viewModel.MoedaViewModel
 import br.com.brq.agatha.investimentos.viewModel.UsuarioViewModel
 import kotlinx.android.synthetic.main.cambio.*
