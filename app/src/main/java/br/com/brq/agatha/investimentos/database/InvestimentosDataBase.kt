@@ -20,7 +20,6 @@ abstract class InvestimentosDataBase :RoomDatabase(){
     companion object{
         fun getBatadaBase(context: Context): InvestimentosDataBase {
             return Room.databaseBuilder(context, InvestimentosDataBase::class.java, NOME_BANCO)
-                .fallbackToDestructiveMigration()
                 .build()
         }
     }

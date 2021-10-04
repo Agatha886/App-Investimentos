@@ -8,8 +8,7 @@ import br.com.brq.agatha.investimentos.database.InvestimentosDataBase
 import br.com.brq.agatha.investimentos.repository.MoedaRepository
 
 class MoedaViewModel(context: Context) : ViewModel() {
-    private val dao = InvestimentosDataBase.getBatadaBase(context).getMoedaDao()
-    private val repository: MoedaRepository = MoedaRepository(dao)
+    private val repository: MoedaRepository = MoedaRepository(context)
 
     var quandoVendaSucesso: (totalDeMoeda: Double) -> Unit = {}
     var quandoVendaFalha: (mensagem: String) -> Unit = {}
