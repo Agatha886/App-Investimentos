@@ -24,18 +24,20 @@ class ListaDeMoedasViewModel(context: Context) : ViewModel() {
 
     fun buscaDaApi() {
         var finance: Finance? = null
+
         io.launch {
+            val buscaMoedas = repositoryMoeda.buscaMoedas()
+
             try {
                 VALIDA_BUSCA_API = true
                 val call = MoedasRetrofit().retornaFinance()
                 val resposta = call.execute()
                 finance = resposta.body()
+                atualizaBancoDeDados(buscaMoedas, finance)
                 withContext(Dispatchers.Main) {
                     eventRetornoApi.value = RetornoApiStade.sucesso(finance)
                 }
             } catch (e: Exception) {
-                val buscaMoedas = repositoryMoeda.buscaMoedas()
-                atualizaBancoDeDados(buscaMoedas, finance)
                 withContext(Dispatchers.Main){
                     eventRetornoApi.value = RetornoApiStade.falha(buscaMoedas)
                 }
