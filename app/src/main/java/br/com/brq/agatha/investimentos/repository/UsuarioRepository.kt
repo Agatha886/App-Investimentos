@@ -74,9 +74,4 @@ class UsuarioRepository(private val context: Context){
         }
     }
 
-    fun calculaSaldoCompra(moeda: Moeda, valor: String, usuario: Usuario): BigDecimal {
-        val valorDaCompra = BigDecimal(valor).multiply(moeda.buy)
-        return usuario.saldoDisponivel.subtract(valorDaCompra)
-    }
-
 }

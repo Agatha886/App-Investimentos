@@ -86,7 +86,7 @@ class InvestimentosViewModel(context: Context) : ViewModel() {
     fun compra(idUsuario: Int, moeda: Moeda, valor: String) {
         io.launch {
             val usuario: Usuario = repositoryUsuario.getUsuario(idUsuario)
-            val novoSaldo: BigDecimal = repositoryUsuario.calculaSaldoCompra(moeda, valor, usuario)
+            val novoSaldo: BigDecimal = usuario.calculaSaldoCompra(moeda, valor)
 
             if (novoSaldo > BigDecimal.ZERO) {
                 withContext(Dispatchers.Main) {

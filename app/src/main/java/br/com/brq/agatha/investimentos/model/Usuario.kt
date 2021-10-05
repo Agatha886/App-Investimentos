@@ -21,4 +21,9 @@ class Usuario(
         return saldoDisponivel.add(BigDecimal(valorVendaMoeda).multiply(moeda.sell))
     }
 
+    fun calculaSaldoCompra(moeda: Moeda, valor: String): BigDecimal {
+        val valorDaCompra = BigDecimal(valor).multiply(moeda.buy)
+        return saldoDisponivel.subtract(valorDaCompra)
+    }
+
 }
