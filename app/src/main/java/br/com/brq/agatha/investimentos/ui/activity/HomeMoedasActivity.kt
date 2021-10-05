@@ -10,10 +10,9 @@ import br.com.brq.agatha.investimentos.constantes.MENSAGEM_FALHA_API
 import br.com.brq.agatha.investimentos.constantes.MENSAGEM_MOEDA_INVALIDA
 import br.com.brq.agatha.investimentos.extension.mensagem
 import br.com.brq.agatha.investimentos.extension.setMyActionBar
-import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.ui.recyclerview.ListaMoedasAdpter
-import br.com.brq.agatha.investimentos.viewModel.InvestimentosViewModel
+import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.RetornoStade
 import kotlinx.android.synthetic.main.activity_moedas_home.*
 
@@ -24,8 +23,8 @@ class HomeMoedasActivity : AppCompatActivity() {
         ListaMoedasAdpter(this@HomeMoedasActivity)
     }
 
-    private val viewModel: InvestimentosViewModel by lazy {
-        InvestimentosViewModel(this)
+    private val viewModel: HomeViewModel by lazy {
+        HomeViewModel(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,8 +41,8 @@ class HomeMoedasActivity : AppCompatActivity() {
     private fun observerViewModel() {
         viewModel.viewEventRetornoApi.observe(this, Observer {
             when (it) {
-                is RetornoStade.Sucesso<*> -> setAdapterComDadosDaApi(it.`object` as Finance)
-                is RetornoStade.Falha<*> -> setAdapterComBancoDeDados(it.`object`as List<Moeda>)
+                is RetornoStade.Sucesso -> adapter.atualiza(it.listaMoeda)
+                is RetornoStade.FalhaApi<*> -> setAdapterComBancoDeDados(it.`object`as List<Moeda>)
             }
         })
     }
@@ -72,17 +71,6 @@ class HomeMoedasActivity : AppCompatActivity() {
         mensagem(MENSAGEM_FALHA_API)
     }
 
-    private fun setAdapterComDadosDaApi(finance: Finance?) {
-        adapter.adiciona(finance?.results?.currencies?.usd)
-        adapter.adiciona(finance?.results?.currencies?.jpy)
-        adapter.adiciona(finance?.results?.currencies?.gbp)
-        adapter.adiciona(finance?.results?.currencies?.eur)
-        adapter.adiciona(finance?.results?.currencies?.cny)
-        adapter.adiciona(finance?.results?.currencies?.cad)
-        adapter.adiciona(finance?.results?.currencies?.btc)
-        adapter.adiciona(finance?.results?.currencies?.aud)
-        adapter.adiciona(finance?.results?.currencies?.ars)
-    }
 
 }
 

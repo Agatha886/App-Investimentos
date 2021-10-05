@@ -63,6 +63,7 @@ open class MoedaRepository(context: Context) {
         finance?.results?.currencies?.ars?.let { adiciona(it) }
     }
 
+
     fun getTotalMoeda(nameMoeda: String): LiveData<Double> {
         val liveDate = MutableLiveData<Double>()
         io.launch {

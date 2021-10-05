@@ -18,7 +18,7 @@ import br.com.brq.agatha.investimentos.constantes.VALIDA_BUSCA_API
 import br.com.brq.agatha.investimentos.extension.formatoMoedaBrasileira
 import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
-import br.com.brq.agatha.investimentos.viewModel.InvestimentosViewModel
+import br.com.brq.agatha.investimentos.viewModel.CambioViewModel
 import br.com.brq.agatha.investimentos.viewModel.RetornoStade
 import kotlinx.android.synthetic.main.cambio.*
 import java.math.BigDecimal
@@ -37,8 +37,8 @@ class CambioFragment : Fragment() {
 
     var quandoRecebidaMoedaInvalida: (mensagem: String?) -> Unit = {}
 
-    private val viewModel: InvestimentosViewModel by lazy {
-        InvestimentosViewModel(requireContext())
+    private val viewModel: CambioViewModel by lazy {
+        CambioViewModel(requireContext())
     }
 
     override fun onCreateView(
@@ -63,28 +63,28 @@ class CambioFragment : Fragment() {
     }
 
     private fun observerViewModel() {
-        viewModel.viewEventRetornoCompra.observe(viewLifecycleOwner, Observer {
-            when(it){
-               is RetornoStade.Sucesso<*> -> {
-                   estilizaBotaoValido(cambio_button_comprar)
-                   setClickComprar(it.`object` as BigDecimal)
-               }
-               is RetornoStade.Falha<*> -> {
-                   estilizaBotaoInvalido(cambio_button_comprar)
-                   Log.e("ERRO AO COMPRAR", "observerViewModel: ${it.`object` as String}")
-               }
+        viewModel.viewEventRetorno.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is RetornoStade.SucessoCompra -> {
+                    estilizaBotaoValido(cambio_button_comprar)
+                    setClickComprar(it.saldo)
+                }
+                is RetornoStade.FalhaCompra -> {
+                    estilizaBotaoInvalido(cambio_button_comprar)
+                    Log.e("ERRO AO COMPRAR", "observerViewModel: ${it.mensagemErro}")
+                }
             }
         })
 
-        viewModel.viewEventRetornoVenda.observe(viewLifecycleOwner, Observer {
-            when(it){
-                is RetornoStade.Sucesso<*> ->{
+        viewModel.viewEventRetorno.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is RetornoStade.SucessoVenda -> {
                     estilizaBotaoValido(cambio_button_vender)
-                    setCliqueBotaoVender(it.`object` as Double)
+                    setCliqueBotaoVender(it.totalMoedas)
                 }
-                is RetornoStade.Falha<*> ->{
+                is RetornoStade.FalhaVenda -> {
                     estilizaBotaoInvalido(cambio_button_vender)
-                    Log.e("ERRO AO VENDER", "observerViewModel: ${it.`object` as String}")
+                    Log.e("ERRO AO VENDER", "observerViewModel: ${it.mensagemErro}")
                 }
             }
         })
@@ -159,8 +159,6 @@ class CambioFragment : Fragment() {
             .append(cambio_quantidade.text.toString()).append(" ").append(moeda.abreviacao)
             .append(" - ")
             .append(moeda.name).append(", totalizando \n").append(saldoFormatado)
-
-        Log.i("TAG", resposta.toString())
         return resposta.toString()
     }
 
