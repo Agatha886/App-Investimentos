@@ -12,8 +12,6 @@ import kotlinx.android.synthetic.main.fragment_resposta.*
 
 class RespostaFragment : Fragment() {
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

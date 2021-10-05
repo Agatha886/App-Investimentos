@@ -4,20 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.HomeMoedasActivity"
-    android:background="@color/black">
+    android:background="@color/black"
+    tools:context=".ui.activity.HomeMoedasActivity">
 
     <include
         android:id="@+id/include_my_toolbar"
-        layout="@layout/my_action_bar"/>
+        layout="@layout/my_action_bar" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/home_recyclerView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/home_swipe"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_card_moedas"
         app:layout_constraintTop_toBottomOf="@id/include_my_toolbar"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_card_moedas" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -39,30 +39,14 @@ class ListaMoedasAdpter(
         if (moedasNovas != null) {
             listaDeMoedas.addAll(moedasNovas)
         } else {
-            Log.e("NULL", "FILMES NULOS")
+            Log.e("NULL MOEDA", "Moedas Nulas")
         }
 
        atualizaAoAdicionar()
     }
 
-    fun adiciona(moeda:Moeda?) {
-        if (moeda != null) {
-            listaDeMoedas.add(moeda)
-        } else {
-            verificaSeListaEhNula()
-            Log.e("NULL", "MOEDA NULA")
-        }
-        atualizaAoAdicionar()
-    }
-
     fun atualizaAoAdicionar() {
         notifyItemRangeInserted(0, listaDeMoedas.size)
-    }
-
-    private fun verificaSeListaEhNula() {
-        if(listaDeMoedas.size == 0){
-                Toast.makeText(context, "Não foi possivel adicionar itens", Toast.LENGTH_LONG).show()
-        }
     }
 
     inner class ListaMoedasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

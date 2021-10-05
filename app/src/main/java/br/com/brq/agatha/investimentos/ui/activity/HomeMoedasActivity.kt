@@ -33,8 +33,17 @@ class HomeMoedasActivity : AppCompatActivity() {
         setMyActionBar("Home/Moeda", false)
         configuraAdapter()
         observerViewModel()
-        if (savedInstanceState == null) {
-            configuraViewModel()
+        configuraViewModel()
+        configuraSwipe()
+    }
+
+    private fun configuraSwipe() {
+        home_swipe.setOnRefreshListener {
+            viewModel.buscaDaApi()
+        }
+
+        viewModel.quandoFinaliza = {
+            home_swipe.isRefreshing = false
         }
     }
 
@@ -42,7 +51,7 @@ class HomeMoedasActivity : AppCompatActivity() {
         viewModel.viewEventRetornoApi.observe(this, Observer {
             when (it) {
                 is RetornoStade.Sucesso -> adapter.atualiza(it.listaMoeda)
-                is RetornoStade.FalhaApi<*> -> setAdapterComBancoDeDados(it.`object`as List<Moeda>)
+                is RetornoStade.FalhaApi-> setAdapterComBancoDeDados(it.listaMoeda)
             }
         })
     }

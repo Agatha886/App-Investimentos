@@ -22,13 +22,13 @@ class HomeViewModel(context: Context) : ViewModel() {
     val viewEventRetornoApi: LiveData<RetornoStade> = eventRetornoApi
     private val repositoryMoeda: MoedaRepository = MoedaRepository(context)
     private val listaMoedasDaApi = mutableListOf<Moeda>()
+    var quandoFinaliza:() -> Unit ={}
 
     fun buscaDaApi() {
         var finance: Finance?
 
         io.launch {
             val buscaMoedas = repositoryMoeda.buscaMoedas()
-
             try {
                 VALIDA_BUSCA_API = true
                 val call = MoedasRetrofit().retornaFinance()
@@ -38,10 +38,12 @@ class HomeViewModel(context: Context) : ViewModel() {
                 adicionaTodasAsMoedas(finance)
                 withContext(Dispatchers.Main) {
                     eventRetornoApi.value = RetornoStade.Sucesso(listaMoedasDaApi)
+                    quandoFinaliza()
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     eventRetornoApi.value = RetornoStade.FalhaApi(buscaMoedas)
+                    quandoFinaliza()
                 }
             }
         }

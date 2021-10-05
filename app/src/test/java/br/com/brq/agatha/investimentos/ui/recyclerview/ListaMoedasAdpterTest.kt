@@ -34,19 +34,6 @@ class ListaMoedasAdpterTest : TestCase() {
 
     fun testAtualiza() {}
 
-    fun testAdiciona() {
-        // Mock Não executa nada do obejeto que estamos mokando, diferente do spy
-        val contex = Mockito.mock(Context::class.java)
-
-        // Objeto espião Syp - Executa as funções do ojeto mas tem a capaciadae de mudar seus comportamentos
-        val listaMoedasAdpter = Mockito.spy(ListaMoedasAdpter(contex))
-        Mockito.doNothing().`when`(listaMoedasAdpter).atualizaAoAdicionar()
-
-        listaMoedasAdpter.adiciona(moedaDeExemplo)
-        assertEquals(1, listaMoedasAdpter.itemCount)
-
-    }
-
     fun testAtualizaAoAdicionar() {}
 
 
