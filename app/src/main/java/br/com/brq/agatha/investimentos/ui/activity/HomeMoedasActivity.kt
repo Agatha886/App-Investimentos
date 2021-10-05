@@ -3,7 +3,6 @@ package br.com.brq.agatha.investimentos.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
@@ -14,18 +13,19 @@ import br.com.brq.agatha.investimentos.extension.setMyActionBar
 import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.ui.recyclerview.ListaMoedasAdpter
-import br.com.brq.agatha.investimentos.viewModel.ListaDeMoedasViewModel
-import br.com.brq.agatha.investimentos.viewModel.RetornoApiStade
+import br.com.brq.agatha.investimentos.viewModel.InvestimentosViewModel
+import br.com.brq.agatha.investimentos.viewModel.RetornoStade
 import kotlinx.android.synthetic.main.activity_moedas_home.*
 
+@Suppress("UNCHECKED_CAST")
 class HomeMoedasActivity : AppCompatActivity() {
 
     private val adapter: ListaMoedasAdpter by lazy {
         ListaMoedasAdpter(this@HomeMoedasActivity)
     }
 
-    private val viewModel: ListaDeMoedasViewModel by lazy {
-        ListaDeMoedasViewModel(this)
+    private val viewModel: InvestimentosViewModel by lazy {
+        InvestimentosViewModel(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,8 +42,8 @@ class HomeMoedasActivity : AppCompatActivity() {
     private fun observerViewModel() {
         viewModel.viewEventRetornoApi.observe(this, Observer {
             when (it) {
-                is RetornoApiStade.sucesso -> setAdapterComDadosDaApi(it.finance)
-                is RetornoApiStade.falha -> setAdapterComBancoDeDados(it.listaMoedas)
+                is RetornoStade.Sucesso<*> -> setAdapterComDadosDaApi(it.`object` as Finance)
+                is RetornoStade.Falha<*> -> setAdapterComBancoDeDados(it.`object`as List<Moeda>)
             }
         })
     }

@@ -12,7 +12,7 @@ import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
 import kotlinx.android.synthetic.main.item_card_moedas.view.*
 
-open class ListaMoedasAdpter(
+class ListaMoedasAdpter(
     private val context: Context) :
     RecyclerView.Adapter<ListaMoedasAdpter.ListaMoedasViewHolder>() {
 

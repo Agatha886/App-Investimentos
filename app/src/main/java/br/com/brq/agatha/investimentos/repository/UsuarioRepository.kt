@@ -1,7 +1,9 @@
 package br.com.brq.agatha.investimentos.repository
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import br.com.brq.agatha.investimentos.database.InvestimentosDataBase
 import br.com.brq.agatha.investimentos.database.dao.UsuarioDao
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.model.Usuario
@@ -11,12 +13,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
-class UsuarioRepository(private val daoUsuario: UsuarioDao){
+class UsuarioRepository(private val context: Context){
 
     private val io = CoroutineScope(Dispatchers.IO)
-    var quandoCompraSucesso: (saldoRestante: BigDecimal) -> Unit = {}
-    var quandoFalhaCompra: (mensagem: String) -> Unit = {}
+    private val daoUsuario = InvestimentosDataBase.getBatadaBase(context).getUsuarioDao()
 
+
+    fun getUsuario(idUsuario: Int): Usuario{
+        return daoUsuario.retornaUsuario(idUsuario)
+    }
 
     fun getSaldoDisponivel(id: Int): LiveData<BigDecimal> {
         val liveData = MutableLiveData<BigDecimal>()
@@ -69,24 +74,7 @@ class UsuarioRepository(private val daoUsuario: UsuarioDao){
         }
     }
 
-    fun compra(idUsuario: Int, moeda: Moeda, valor: String) {
-        io.launch {
-            val usuario: Usuario = daoUsuario.retornaUsuario(idUsuario)
-            val novoSaldo = calculaSaldoCompra(moeda, valor, usuario)
-
-            if (novoSaldo > BigDecimal.ZERO) {
-                withContext(Dispatchers.Main) {
-                    quandoCompraSucesso(novoSaldo)
-                }
-            } else {
-                withContext(Dispatchers.Main) {
-                    quandoFalhaCompra("Valor de Compra Inválido")
-                }
-            }
-        }
-    }
-
-    private fun calculaSaldoCompra(moeda: Moeda, valor: String, usuario: Usuario): BigDecimal {
+    fun calculaSaldoCompra(moeda: Moeda, valor: String, usuario: Usuario): BigDecimal {
         val valorDaCompra = BigDecimal(valor).multiply(moeda.buy)
         return usuario.saldoDisponivel.subtract(valorDaCompra)
     }

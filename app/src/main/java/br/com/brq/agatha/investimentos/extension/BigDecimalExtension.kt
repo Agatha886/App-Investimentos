@@ -15,7 +15,7 @@ fun BigDecimal.formatoMoedaBrasileira(): String {
 
 
 fun BigDecimal.formatoPorcentagem(): String {
-    val formato = format(Locale(PORTUGUES, BRASIL), "%.2f", this)
+    val formato: String = format(Locale(PORTUGUES, BRASIL), "%.2f", this)
     return "$formato%"
 }
 
