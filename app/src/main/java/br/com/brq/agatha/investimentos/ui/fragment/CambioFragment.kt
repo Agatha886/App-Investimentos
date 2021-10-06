@@ -14,7 +14,6 @@ import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
 import br.com.brq.agatha.investimentos.constantes.TipoTranferencia
-import br.com.brq.agatha.investimentos.constantes.VALIDA_BUSCA_API
 import br.com.brq.agatha.investimentos.extension.formatoMoedaBrasileira
 import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
@@ -54,16 +53,22 @@ class CambioFragment : Fragment() {
         inicializaCampos()
         observerViewModel()
         setCliqueBotoesQuandoInvalidos("Valor nulo")
-        if (VALIDA_BUSCA_API) {
-            setCampoQuantidadeMoeda()
-        } else {
-            setCliqueBotoesQuandoInvalidos("Não é foi possível realizar a operação, dados de compra e venda não atualizados")
-        }
+
+        RetornoStade.eventRetorno.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is RetornoStade.FalhaApi -> {
+                    setCliqueBotoesQuandoInvalidos("Dados não atualizados!!")
+                }
+                else -> {
+                    setCampoQuantidadeMoeda()
+                }
+            }
+        })
 
     }
 
     private fun observerViewModel() {
-        viewModel.viewEventRetorno.observe(viewLifecycleOwner, Observer {
+        RetornoStade.eventRetorno.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is RetornoStade.SucessoCompra -> {
                     estilizaBotaoValido(cambio_button_comprar)
@@ -76,7 +81,7 @@ class CambioFragment : Fragment() {
             }
         })
 
-        viewModel.viewEventRetorno.observe(viewLifecycleOwner, Observer {
+        RetornoStade.eventRetorno.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is RetornoStade.SucessoVenda -> {
                     estilizaBotaoValido(cambio_button_vender)

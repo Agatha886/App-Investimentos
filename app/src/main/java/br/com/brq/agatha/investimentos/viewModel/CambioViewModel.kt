@@ -19,12 +19,8 @@ class CambioViewModel(context: Context) : ViewModel() {
 
     private val io = CoroutineScope(Dispatchers.IO)
 
-    private val eventRetorno = MutableLiveData<RetornoStade>()
-    val viewEventRetorno: LiveData<RetornoStade> = eventRetorno
-
     private val repositoryMoeda: MoedaRepository = MoedaRepository(context)
     private val repositoryUsuario = UsuarioRepository(context)
-
     // Tela De Câmbio Usuario
 
     fun adicionaUsuario(usuario: Usuario) {
@@ -46,12 +42,11 @@ class CambioViewModel(context: Context) : ViewModel() {
 
             if (novoSaldo > BigDecimal.ZERO) {
                 withContext(Dispatchers.Main) {
-                    Log.i("TAG", "compra: $novoSaldo")
-                   eventRetorno.value = RetornoStade.SucessoCompra(novoSaldo)
+                  RetornoStade.eventRetorno.value = RetornoStade.SucessoCompra(novoSaldo)
                 }
             } else {
                 withContext(Dispatchers.Main) {
-                    eventRetorno.value = RetornoStade
+                    RetornoStade.eventRetorno.value = RetornoStade
                         .FalhaCompra("Valor de Compra Inválido")
                 }
             }
@@ -92,11 +87,11 @@ class CambioViewModel(context: Context) : ViewModel() {
 
             if (valorTotalMoeda >= 00.0) {
                 withContext(Dispatchers.Main) {
-                    eventRetorno.value = RetornoStade.SucessoVenda(valorTotalMoeda)
+                    RetornoStade.eventRetorno.value = RetornoStade.SucessoVenda(valorTotalMoeda)
                 }
             } else {
                 withContext(Dispatchers.Main){
-                    eventRetorno.value = RetornoStade.FalhaVenda("Valor inválido")
+                    RetornoStade.eventRetorno.value = RetornoStade.FalhaVenda("Valor inválido")
                 }
             }
         }

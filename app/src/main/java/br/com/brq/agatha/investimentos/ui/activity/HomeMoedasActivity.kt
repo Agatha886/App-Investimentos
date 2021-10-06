@@ -48,7 +48,7 @@ class HomeMoedasActivity : AppCompatActivity() {
     }
 
     private fun observerViewModel() {
-        viewModel.viewEventRetornoApi.observe(this, Observer {
+        RetornoStade.eventRetorno.observe(this, Observer {
             when (it) {
                 is RetornoStade.Sucesso -> adapter.atualiza(it.listaMoeda)
                 is RetornoStade.FalhaApi-> setAdapterComBancoDeDados(it.listaMoeda)

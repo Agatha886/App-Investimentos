@@ -1,10 +1,7 @@
 package br.com.brq.agatha.investimentos.viewModel
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import br.com.brq.agatha.investimentos.constantes.VALIDA_BUSCA_API
 import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.repository.MoedaRepository
@@ -18,38 +15,34 @@ class HomeViewModel(context: Context) : ViewModel() {
 
     private val io = CoroutineScope(Dispatchers.IO)
 
-    private val eventRetornoApi = MutableLiveData<RetornoStade>()
-    val viewEventRetornoApi: LiveData<RetornoStade> = eventRetornoApi
     private val repositoryMoeda: MoedaRepository = MoedaRepository(context)
     private val listaMoedasDaApi = mutableListOf<Moeda>()
     var quandoFinaliza:() -> Unit ={}
 
     fun buscaDaApi() {
         var finance: Finance?
-
         io.launch {
             val buscaMoedas = repositoryMoeda.buscaMoedas()
             try {
-                VALIDA_BUSCA_API = true
                 val call = MoedasRetrofit().retornaFinance()
                 val resposta = call.execute()
                 finance = resposta.body()
                 atualizaBancoDeDados(buscaMoedas, finance)
-                adicionaTodasAsMoedas(finance)
+                agrupaTodasAsMoedasNaLista(finance)
                 withContext(Dispatchers.Main) {
-                    eventRetornoApi.value = RetornoStade.Sucesso(listaMoedasDaApi)
+                    RetornoStade.eventRetorno.value = RetornoStade.Sucesso(listaMoedasDaApi)
                     quandoFinaliza()
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    eventRetornoApi.value = RetornoStade.FalhaApi(buscaMoedas)
+                    RetornoStade.eventRetorno.value = RetornoStade.FalhaApi(buscaMoedas)
                     quandoFinaliza()
                 }
             }
         }
     }
 
-    private fun adicionaTodasAsMoedas(finance: Finance?) {
+    private fun agrupaTodasAsMoedasNaLista(finance: Finance?) {
         listaMoedasDaApi.clear()
         finance?.results?.currencies?.usd?.let { listaMoedasDaApi.add(it) }
         finance?.results?.currencies?.jpy?.let { listaMoedasDaApi.add(it) }
