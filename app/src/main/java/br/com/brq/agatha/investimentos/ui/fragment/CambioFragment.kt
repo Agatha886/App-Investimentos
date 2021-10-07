@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
@@ -120,18 +121,26 @@ class CambioFragment : Fragment() {
 
     private fun setClickVender(totalMoeda: Double) {
         cambio_button_vender.setOnClickListener {
-            val saldoVenda =
-                viewModel.setSaldoVenda(1, moeda, cambio_quantidade.text.toString())
-            viewModel.setTotalMoedaVenda(moeda.name, totalMoeda)
-            viewModel.setEventRetornoComoSem()
-            cambio_quantidade.setText("")
-            saldoVenda.observe(viewLifecycleOwner, Observer {
-                quandoCompraOuVendaSucesso(
-                    mensagemOperacaoSucesso(it, "vender "),
-                    TipoTranferencia.VENDA
-                )
-            })
+            val novoTotalDeMoedas = setTotalDeMoedasAposVenda(totalMoeda)
+            limpaCampos()
+            vaiParaFragmentSucessoAposVenda(novoTotalDeMoedas)
         }
+    }
+
+    private fun setTotalDeMoedasAposVenda(totalMoeda: Double): LiveData<BigDecimal> {
+        val saldoVenda =
+            viewModel.setSaldoVenda(1, moeda, cambio_quantidade.text.toString())
+        viewModel.setTotalMoedaVenda(moeda.name, totalMoeda)
+        return saldoVenda
+    }
+
+    private fun vaiParaFragmentSucessoAposVenda(saldoVenda: LiveData<BigDecimal>) {
+        saldoVenda.observe(viewLifecycleOwner, Observer {
+            quandoCompraOuVendaSucesso(
+                mensagemOperacaoSucesso(it, "vender "),
+                TipoTranferencia.VENDA
+            )
+        })
     }
 
     private fun setBotoesQuandoInvalidos(mensgem: String) {
@@ -151,18 +160,30 @@ class CambioFragment : Fragment() {
 
     private fun setClickComprar(valor: BigDecimal) {
         cambio_button_comprar.setOnClickListener {
-            viewModel.setSaldoCompra(1, valor)
-            viewModel.setToltalMoedaCompra(
-                moeda.name,
-                cambio_quantidade.text.toString().toDouble()
-            )
-            viewModel.setEventRetornoComoSem()
-            cambio_quantidade.setText("")
-            quandoCompraOuVendaSucesso(
-                mensagemOperacaoSucesso(valor, "comprar "),
-                TipoTranferencia.COMPRA
-            )
+            setSaldoAposCompra(valor)
+            limpaCampos()
+            vaiParaFrgementSucessoAposCompra(valor)
         }
+    }
+
+    private fun vaiParaFrgementSucessoAposCompra(valor: BigDecimal) {
+        quandoCompraOuVendaSucesso(
+            mensagemOperacaoSucesso(valor, "comprar "),
+            TipoTranferencia.COMPRA
+        )
+    }
+
+    private fun setSaldoAposCompra(valor: BigDecimal) {
+        viewModel.setSaldoCompra(1, valor)
+        viewModel.setToltalMoedaCompra(
+            moeda.name,
+            cambio_quantidade.text.toString().toDouble()
+        )
+    }
+
+    private fun limpaCampos() {
+        viewModel.setEventRetornoComoSem()
+        cambio_quantidade.setText("")
     }
 
     private fun mensagemOperacaoSucesso(saldo: BigDecimal, nomeOperacao: String): String {
