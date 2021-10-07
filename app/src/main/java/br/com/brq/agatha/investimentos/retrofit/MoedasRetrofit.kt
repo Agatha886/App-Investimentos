@@ -1,5 +1,7 @@
 package br.com.brq.agatha.investimentos.retrofit
 
+import br.com.brq.agatha.investimentos.model.Currencie
+import br.com.brq.agatha.investimentos.model.Currencies
 import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Results
 import br.com.brq.agatha.investimentos.retrofit.service.FinanceService
@@ -21,7 +23,7 @@ class MoedasRetrofit {
         return  serviceFinance.buscaFinance()
     }
 
-    fun retornaMoeda(): Call<Finance>{
+    fun retornaMoeda(abreviacao: String): Call<Currencie>{
         return serviceFinance.buscaMoeda()
     }
 

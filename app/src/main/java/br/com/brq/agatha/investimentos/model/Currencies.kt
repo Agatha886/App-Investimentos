@@ -20,6 +20,8 @@ class Currencies(
     @SerializedName("CNY")
     val cny: Moeda,
     @SerializedName("BTC")
-    val btc: Moeda,
-    var name: String)
+    val btc: Moeda)
 
+class Currencie(
+    @SerializedName("name")
+    var name: String)
