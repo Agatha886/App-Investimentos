@@ -25,3 +25,7 @@
     </application>
 
 </manifest>
+
+<!--    https://api.hgbrasil.com/finance?&fields=only_results,currencies&key=835f00d7-->
+
+<!--    https://api.hgbrasil.com/finance/quotations?&fields=only_,results,currencies,USD&key=835f00d7-->

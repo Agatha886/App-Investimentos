@@ -18,7 +18,8 @@ import br.com.brq.agatha.investimentos.extension.formatoMoedaBrasileira
 import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.viewModel.CambioViewModel
-import br.com.brq.agatha.investimentos.viewModel.RetornoStade
+import br.com.brq.agatha.investimentos.viewModel.RetornoStadeApi
+import br.com.brq.agatha.investimentos.viewModel.RetornoStadeCompraEVenda
 import kotlinx.android.synthetic.main.cambio.*
 import java.math.BigDecimal
 import java.text.DecimalFormat
@@ -52,12 +53,12 @@ class CambioFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         inicializaCampos()
         observerViewModel()
-        setCliqueBotoesQuandoInvalidos("Valor nulo")
+        setBotoesQuandoInvalidos("Valor nulo")
 
-        RetornoStade.eventRetorno.observe(viewLifecycleOwner, Observer {
+        RetornoStadeApi.eventRetorno.observe(viewLifecycleOwner, Observer {
             when (it) {
-                is RetornoStade.FalhaApi -> {
-                    setCliqueBotoesQuandoInvalidos("Dados não atualizados!!")
+                is RetornoStadeApi.FalhaApi -> {
+                    setBotoesQuandoInvalidos("Dados não atualizados!!")
                 }
                 else -> {
                     setCampoQuantidadeMoeda()
@@ -68,60 +69,62 @@ class CambioFragment : Fragment() {
     }
 
     private fun observerViewModel() {
-        RetornoStade.eventRetorno.observe(viewLifecycleOwner, Observer {
+        viewModel.viewEventRetornoCompraEVenda.observe(viewLifecycleOwner, Observer {
             when (it) {
-                is RetornoStade.SucessoCompra -> {
-                    estilizaBotaoValido(cambio_button_comprar)
+                is RetornoStadeCompraEVenda.SucessoCompra -> {
+                    estilizaBotaoOperacaoValida(cambio_button_comprar)
                     setClickComprar(it.saldo)
                 }
-                is RetornoStade.FalhaCompra -> {
-                    estilizaBotaoInvalido(cambio_button_comprar)
+                is RetornoStadeCompraEVenda.FalhaCompra -> {
+                    estilizaBotaoOperacaoInvalida(cambio_button_comprar)
                     Log.e("ERRO AO COMPRAR", "observerViewModel: ${it.mensagemErro}")
                 }
+
+                is RetornoStadeCompraEVenda.SucessoVenda -> {
+                    estilizaBotaoOperacaoValida(cambio_button_vender)
+                    setClickVender(it.totalMoedas)
+                }
+                is RetornoStadeCompraEVenda.FalhaVenda -> {
+                    estilizaBotaoOperacaoInvalida(cambio_button_vender)
+                    Log.e("ERRO AO VENDER", "observerViewModel: ${it.mensagemErro}")
+                }
+
+                is RetornoStadeCompraEVenda.SemRetorno -> setBotoesQuandoInvalidos("Valor Nulo")
             }
         })
 
-        RetornoStade.eventRetorno.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is RetornoStade.SucessoVenda -> {
-                    estilizaBotaoValido(cambio_button_vender)
-                    setCliqueBotaoVender(it.totalMoedas)
-                }
-                is RetornoStade.FalhaVenda -> {
-                    estilizaBotaoInvalido(cambio_button_vender)
-                    Log.e("ERRO AO VENDER", "observerViewModel: ${it.mensagemErro}")
-                }
-            }
-        })
     }
 
     private fun setCampoQuantidadeMoeda() {
         cambio_quantidade.doAfterTextChanged { valorDigitado ->
             val texto = valorDigitado.toString()
             if (texto.isBlank() || texto[0] == '0') {
-                setCliqueBotoesQuandoInvalidos("Valor Inválido")
+                setBotoesQuandoInvalidos("Valor Inválido")
             } else {
-                viewModel.compra(1, moeda, valorDigitado.toString())
-                viewModel.venda(moeda.name, valorDigitado.toString())
+                viewModel.compra(1, moeda, texto)
+                viewModel.venda(moeda.name, texto)
             }
         }
     }
 
-    private fun estilizaBotaoInvalido(button: Button) {
+    private fun estilizaBotaoOperacaoInvalida(button: Button) {
         button.setBackgroundResource(R.drawable.button_cambio_apagado)
         button.setTextColor(resources.getColor(R.color.cinza))
         button.setOnClickListener { toastMensagem("Operação Inválida") }
     }
 
-    private fun estilizaBotaoValido(button: Button) {
+    private fun estilizaBotaoOperacaoValida(button: Button) {
         button.setBackgroundResource(R.drawable.button_cambio)
         button.setTextColor(resources.getColor(R.color.white))
     }
 
-    private fun setCliqueBotaoVender(totalMoeda: Double) {
+    private fun setClickVender(totalMoeda: Double) {
         cambio_button_vender.setOnClickListener {
-            val saldoVenda = viewModel.setSaldoVenda(1, moeda, cambio_quantidade.text.toString())
+            val saldoVenda =
+                viewModel.setSaldoVenda(1, moeda, cambio_quantidade.text.toString())
             viewModel.setTotalMoedaVenda(moeda.name, totalMoeda)
+            viewModel.setEventRetornoComoSem()
+            cambio_quantidade.setText("")
             saldoVenda.observe(viewLifecycleOwner, Observer {
                 quandoCompraOuVendaSucesso(
                     mensagemOperacaoSucesso(it, "vender "),
@@ -131,7 +134,7 @@ class CambioFragment : Fragment() {
         }
     }
 
-    private fun setCliqueBotoesQuandoInvalidos(mensgem: String) {
+    private fun setBotoesQuandoInvalidos(mensgem: String) {
         cambio_button_comprar.visibility = VISIBLE
         cambio_button_vender.visibility = VISIBLE
         cambio_button_comprar.setOnClickListener { toastMensagem(mensgem) }
@@ -149,7 +152,12 @@ class CambioFragment : Fragment() {
     private fun setClickComprar(valor: BigDecimal) {
         cambio_button_comprar.setOnClickListener {
             viewModel.setSaldoCompra(1, valor)
-            viewModel.setToltalMoedaCompra(moeda.name, cambio_quantidade.text.toString().toDouble())
+            viewModel.setToltalMoedaCompra(
+                moeda.name,
+                cambio_quantidade.text.toString().toDouble()
+            )
+            viewModel.setEventRetornoComoSem()
+            cambio_quantidade.setText("")
             quandoCompraOuVendaSucesso(
                 mensagemOperacaoSucesso(valor, "comprar "),
                 TipoTranferencia.COMPRA

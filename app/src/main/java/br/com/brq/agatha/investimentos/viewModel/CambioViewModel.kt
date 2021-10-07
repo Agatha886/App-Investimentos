@@ -21,6 +21,8 @@ class CambioViewModel(context: Context) : ViewModel() {
 
     private val repositoryMoeda: MoedaRepository = MoedaRepository(context)
     private val repositoryUsuario = UsuarioRepository(context)
+    private val eventRetorno = MutableLiveData<RetornoStadeCompraEVenda>()
+    val viewEventRetornoCompraEVenda: LiveData<RetornoStadeCompraEVenda> = eventRetorno
     // Tela De Câmbio Usuario
 
     fun adicionaUsuario(usuario: Usuario) {
@@ -42,15 +44,19 @@ class CambioViewModel(context: Context) : ViewModel() {
 
             if (novoSaldo > BigDecimal.ZERO) {
                 withContext(Dispatchers.Main) {
-                  RetornoStade.eventRetorno.value = RetornoStade.SucessoCompra(novoSaldo)
+                  eventRetorno.value = RetornoStadeCompraEVenda.SucessoCompra(novoSaldo)
                 }
             } else {
                 withContext(Dispatchers.Main) {
-                    RetornoStade.eventRetorno.value = RetornoStade
+                    eventRetorno.value = RetornoStadeCompraEVenda
                         .FalhaCompra("Valor de Compra Inválido")
                 }
             }
         }
+    }
+
+    fun setEventRetornoComoSem(){
+        eventRetorno.value = RetornoStadeCompraEVenda.SemRetorno
     }
 
     fun setSaldoCompra(idUsuario: Int, valorComprado: BigDecimal) {
@@ -80,18 +86,18 @@ class CambioViewModel(context: Context) : ViewModel() {
         repositoryMoeda.setTotalMoedaAposVenda(nameMoeda, valorDaCompra)
     }
 
-    fun venda(nameMoeda: String, valorDeVenda: String) {
+    fun venda(nameMoeda: String, quantidadeVenda: String) {
         io.launch {
             val moeda = repositoryMoeda.buscaMoeda(nameMoeda)
-            val valorTotalMoeda = moeda.totalDeMoeda.minus(BigDecimal(valorDeVenda).toDouble())
+            val valorTotalMoeda = moeda.totalDeMoeda.minus(BigDecimal(quantidadeVenda).toDouble())
 
             if (valorTotalMoeda >= 00.0) {
                 withContext(Dispatchers.Main) {
-                    RetornoStade.eventRetorno.value = RetornoStade.SucessoVenda(valorTotalMoeda)
+                    eventRetorno.value = RetornoStadeCompraEVenda.SucessoVenda(valorTotalMoeda)
                 }
             } else {
                 withContext(Dispatchers.Main){
-                    RetornoStade.eventRetorno.value = RetornoStade.FalhaVenda("Valor inválido")
+                    eventRetorno.value = RetornoStadeCompraEVenda.FalhaVenda("Valor inválido")
                 }
             }
         }

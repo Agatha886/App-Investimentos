@@ -17,7 +17,8 @@ import br.com.brq.agatha.investimentos.ui.fragment.RespostaFragment
 import java.io.Serializable
 
 @Suppress("DEPRECATION")
-class CambioActivity() : AppCompatActivity() {
+class
+CambioActivity() : AppCompatActivity() {
 
     private var setTituloAppBar: (tipoTransferencia:TipoTranferencia) -> String = { tipoTranferencia ->
         if(tipoTranferencia == TipoTranferencia.COMPRA){"Compra"}else if(tipoTranferencia== TipoTranferencia.VENDA){"Venda"}else{"Câmbio"}

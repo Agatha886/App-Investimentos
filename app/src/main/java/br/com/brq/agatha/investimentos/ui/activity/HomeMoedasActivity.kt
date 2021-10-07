@@ -2,6 +2,7 @@ package br.com.brq.agatha.investimentos.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
@@ -13,7 +14,7 @@ import br.com.brq.agatha.investimentos.extension.setMyActionBar
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.ui.recyclerview.ListaMoedasAdpter
 import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
-import br.com.brq.agatha.investimentos.viewModel.RetornoStade
+import br.com.brq.agatha.investimentos.viewModel.RetornoStadeApi
 import kotlinx.android.synthetic.main.activity_moedas_home.*
 
 @Suppress("UNCHECKED_CAST")
@@ -48,10 +49,11 @@ class HomeMoedasActivity : AppCompatActivity() {
     }
 
     private fun observerViewModel() {
-        RetornoStade.eventRetorno.observe(this, Observer {
+        RetornoStadeApi.eventRetorno.observe(this, Observer {
             when (it) {
-                is RetornoStade.Sucesso -> adapter.atualiza(it.listaMoeda)
-                is RetornoStade.FalhaApi-> setAdapterComBancoDeDados(it.listaMoeda)
+                is RetornoStadeApi.Sucesso -> adapter.atualiza(it.listaMoeda)
+                is RetornoStadeApi.FalhaApi-> setAdapterComBancoDeDados(it.listaMoeda)
+                else -> Log.i("TAG", "observerViewModel: Entrou no else")
             }
         })
     }

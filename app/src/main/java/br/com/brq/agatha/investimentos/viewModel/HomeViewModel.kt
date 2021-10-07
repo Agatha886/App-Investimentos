@@ -1,6 +1,7 @@
 package br.com.brq.agatha.investimentos.viewModel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
@@ -29,16 +30,26 @@ class HomeViewModel(context: Context) : ViewModel() {
                 finance = resposta.body()
                 atualizaBancoDeDados(buscaMoedas, finance)
                 agrupaTodasAsMoedasNaLista(finance)
+
                 withContext(Dispatchers.Main) {
-                    RetornoStade.eventRetorno.value = RetornoStade.Sucesso(listaMoedasDaApi)
+                    RetornoStadeApi.eventRetorno.value = RetornoStadeApi.Sucesso(listaMoedasDaApi)
                     quandoFinaliza()
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    RetornoStade.eventRetorno.value = RetornoStade.FalhaApi(buscaMoedas)
+                    RetornoStadeApi.eventRetorno.value = RetornoStadeApi.FalhaApi(buscaMoedas)
                     quandoFinaliza()
                 }
             }
+        }
+    }
+    
+    fun buscaMoedaDaApi(){
+        io.launch {
+            val call = MoedasRetrofit().retornaMoeda()
+            val resposta = call.execute()
+            val results = resposta.body()
+            Log.i("TAG", "buscaMoedaDaApi: ${results?.results?.currencies?.name}")
         }
     }
 
