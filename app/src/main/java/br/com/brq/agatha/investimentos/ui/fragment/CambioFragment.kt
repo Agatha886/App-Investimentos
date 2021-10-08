@@ -74,7 +74,7 @@ class CambioFragment : Fragment() {
             when (it) {
                 is RetornoStadeCompraEVenda.SucessoCompra -> {
                     estilizaBotaoOperacaoValida(cambio_button_comprar)
-                    setClickComprar(it.saldo)
+                    setClickComprar(it.valorGasto)
                 }
                 is RetornoStadeCompraEVenda.FalhaCompra -> {
                     estilizaBotaoOperacaoInvalida(cambio_button_comprar)

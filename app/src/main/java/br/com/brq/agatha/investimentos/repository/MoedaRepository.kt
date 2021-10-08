@@ -17,7 +17,6 @@ open class MoedaRepository(context: Context) {
     private val io = CoroutineScope(Dispatchers.IO)
     private val daoMoeda = InvestimentosDataBase.getBatadaBase(context).getMoedaDao()
 
-
     fun buscaMoeda(nameMoeda: String): Moeda{
         return daoMoeda.buscaMoeda(nameMoeda)
     }

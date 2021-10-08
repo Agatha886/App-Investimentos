@@ -31,8 +31,6 @@ class HomeViewModel(context: Context) : ViewModel() {
                 atualizaBancoDeDados(buscaMoedas, finance)
                 agrupaTodasAsMoedasNaLista(finance)
 
-                buscaMoedaDaApi()
-
                 withContext(Dispatchers.Main) {
                     RetornoStadeApi.eventRetorno.value = RetornoStadeApi.Sucesso(listaMoedasDaApi)
                     quandoFinaliza()
@@ -43,15 +41,6 @@ class HomeViewModel(context: Context) : ViewModel() {
                     quandoFinaliza()
                 }
             }
-        }
-    }
-    
-    fun buscaMoedaDaApi(){
-        io.launch {
-            val call = MoedasRetrofit().retornaMoeda("USD")
-            val resposta = call.execute()
-            val results = resposta.body()
-            Log.i("TAG", "buscaMoedaDaApi: ${results?.name}")
         }
     }
 

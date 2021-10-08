@@ -2,26 +2,25 @@ package br.com.brq.agatha.investimentos.model
 
 import com.google.gson.annotations.SerializedName
 
-class Currencies(
+data class Currencies(
     @SerializedName("USD")
-    val usd: Moeda,
+    val usd: Moeda?,
     @SerializedName("EUR")
-    val eur: Moeda,
+    val eur: Moeda?,
     @SerializedName("GBP")
-    val gbp: Moeda,
+    val gbp: Moeda?,
     @SerializedName("ARS")
-    val ars: Moeda,
+    val ars: Moeda?,
     @SerializedName("CAD")
-    val cad: Moeda,
+    val cad: Moeda?,
     @SerializedName("AUD")
-    val aud: Moeda,
+    val aud: Moeda?,
     @SerializedName("JPY")
-    val jpy: Moeda,
+    val jpy: Moeda?,
     @SerializedName("CNY")
-    val cny: Moeda,
+    val cny: Moeda?,
     @SerializedName("BTC")
-    val btc: Moeda)
+    val btc: Moeda?,
+    var name: String
+    )
 
-class Currencie(
-    @SerializedName("name")
-    var name: String)

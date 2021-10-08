@@ -9,6 +9,7 @@ import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.model.Usuario
 import br.com.brq.agatha.investimentos.repository.MoedaRepository
 import br.com.brq.agatha.investimentos.repository.UsuarioRepository
+import br.com.brq.agatha.investimentos.retrofit.MoedasRetrofit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,6 +38,15 @@ class CambioViewModel(context: Context) : ViewModel() {
         repositoryUsuario.apagaTodos()
     }
 
+    fun buscaMoedaDaApi(){
+        io.launch {
+            val call = MoedasRetrofit().retornaMoeda("USD")
+            val resposta = call.execute()
+            val finance = resposta.body()
+            Log.i("TAG", "buscaMoedaDaApi: ${finance?.results?.currencies?.name}")
+        }
+    }
+
     fun compra(idUsuario: Int, moeda: Moeda, valor: String) {
         io.launch {
             val usuario: Usuario = repositoryUsuario.getUsuario(idUsuario)
@@ -44,7 +54,7 @@ class CambioViewModel(context: Context) : ViewModel() {
 
             if (novoSaldo > BigDecimal.ZERO) {
                 withContext(Dispatchers.Main) {
-                  eventRetorno.value = RetornoStadeCompraEVenda.SucessoCompra(novoSaldo)
+                  eventRetorno.value = RetornoStadeCompraEVenda.SucessoCompra(BigDecimal(valor))
                 }
             } else {
                 withContext(Dispatchers.Main) {
