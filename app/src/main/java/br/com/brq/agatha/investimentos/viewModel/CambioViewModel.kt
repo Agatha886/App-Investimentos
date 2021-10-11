@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.model.Usuario
-import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
+import br.com.brq.agatha.investimentos.repository.MoedaDbDataSource
 import br.com.brq.agatha.investimentos.repository.UsuarioRepository
 import br.com.brq.agatha.investimentos.retrofit.MoedasRetrofit
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +20,7 @@ class CambioViewModel(context: Context) : ViewModel() {
 
     private val io = CoroutineScope(Dispatchers.IO)
 
-    private val repositoryMoeda: MoedaApiDataSource = MoedaApiDataSource(context)
+    private val dbDataSource =  MoedaDbDataSource(context)
     private val repositoryUsuario = UsuarioRepository(context)
     private val eventRetorno = MutableLiveData<RetornoStadeCompraEVenda>()
     val viewEventRetornoCompraEVenda: LiveData<RetornoStadeCompraEVenda> = eventRetorno
@@ -85,20 +85,20 @@ class CambioViewModel(context: Context) : ViewModel() {
     // Tela De Câmbio Moeda
 
     fun getTotalMoeda(nameMoeda: String): LiveData<Double> {
-        return repositoryMoeda.getTotalMoeda(nameMoeda)
+        return dbDataSource.getTotalMoeda(nameMoeda)
     }
 
     fun setToltalMoedaCompra(nameMoeda: String, valorDaCompra: Double) {
-        repositoryMoeda.setTotalMoedaAposCompra(nameMoeda, valorDaCompra)
+        dbDataSource.setTotalMoedaAposCompra(nameMoeda, valorDaCompra)
     }
 
     fun setTotalMoedaVenda(nameMoeda: String, valorDaCompra: Double) {
-        repositoryMoeda.setTotalMoedaAposVenda(nameMoeda, valorDaCompra)
+        dbDataSource.setTotalMoedaAposVenda(nameMoeda, valorDaCompra)
     }
 
     fun venda(nameMoeda: String, quantidadeVenda: String) {
         io.launch {
-            val moeda = repositoryMoeda.buscaMoeda(nameMoeda)
+            val moeda = dbDataSource.buscaMoeda(nameMoeda)
             val valorTotalMoeda = moeda.totalDeMoeda.minus(BigDecimal(quantidadeVenda).toDouble())
 
             if (valorTotalMoeda >= 00.0) {

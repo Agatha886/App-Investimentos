@@ -1,13 +1,9 @@
 package br.com.brq.agatha.investimentos.viewModel
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import java.lang.IllegalArgumentException
 
 class HomeViewModel(val dataSource: MoedaApiDataSource) : ViewModel() {

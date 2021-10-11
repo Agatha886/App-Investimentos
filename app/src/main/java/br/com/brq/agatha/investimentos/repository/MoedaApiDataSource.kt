@@ -14,13 +14,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
-open class MoedaApiDataSource(context: Context){
+open class MoedaApiDataSource(context: Context): MoedaDbDataSource(context){
 
     private val io = CoroutineScope(Dispatchers.IO)
-    private val daoMoeda = InvestimentosDataBase.getBatadaBase(context).getMoedaDao()
     private val listaMoedasDaApi = mutableListOf<Moeda>()
 
-    fun buscaDaApi(retornoStadeApi: (retorno: RetornoStadeApi) -> Unit) {
+    fun buscaDaApi(retornoStadeApi: (retorno: RetornoStadeApi) -> Unit){
         var finance: Finance?
         io.launch {
             val moedasDoBanco = buscaMoedasNoBanco()
@@ -64,29 +63,7 @@ open class MoedaApiDataSource(context: Context){
         }
     }
 
-
-    fun buscaMoeda(nameMoeda: String): Moeda{
-        return daoMoeda.buscaMoeda(nameMoeda)
-    }
-
-    private fun buscaMoedasNoBanco(): List<Moeda> {
-        return daoMoeda.buscaTodasAsMoedas()
-    }
-
-    private fun modifica(moedaNova: Moeda) {
-        io.launch {
-            val moeda = daoMoeda.buscaMoeda(moedaNova.name)
-            moedaNova.id = moeda.id
-            moedaNova.totalDeMoeda = moeda.totalDeMoeda
-            daoMoeda.modifica(moedaNova)
-        }
-    }
-
-    private fun adiciona(moeda: Moeda) {
-        daoMoeda.adiciona(moeda)
-    }
-
-     fun modificaTotasAsMoedasNoBanco(finance: Finance?) {
+    fun modificaTotasAsMoedasNoBanco(finance: Finance?) {
         finance?.results?.currencies?.usd?.let { modifica(it) }
         finance?.results?.currencies?.jpy?.let { modifica(it) }
         finance?.results?.currencies?.gbp?.let { modifica(it) }
@@ -108,35 +85,6 @@ open class MoedaApiDataSource(context: Context){
         finance?.results?.currencies?.btc?.let { adiciona(it) }
         finance?.results?.currencies?.aud?.let { adiciona(it) }
         finance?.results?.currencies?.ars?.let { adiciona(it) }
-    }
-
-
-    fun getTotalMoeda(nameMoeda: String): LiveData<Double> {
-        val liveDate = MutableLiveData<Double>()
-        io.launch {
-            val moeda = daoMoeda.buscaMoeda(nameMoeda)
-            withContext(Dispatchers.Main) {
-                liveDate.value = moeda.totalDeMoeda
-            }
-        }
-
-        return liveDate
-    }
-
-    fun setTotalMoedaAposCompra(nameMoeda: String, valorDaCompra: Double) {
-        io.launch {
-            val moeda = daoMoeda.buscaMoeda(nameMoeda)
-            moeda.setTotalMoedaCompra(valorDaCompra)
-            daoMoeda.modifica(moeda)
-        }
-    }
-
-    fun setTotalMoedaAposVenda(nameMoeda: String, valorTotalAposVenda: Double) {
-        io.launch {
-            val moeda = daoMoeda.buscaMoeda(nameMoeda)
-            moeda.setTotalMoedaVenda(valorTotalAposVenda)
-            daoMoeda.modifica(moeda)
-        }
     }
 
 }
