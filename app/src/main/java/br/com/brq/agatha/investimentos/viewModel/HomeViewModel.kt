@@ -16,8 +16,8 @@ class HomeViewModel(val dataSource: MoedaApiDataSource) : ViewModel() {
     fun buscaDaApi() {
         dataSource.buscaDaApi {
             RetornoStadeApi.eventRetornoDaApi.value = it
+            quandoFinaliza()
         }
-        quandoFinaliza()
     }
 
     class HomeViewModelFactory(private val context: Context): ViewModelProvider.Factory {

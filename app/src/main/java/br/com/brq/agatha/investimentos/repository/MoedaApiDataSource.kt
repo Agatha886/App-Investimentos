@@ -14,13 +14,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
-open class MoedaApiDataSource(context: Context): MoedaRepository {
+open class MoedaApiDataSource(context: Context){
 
     private val io = CoroutineScope(Dispatchers.IO)
     private val daoMoeda = InvestimentosDataBase.getBatadaBase(context).getMoedaDao()
     private val listaMoedasDaApi = mutableListOf<Moeda>()
 
-    override fun buscaDaApi(retornoStadeApi: (retorno: RetornoStadeApi) -> Unit) {
+    fun buscaDaApi(retornoStadeApi: (retorno: RetornoStadeApi) -> Unit) {
         var finance: Finance?
         io.launch {
             val moedasDoBanco = buscaMoedasNoBanco()
@@ -32,12 +32,12 @@ open class MoedaApiDataSource(context: Context): MoedaRepository {
                 agrupaTodasAsMoedasNaLista(finance)
 
                 withContext(Dispatchers.Main) {
-                retornoStadeApi(RetornoStadeApi.Sucesso(listaMoedasDaApi))
+                    retornoStadeApi(RetornoStadeApi.Sucesso(listaMoedasDaApi))
                 }
 
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                retornoStadeApi(RetornoStadeApi.FalhaApi(moedasDoBanco))
+                    retornoStadeApi(RetornoStadeApi.FalhaApi(moedasDoBanco))
                 }
             }
         }
