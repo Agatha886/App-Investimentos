@@ -25,7 +25,7 @@ class HomeMoedasActivity : AppCompatActivity() {
     }
 
     private val viewModel: HomeViewModel by lazy {
-        HomeViewModel(this)
+        HomeViewModel.HomeViewModelFactory(this).create(HomeViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +49,7 @@ class HomeMoedasActivity : AppCompatActivity() {
     }
 
     private fun observerViewModel() {
-        RetornoStadeApi.eventRetorno.observe(this, Observer {
+        RetornoStadeApi.eventRetornoDaApi.observe(this, Observer {
             when (it) {
                 is RetornoStadeApi.Sucesso -> adapter.atualiza(it.listaMoeda)
                 is RetornoStadeApi.FalhaApi-> setAdapterComBancoDeDados(it.listaMoeda)

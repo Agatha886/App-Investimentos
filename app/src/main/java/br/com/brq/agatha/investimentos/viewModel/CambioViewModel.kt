@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.model.Usuario
-import br.com.brq.agatha.investimentos.repository.MoedaRepository
+import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
 import br.com.brq.agatha.investimentos.repository.UsuarioRepository
 import br.com.brq.agatha.investimentos.retrofit.MoedasRetrofit
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +20,7 @@ class CambioViewModel(context: Context) : ViewModel() {
 
     private val io = CoroutineScope(Dispatchers.IO)
 
-    private val repositoryMoeda: MoedaRepository = MoedaRepository(context)
+    private val repositoryMoeda: MoedaApiDataSource = MoedaApiDataSource(context)
     private val repositoryUsuario = UsuarioRepository(context)
     private val eventRetorno = MutableLiveData<RetornoStadeCompraEVenda>()
     val viewEventRetornoCompraEVenda: LiveData<RetornoStadeCompraEVenda> = eventRetorno

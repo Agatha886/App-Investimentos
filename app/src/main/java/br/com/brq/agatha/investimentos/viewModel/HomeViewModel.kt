@@ -1,68 +1,36 @@
 package br.com.brq.agatha.investimentos.viewModel
 
 import android.content.Context
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import br.com.brq.agatha.investimentos.model.Finance
-import br.com.brq.agatha.investimentos.model.Moeda
-import br.com.brq.agatha.investimentos.repository.MoedaRepository
-import br.com.brq.agatha.investimentos.retrofit.MoedasRetrofit
+import androidx.lifecycle.ViewModelProvider
+import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import java.lang.IllegalArgumentException
 
-class HomeViewModel(context: Context) : ViewModel() {
-
-    private val io = CoroutineScope(Dispatchers.IO)
-
-    private val repositoryMoeda: MoedaRepository = MoedaRepository(context)
-    private val listaMoedasDaApi = mutableListOf<Moeda>()
-    var quandoFinaliza:() -> Unit ={}
+class HomeViewModel(val dataSource: MoedaApiDataSource) : ViewModel() {
+    var quandoFinaliza: () -> Unit = {}
 
     fun buscaDaApi() {
-        var finance: Finance?
-        io.launch {
-            val buscaMoedas = repositoryMoeda.buscaMoedas()
-            try {
-                val call = MoedasRetrofit().retornaFinance()
-                val resposta = call.execute()
-                finance = resposta.body()
-                atualizaBancoDeDados(buscaMoedas, finance)
-                agrupaTodasAsMoedasNaLista(finance)
+        dataSource.buscaDaApi {
+            RetornoStadeApi.eventRetornoDaApi.value = it
+        }
+        quandoFinaliza()
+    }
 
-                withContext(Dispatchers.Main) {
-                    RetornoStadeApi.eventRetorno.value = RetornoStadeApi.Sucesso(listaMoedasDaApi)
-                    quandoFinaliza()
+    class HomeViewModelFactory(private val context: Context): ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return when {
+                modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                    HomeViewModel(dataSource = MoedaApiDataSource(context)) as T
                 }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    RetornoStadeApi.eventRetorno.value = RetornoStadeApi.FalhaApi(buscaMoedas)
-                    quandoFinaliza()
+                else -> {
+                    throw IllegalArgumentException("Unknow ViewModel class")
                 }
             }
         }
     }
-
-    private fun agrupaTodasAsMoedasNaLista(finance: Finance?) {
-        listaMoedasDaApi.clear()
-        finance?.results?.currencies?.usd?.let { listaMoedasDaApi.add(it) }
-        finance?.results?.currencies?.jpy?.let { listaMoedasDaApi.add(it) }
-        finance?.results?.currencies?.gbp?.let { listaMoedasDaApi.add(it) }
-        finance?.results?.currencies?.eur?.let { listaMoedasDaApi.add(it) }
-        finance?.results?.currencies?.cny?.let { listaMoedasDaApi.add(it) }
-        finance?.results?.currencies?.cad?.let { listaMoedasDaApi.add(it) }
-        finance?.results?.currencies?.btc?.let { listaMoedasDaApi.add(it) }
-        finance?.results?.currencies?.aud?.let { listaMoedasDaApi.add(it) }
-        finance?.results?.currencies?.ars?.let { listaMoedasDaApi.add(it) }
-    }
-
-    private fun atualizaBancoDeDados(buscaMoedas: List<Moeda>, finance: Finance?) {
-        if (buscaMoedas.isNullOrEmpty()) {
-            repositoryMoeda.adicionaTodasAsMoedasNoBanco(finance)
-        } else {
-            repositoryMoeda.modificaTotasAsMoedasNoBanco(finance)
-        }
-    }
-
 }
+

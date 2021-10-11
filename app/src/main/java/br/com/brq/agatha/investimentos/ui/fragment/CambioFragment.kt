@@ -56,7 +56,7 @@ class CambioFragment : Fragment() {
         observerViewModel()
         setBotoesQuandoInvalidos("Valor nulo")
 
-        RetornoStadeApi.eventRetorno.observe(viewLifecycleOwner, Observer {
+        RetornoStadeApi.eventRetornoDaApi.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is RetornoStadeApi.FalhaApi -> {
                     setBotoesQuandoInvalidos("Dados não atualizados!!")
