@@ -17,7 +17,7 @@ import java.math.BigDecimal
 open class MoedaApiDataSource(context: Context): MoedaDbDataSource(context){
 
     private val io = CoroutineScope(Dispatchers.IO)
-    private val listaMoedasDaApi = mutableListOf<Moeda>()
+    val listaMoedasDaApi = mutableListOf<Moeda>()
 
     fun buscaDaApi(retornoStadeApi: (retorno: RetornoStadeApi) -> Unit){
         var finance: Finance?
@@ -42,7 +42,7 @@ open class MoedaApiDataSource(context: Context): MoedaDbDataSource(context){
         }
     }
 
-    private fun agrupaTodasAsMoedasNaLista(finance: Finance?) {
+    fun agrupaTodasAsMoedasNaLista(finance: Finance?) {
         listaMoedasDaApi.clear()
         finance?.results?.currencies?.usd?.let { listaMoedasDaApi.add(it) }
         finance?.results?.currencies?.jpy?.let { listaMoedasDaApi.add(it) }
@@ -55,7 +55,7 @@ open class MoedaApiDataSource(context: Context): MoedaDbDataSource(context){
         finance?.results?.currencies?.ars?.let { listaMoedasDaApi.add(it) }
     }
 
-    private fun atualizaBancoDeDados(buscaMoedas: List<Moeda>, finance: Finance?) {
+    fun atualizaBancoDeDados(buscaMoedas: List<Moeda>, finance: Finance?) {
         if (buscaMoedas.isNullOrEmpty()) {
             adicionaTodasAsMoedasNoBanco(finance)
         } else {

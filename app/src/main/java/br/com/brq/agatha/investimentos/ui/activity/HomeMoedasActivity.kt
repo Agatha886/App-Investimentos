@@ -3,6 +3,7 @@ package br.com.brq.agatha.investimentos.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
@@ -28,6 +29,7 @@ class HomeMoedasActivity : AppCompatActivity() {
         HomeViewModel.HomeViewModelFactory(this).create(HomeViewModel::class.java)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_moedas_home)
@@ -49,10 +51,16 @@ class HomeMoedasActivity : AppCompatActivity() {
     }
 
     private fun observerViewModel() {
-        RetornoStadeApi.eventRetornoDaApi.observe(this, Observer {
+        viewModel.viewModelRetornoDaApi.observe(this, Observer {
             when (it) {
-                is RetornoStadeApi.Sucesso -> adapter.atualiza(it.listaMoeda)
-                is RetornoStadeApi.FalhaApi-> setAdapterComBancoDeDados(it.listaMoeda)
+                is RetornoStadeApi.Sucesso -> {
+                    adapter.atualiza(it.listaMoeda)
+                    adapter.quandoMoedaClicado = this::vaiParaActivityCambio
+                }
+                is RetornoStadeApi.FalhaApi-> {
+                    setAdapterComBancoDeDados(it.listaMoeda)
+                    adapter.quandoMoedaClicado = { mensagem("Dados não atualizados") }
+                }
                 else -> Log.i("TAG", "observerViewModel: Entrou no else")
             }
         })
@@ -60,7 +68,6 @@ class HomeMoedasActivity : AppCompatActivity() {
 
     private fun configuraAdapter() {
         home_recyclerView.adapter = adapter
-        adapter.quandoMoedaClicado = this::vaiParaActivityCambio
     }
 
     private fun vaiParaActivityCambio(moeda: Moeda) {

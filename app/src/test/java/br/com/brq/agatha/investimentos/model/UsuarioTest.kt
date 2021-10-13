@@ -1,5 +1,6 @@
 package br.com.brq.agatha.investimentos.model
 
+import br.com.brq.agatha.investimentos.viewModel.RetornoStadeApi
 import junit.framework.TestCase
 import java.math.BigDecimal
 
@@ -19,7 +20,6 @@ class UsuarioTest : TestCase() {
     fun testSetSaldo() {
         usuarioDeExemplo.setSaldo(BigDecimal(1000))
         assertEquals(BigDecimal(1000), usuarioDeExemplo.saldoDisponivel)
-
     }
 
     fun testCalculaSaldoVenda() {

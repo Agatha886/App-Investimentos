@@ -24,18 +24,10 @@ class CambioViewModel(context: Context) : ViewModel() {
     private val repositoryUsuario = UsuarioRepository(context)
     private val eventRetorno = MutableLiveData<RetornoStadeCompraEVenda>()
     val viewEventRetornoCompraEVenda: LiveData<RetornoStadeCompraEVenda> = eventRetorno
-    // Tela De Câmbio Usuario
 
-    fun adicionaUsuario(usuario: Usuario) {
-        repositoryUsuario.adicionaUsuario(usuario)
-    }
 
     fun getSaldoDisponivel(id: Int): LiveData<BigDecimal> {
         return repositoryUsuario.getSaldoDisponivel(id)
-    }
-
-    fun apagaTodos() {
-        repositoryUsuario.apagaTodos()
     }
 
     fun buscaMoedaDaApi(){
@@ -43,7 +35,7 @@ class CambioViewModel(context: Context) : ViewModel() {
             val call = MoedasRetrofit().retornaMoeda("USD")
             val resposta = call.execute()
             val finance = resposta.body()
-            Log.i("TAG", "buscaMoedaDaApi: ${finance?.results?.currencies?.name}")
+//            Log.i("TAG", "buscaMoedaDaApi: ${finance?.results?.currencies?.name}")
         }
     }
 
@@ -82,8 +74,6 @@ class CambioViewModel(context: Context) : ViewModel() {
     }
 
 
-    // Tela De Câmbio Moeda
-
     fun getTotalMoeda(nameMoeda: String): LiveData<Double> {
         return dbDataSource.getTotalMoeda(nameMoeda)
     }
@@ -96,14 +86,14 @@ class CambioViewModel(context: Context) : ViewModel() {
         dbDataSource.setTotalMoedaAposVenda(nameMoeda, valorDaCompra)
     }
 
-    fun venda(nameMoeda: String, quantidadeVenda: String) {
+    fun venda(nameMoeda: String, quantidadeParaVenda: String) {
         io.launch {
             val moeda = dbDataSource.buscaMoeda(nameMoeda)
-            val valorTotalMoeda = moeda.totalDeMoeda.minus(BigDecimal(quantidadeVenda).toDouble())
+            val valorTotalMoeda = moeda.totalDeMoeda.minus(BigDecimal(quantidadeParaVenda).toDouble())
 
             if (valorTotalMoeda >= 00.0) {
                 withContext(Dispatchers.Main) {
-                    eventRetorno.value = RetornoStadeCompraEVenda.SucessoVenda(valorTotalMoeda)
+                    eventRetorno.value = RetornoStadeCompraEVenda.SucessoVenda(valorTotalMoeda, quantidadeParaVenda)
                 }
             } else {
                 withContext(Dispatchers.Main){

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
+import br.com.brq.agatha.investimentos.constantes.CHAVE_BUSCA_API
 import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
 import br.com.brq.agatha.investimentos.constantes.TipoTranferencia
 import br.com.brq.agatha.investimentos.extension.formatoMoedaBrasileira
@@ -55,18 +56,7 @@ class CambioFragment : Fragment() {
         inicializaCampos()
         observerViewModel()
         setBotoesQuandoInvalidos("Valor nulo")
-
-        RetornoStadeApi.eventRetornoDaApi.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is RetornoStadeApi.FalhaApi -> {
-                    setBotoesQuandoInvalidos("Dados não atualizados!!")
-                }
-                else -> {
-                    setCampoQuantidadeMoeda()
-                }
-            }
-        })
-
+        setCampoQuantidadeMoeda()
     }
 
     private fun observerViewModel() {
@@ -83,7 +73,7 @@ class CambioFragment : Fragment() {
 
                 is RetornoStadeCompraEVenda.SucessoVenda -> {
                     estilizaBotaoOperacaoValida(cambio_button_vender)
-                    setClickVender(it.totalMoedas)
+                    setClickVender(it.totalMoedas, it.valorGastoNaVenda)
                 }
                 is RetornoStadeCompraEVenda.FalhaVenda -> {
                     estilizaBotaoOperacaoInvalida(cambio_button_vender)
@@ -119,11 +109,11 @@ class CambioFragment : Fragment() {
         button.setTextColor(resources.getColor(R.color.white))
     }
 
-    private fun setClickVender(totalMoeda: Double) {
+    private fun setClickVender(totalMoeda: Double, valorVenda: String) {
         cambio_button_vender.setOnClickListener {
             val novoTotalDeMoedas = setTotalDeMoedasAposVenda(totalMoeda)
             limpaCampos()
-            vaiParaFragmentSucessoAposVenda(novoTotalDeMoedas)
+            vaiParaFragmentSucessoAposVenda(novoTotalDeMoedas, valorVenda)
         }
     }
 
@@ -134,10 +124,13 @@ class CambioFragment : Fragment() {
         return saldoVenda
     }
 
-    private fun vaiParaFragmentSucessoAposVenda(saldoVenda: LiveData<BigDecimal>) {
+    private fun vaiParaFragmentSucessoAposVenda(
+        saldoVenda: LiveData<BigDecimal>,
+        valorVenda: String
+    ) {
         saldoVenda.observe(viewLifecycleOwner, Observer {
             quandoCompraOuVendaSucesso(
-                mensagemOperacaoSucesso(it, "vender "),
+                mensagemOperacaoSucesso(it, "vender ", valorVenda),
                 TipoTranferencia.VENDA
             )
         })
@@ -168,7 +161,7 @@ class CambioFragment : Fragment() {
 
     private fun vaiParaFrgementSucessoAposCompra(valor: BigDecimal) {
         quandoCompraOuVendaSucesso(
-            mensagemOperacaoSucesso(valor, "comprar "),
+            mensagemOperacaoSucesso(valor, "comprar ", valor.toString()),
             TipoTranferencia.COMPRA
         )
     }
@@ -186,11 +179,15 @@ class CambioFragment : Fragment() {
         cambio_quantidade.setText("")
     }
 
-    private fun mensagemOperacaoSucesso(saldo: BigDecimal, nomeOperacao: String): String {
+    private fun mensagemOperacaoSucesso(
+        saldo: BigDecimal,
+        nomeOperacao: String,
+        quantidadeMoeda: String
+    ): String {
         val saldoFormatado = saldo.formatoMoedaBrasileira()
         val resposta = StringBuilder()
         resposta.append("Parabéns! \n Você acabou de ").append(nomeOperacao)
-            .append(cambio_quantidade.text.toString()).append(" ").append(moeda.abreviacao)
+            .append(quantidadeMoeda).append(" ").append(moeda.abreviacao)
             .append(" - ")
             .append(moeda.name).append(", totalizando \n").append(saldoFormatado)
         return resposta.toString()
@@ -200,11 +197,7 @@ class CambioFragment : Fragment() {
         try {
             setCampos()
         } catch (e: Exception) {
-            when (e) {
-                is java.lang.IllegalArgumentException -> {
-                    quandoRecebidaMoedaInvalida(e.message)
-                }
-            }
+            quandoRecebidaMoedaInvalida(e.message)
             Log.e("ERRO MOEDA", "onViewCreated: ${e.message}")
         }
     }

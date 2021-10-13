@@ -1,6 +1,7 @@
 package br.com.brq.agatha.investimentos.model
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigDecimal
 
 data class Currencies(
     @SerializedName("USD")
@@ -20,7 +21,9 @@ data class Currencies(
     @SerializedName("CNY")
     val cny: Moeda?,
     @SerializedName("BTC")
-    val btc: Moeda?,
-    var name: String
+    val btc: Moeda?
     )
-
+data class Currencie(var name: String,
+                         var buy: BigDecimal?,
+                         var sell: BigDecimal?,
+                         var variation: BigDecimal)

@@ -1,6 +1,8 @@
 package br.com.brq.agatha.investimentos.viewModel
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
@@ -8,10 +10,12 @@ import java.lang.IllegalArgumentException
 
 class HomeViewModel(val dataSource: MoedaApiDataSource) : ViewModel() {
     var quandoFinaliza: () -> Unit = {}
+    private  val eventRetornoDaApi = MutableLiveData<RetornoStadeApi>()
+    val viewModelRetornoDaApi:LiveData<RetornoStadeApi> = eventRetornoDaApi
 
     fun buscaDaApi() {
         dataSource.buscaDaApi {
-            RetornoStadeApi.eventRetornoDaApi.value = it
+            eventRetornoDaApi.postValue(it)
             quandoFinaliza()
         }
     }
