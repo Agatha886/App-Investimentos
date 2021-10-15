@@ -4,8 +4,8 @@ import br.com.brq.agatha.investimentos.model.Moeda
 import java.math.BigDecimal
 
 sealed class RetornoStadeApi {
-    data class FalhaApi(var  listaMoeda: List<Moeda>) : RetornoStadeApi()
-    data class Sucesso(var  listaMoeda: List<Moeda>) : RetornoStadeApi()
+    data class SucessoRetornoBanco(var  listaMoeda: List<Moeda>) : RetornoStadeApi()
+    data class SucessoRetornoApi(var  listaMoeda: List<Moeda>) : RetornoStadeApi()
 
 }
 

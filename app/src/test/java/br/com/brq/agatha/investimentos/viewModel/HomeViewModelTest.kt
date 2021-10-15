@@ -1,35 +1,53 @@
 package br.com.brq.agatha.investimentos.viewModel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import br.com.brq.agatha.investimentos.viewModel.base.AppContextProvider
-import br.com.brq.agatha.investimentos.viewModel.base.TestContextProvider
+import br.com.brq.agatha.investimentos.model.Finance
+import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
+import br.com.brq.agatha.investimentos.viewModel.base.TestContextProvider
 import io.mockk.MockKAnnotations
-import io.mockk.mockk
-import io.mockk.spyk
+import io.mockk.coEvery
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
 import junit.framework.Assert.assertEquals
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.JUnit4
 
+@RunWith(JUnit4::class)
 class HomeViewModelTest {
+
     @get : Rule
     val rule = InstantTaskExecutorRule()
 
+    @MockK
+    private lateinit var dataSource: MoedaApiDataSource
+
+    @MockK
+    private lateinit var finance: Finance
+
+    @MockK
+    private lateinit var moedaWrapper: MoedaWrapper
+
+    private lateinit var viewModel: HomeViewModel
+
+    @Before
+    fun setUp(){
+        MockKAnnotations.init(this, relaxUnitFun = true)
+        viewModel = HomeViewModel(dataSource,TestContextProvider(),moedaWrapper)
+    }
+
     @Test
     fun deveRetornarSucesso_quandoConsegueBuscarDaApi() {
-        //Arrange
-        MockKAnnotations.init(this, relaxUnitFun = true)
-        val dataSource = mockk<MoedaApiDataSource>()
-        val viewModel = spyk(HomeViewModel(dataSource))
+        val listaMoedas = listOf<Moeda>()
+        coEvery { dataSource.buscaMoedasNoBanco()} returns listaMoedas
+        coEvery { dataSource.getFinanceDaApi()} returns finance
+        every { moedaWrapper.agrupaTodasAsMoedasNaLista(finance) } returns listaMoedas
 
-        val testContextProvider = TestContextProvider()
-        AppContextProvider.coroutinesContextProviderDelegate = testContextProvider
-
-        AppContextProvider.coroutinesContextProviderDelegate.run {
-            viewModel.buscaDaApi()
-            assertEquals(true, viewModel.entrouNoio)
-        }
-
+        viewModel.buscaDaApi()
+        assertEquals(RetornoStadeApi.SucessoRetornoApi(listaMoedas), viewModel.viewModelRetornoDaApi.value)
 
     }
 }

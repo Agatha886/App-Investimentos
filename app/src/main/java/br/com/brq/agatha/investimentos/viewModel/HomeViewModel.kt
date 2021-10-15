@@ -8,13 +8,15 @@ import androidx.lifecycle.ViewModelProvider
 import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
-import br.com.brq.agatha.investimentos.viewModel.base.AppContextProvider
+import br.com.brq.agatha.investimentos.viewModel.base.CoroutinesContextProvider
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class HomeViewModel(val dataSource: MoedaApiDataSource) : ViewModel() {
+class HomeViewModel(
+    val dataSource: MoedaApiDataSource,
+    private val coroutinesContextProvider: CoroutinesContextProvider,
+    private val moedaWrapper: MoedaWrapper
+) : ViewModel() {
 
     var quandoFinaliza: () -> Unit = {}
 
@@ -22,11 +24,7 @@ class HomeViewModel(val dataSource: MoedaApiDataSource) : ViewModel() {
 
     val viewModelRetornoDaApi: LiveData<RetornoStadeApi> = eventRetornoDaApi
 
-    val io = CoroutineScope(AppContextProvider.io)
-
-    val listaMoedaApi = mutableListOf<Moeda>()
-    var entrouNoio = false
-
+    private val io = CoroutineScope(coroutinesContextProvider.io)
 
     fun buscaDaApi() {
         io.launch {
@@ -34,32 +32,37 @@ class HomeViewModel(val dataSource: MoedaApiDataSource) : ViewModel() {
             try {
                 val financeDaApi = dataSource.getFinanceDaApi()
                 atualizaBanco(moedasDoBanco, financeDaApi)
-                dataSource.agrupaTodasAsMoedasNaLista(financeDaApi, listaMoedaApi)
-                entrouNoio = true
-                withContext(AppContextProvider.main) {
-                    eventRetornoDaApi.value = RetornoStadeApi.Sucesso(listaMoedaApi)
-                    quandoFinaliza()
-                    entrouNoio = true
-                }
+                val listaMoedadaApi = moedaWrapper.agrupaTodasAsMoedasNaLista(financeDaApi)
+                setEventRetornoEFinalizaBusca(RetornoStadeApi.SucessoRetornoApi(listaMoedadaApi))
             } catch (e: Exception) {
-                eventRetornoDaApi.postValue(RetornoStadeApi.FalhaApi(moedasDoBanco))
-                quandoFinaliza()
+                setEventRetornoEFinalizaBusca(RetornoStadeApi.SucessoRetornoBanco(moedasDoBanco))
             }
         }
     }
 
-    fun atualizaBanco(
+    private fun setEventRetornoEFinalizaBusca(retornoStadeApi: RetornoStadeApi) {
+        eventRetornoDaApi.postValue(retornoStadeApi)
+        quandoFinaliza()
+    }
+
+    private fun atualizaBanco(
         moedasDoBanco: List<Moeda>,
         financeDaApi: Finance?
     ) {
         dataSource.atualizaBancoDeDados(moedasDoBanco, financeDaApi)
     }
 
-    class HomeViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
+    class HomeViewModelFactory(
+        private val context: Context,
+        private val coroutinesContextProvider: CoroutinesContextProvider
+    ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return when {
                 modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                    HomeViewModel(dataSource = MoedaApiDataSource(context)) as T
+                    HomeViewModel(
+                        dataSource = MoedaApiDataSource(context),
+                        coroutinesContextProvider, MoedaWrapper()
+                    ) as T
                 }
                 else -> {
                     throw IllegalArgumentException("Unknow ViewModel class")

@@ -11,6 +11,7 @@ import java.lang.StringBuilder
 import java.math.BigDecimal
 import java.text.DecimalFormat
 import java.util.*
+import javax.security.auth.callback.Callback
 
 @Entity
 class Moeda(

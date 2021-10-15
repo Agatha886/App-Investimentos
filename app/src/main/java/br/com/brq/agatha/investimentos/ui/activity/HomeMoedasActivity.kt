@@ -3,7 +3,6 @@ package br.com.brq.agatha.investimentos.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
@@ -16,6 +15,7 @@ import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.ui.recyclerview.ListaMoedasAdpter
 import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.RetornoStadeApi
+import br.com.brq.agatha.investimentos.viewModel.base.AppContextProvider
 import kotlinx.android.synthetic.main.activity_moedas_home.*
 
 @Suppress("UNCHECKED_CAST")
@@ -26,7 +26,8 @@ class HomeMoedasActivity : AppCompatActivity() {
     }
 
     private val viewModel: HomeViewModel by lazy {
-        HomeViewModel.HomeViewModelFactory(this).create(HomeViewModel::class.java)
+        HomeViewModel.HomeViewModelFactory(this, AppContextProvider)
+            .create(HomeViewModel::class.java)
     }
 
 
@@ -53,11 +54,11 @@ class HomeMoedasActivity : AppCompatActivity() {
     private fun observerViewModel() {
         viewModel.viewModelRetornoDaApi.observe(this, Observer {
             when (it) {
-                is RetornoStadeApi.Sucesso -> {
+                is RetornoStadeApi.SucessoRetornoApi -> {
                     adapter.atualiza(it.listaMoeda)
                     adapter.quandoMoedaClicado = this::vaiParaActivityCambio
                 }
-                is RetornoStadeApi.FalhaApi-> {
+                is RetornoStadeApi.SucessoRetornoBanco-> {
                     setAdapterComBancoDeDados(it.listaMoeda)
                     adapter.quandoMoedaClicado = { mensagem("Dados não atualizados") }
                 }
