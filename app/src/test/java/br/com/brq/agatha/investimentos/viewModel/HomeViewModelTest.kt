@@ -45,10 +45,18 @@ class HomeViewModelTest {
         coEvery { dataSource.buscaMoedasNoBanco()} returns listaMoedas
         coEvery { dataSource.getFinanceDaApi()} returns finance
         every { moedaWrapper.agrupaTodasAsMoedasNaLista(finance) } returns listaMoedas
-
         viewModel.buscaDaApi()
         assertEquals(RetornoStadeApi.SucessoRetornoApi(listaMoedas), viewModel.viewModelRetornoDaApi.value)
-
     }
+
+
+    @Test
+    fun deveRetornarSucessoBanco_quandoDarFalhaAoBuscarDaApi(){
+        val listaMoedas = listOf<Moeda>()
+        coEvery{ dataSource.buscaMoedasNoBanco()} returns listaMoedas
+        viewModel.buscaDaApi()
+        assertEquals(RetornoStadeApi.SucessoRetornoBanco(listaMoedas), viewModel.viewModelRetornoDaApi.value)
+    }
+
 }
 

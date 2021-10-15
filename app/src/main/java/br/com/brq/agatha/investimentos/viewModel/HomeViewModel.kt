@@ -24,7 +24,7 @@ class HomeViewModel(
 
     val viewModelRetornoDaApi: LiveData<RetornoStadeApi> = eventRetornoDaApi
 
-    private val io = CoroutineScope(coroutinesContextProvider.io)
+    private val io: CoroutineScope = CoroutineScope(coroutinesContextProvider.io)
 
     fun buscaDaApi() {
         io.launch {
