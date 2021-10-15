@@ -1,6 +1,5 @@
 package br.com.brq.agatha.investimentos.model
 
-import br.com.brq.agatha.investimentos.viewModel.RetornoStadeApi
 import junit.framework.TestCase
 import java.math.BigDecimal
 

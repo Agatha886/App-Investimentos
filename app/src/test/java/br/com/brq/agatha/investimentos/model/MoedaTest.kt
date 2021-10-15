@@ -1,14 +1,14 @@
 package br.com.brq.agatha.investimentos.model
 
 import android.content.Context
-import android.util.Log
-import androidx.core.content.ContextCompat
 import br.com.brq.agatha.investimentos.R
+import io.mockk.mockk
 import junit.framework.TestCase
-import org.mockito.Mockito
 import java.math.BigDecimal
 
+
 class MoedaTest : TestCase() {
+
 
     private val moedaDeExemplo = Moeda(
         name = "Dollar",
@@ -18,6 +18,8 @@ class MoedaTest : TestCase() {
         totalDeMoeda = 0.00,
         variation = BigDecimal(-1)
     )
+
+
     private val moedaDeExemplo2 = Moeda(
         name = "Bitcoin",
         buy = BigDecimal.ZERO,
@@ -35,16 +37,15 @@ class MoedaTest : TestCase() {
         variation = BigDecimal(10)
     )
 
-
     fun testSetAbreviacao() {
         assertEquals("USD", moedaDeExemplo.setAbreviacao())
     }
 
     fun testRetornaCor() {
-        val context = Mockito.mock(Context::class.java)
-        val colorRed: Int = ContextCompat.getColor(context, R.color.red)
-        val colorWhite: Int =  ContextCompat.getColor(context, R.color.white)
-        val colorVerde = ContextCompat.getColor(context, R.color.verde)
+        val context: Context = mockk<Context>()
+        val colorRed: Int = context.resources.getColor(R.color.red)
+        val colorWhite: Int =  context.resources.getColor(R.color.white)
+        val colorVerde = context.resources.getColor(R.color.verde)
 
         assertEquals(colorRed, moedaDeExemplo.retornaCor(context))
         assertEquals(colorWhite, moedaDeExemplo2.retornaCor(context))

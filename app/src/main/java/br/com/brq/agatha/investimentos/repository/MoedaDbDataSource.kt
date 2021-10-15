@@ -23,7 +23,7 @@ open class MoedaDbDataSource(context: Context){
         return daoMoeda.buscaMoeda(nameMoeda)
     }
 
-    protected fun buscaMoedasNoBanco(): List<Moeda> {
+    fun buscaMoedasNoBanco(): List<Moeda> {
         return daoMoeda.buscaTodasAsMoedas()
     }
 
@@ -37,7 +37,9 @@ open class MoedaDbDataSource(context: Context){
     }
 
     protected fun adiciona(moeda: Moeda) {
-        daoMoeda.adiciona(moeda)
+        io.launch {
+            daoMoeda.adiciona(moeda)
+        }
     }
 
 
