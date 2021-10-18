@@ -29,27 +29,35 @@ class HomeViewModel(
     fun buscaDaApi() {
         io.launch {
             val moedasDoBanco = dataSource.buscaMoedasNoBanco()
+            var exception: Exception? = null
+            var financeDaApi: Finance? = null
             try {
-                val financeDaApi = dataSource.getFinanceDaApi()
-                atualizaBanco(moedasDoBanco, financeDaApi)
-                val listaMoedadaApi = moedaWrapper.agrupaTodasAsMoedasNaLista(financeDaApi)
-                setEventRetornoEFinalizaBusca(RetornoStadeApi.SucessoRetornoApi(listaMoedadaApi))
+                financeDaApi = dataSource.getFinanceDaApi()
             } catch (e: Exception) {
-                setEventRetornoEFinalizaBusca(RetornoStadeApi.SucessoRetornoBanco(moedasDoBanco))
+                exception = e
+            } finally {
+                verificaSeDeuExcecaoAoChamarDaApi(exception, financeDaApi, moedasDoBanco)
             }
+        }
+    }
+
+    private fun verificaSeDeuExcecaoAoChamarDaApi(
+        exception: Exception?,
+        financeDaApi: Finance?,
+        moedasDoBanco: List<Moeda>
+    ) {
+        if (exception != null || financeDaApi == null) {
+            setEventRetornoEFinalizaBusca(RetornoStadeApi.SucessoRetornoBanco(moedasDoBanco))
+        } else {
+            dataSource.atualizaBancoDeDados(moedasDoBanco, financeDaApi)
+            val listaMoedadaApi = moedaWrapper.agrupaTodasAsMoedasNaLista(financeDaApi)
+            setEventRetornoEFinalizaBusca(RetornoStadeApi.SucessoRetornoApi(listaMoedadaApi))
         }
     }
 
     private fun setEventRetornoEFinalizaBusca(retornoStadeApi: RetornoStadeApi) {
         eventRetornoDaApi.postValue(retornoStadeApi)
         quandoFinaliza()
-    }
-
-    private fun atualizaBanco(
-        moedasDoBanco: List<Moeda>,
-        financeDaApi: Finance?
-    ) {
-        dataSource.atualizaBancoDeDados(moedasDoBanco, financeDaApi)
     }
 
     class HomeViewModelFactory(
