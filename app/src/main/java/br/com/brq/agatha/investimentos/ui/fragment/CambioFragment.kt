@@ -173,8 +173,8 @@ class CambioFragment : Fragment() {
             moeda.name,
             cambio_quantidade.text.toString().toDouble()
         )
-        viewModel.setSaldoCompra(1, valor).observe(viewLifecycleOwner, Observer {
-            vaiParaFragmentSucessoAposCompra(it, valor.toString())
+        viewModel.setSaldoCompra(1, valor).observe(viewLifecycleOwner, Observer { novoValorSaldo ->
+            vaiParaFragmentSucessoAposCompra(novoValorSaldo, valor.toString())
         })
     }
 
