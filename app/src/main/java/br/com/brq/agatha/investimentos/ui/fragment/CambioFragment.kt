@@ -13,15 +13,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.constantes.CHAVE_BUSCA_API
 import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
 import br.com.brq.agatha.investimentos.constantes.TipoTranferencia
 import br.com.brq.agatha.investimentos.extension.formatoMoedaBrasileira
 import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.viewModel.CambioViewModel
-import br.com.brq.agatha.investimentos.viewModel.RetornoStadeApi
 import br.com.brq.agatha.investimentos.viewModel.RetornoStadeCompraEVenda
+import br.com.brq.agatha.investimentos.viewModel.base.AppContextProvider
 import kotlinx.android.synthetic.main.cambio.*
 import java.math.BigDecimal
 import java.text.DecimalFormat
@@ -40,7 +39,8 @@ class CambioFragment : Fragment() {
     var quandoRecebidaMoedaInvalida: (mensagem: String?) -> Unit = {}
 
     private val viewModel: CambioViewModel by lazy {
-        CambioViewModel(requireContext())
+        CambioViewModel.CambioViewModelFactory(requireContext(), AppContextProvider)
+            .create(CambioViewModel::class.java)
     }
 
     override fun onCreateView(

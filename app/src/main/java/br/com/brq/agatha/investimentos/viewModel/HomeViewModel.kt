@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     val dataSource: MoedaApiDataSource,
-    private val coroutinesContextProvider: CoroutinesContextProvider,
+    coroutinesContextProvider: CoroutinesContextProvider,
     private val moedaWrapper: MoedaWrapper
 ) : ViewModel() {
 
