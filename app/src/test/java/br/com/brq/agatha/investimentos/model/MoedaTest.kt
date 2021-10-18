@@ -20,7 +20,6 @@ class MoedaTest : TestCase() {
         variation = BigDecimal(-1)
     )
 
-
     private val moedaDeExemplo2 = Moeda(
         name = "Bitcoin",
         buy = BigDecimal.ZERO,
