@@ -1,14 +1,15 @@
 package br.com.brq.agatha.investimentos.model
 
 import android.content.Context
+import androidx.core.content.ContextCompat
 import br.com.brq.agatha.investimentos.R
+import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase
 import java.math.BigDecimal
 
 
 class MoedaTest : TestCase() {
-
 
     private val moedaDeExemplo = Moeda(
         name = "Dollar",
@@ -43,9 +44,13 @@ class MoedaTest : TestCase() {
 
     fun testRetornaCor() {
         val context: Context = mockk<Context>()
-        val colorRed: Int = context.resources.getColor(R.color.red)
-        val colorWhite: Int =  context.resources.getColor(R.color.white)
-        val colorVerde = context.resources.getColor(R.color.verde)
+        val colorRed: Int = -1
+        val colorWhite: Int = -3145189
+        val colorVerde = -8465631
+
+        every { ContextCompat.getColor(context, R.color.red) } returns colorRed
+        every { ContextCompat.getColor(context, R.color.white) } returns colorWhite
+        every { ContextCompat.getColor(context, R.color.verde) } returns colorVerde
 
         assertEquals(colorRed, moedaDeExemplo.retornaCor(context))
         assertEquals(colorWhite, moedaDeExemplo2.retornaCor(context))
