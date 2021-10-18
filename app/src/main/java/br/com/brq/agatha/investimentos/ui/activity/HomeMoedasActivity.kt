@@ -17,6 +17,7 @@ import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.RetornoStadeApi
 import br.com.brq.agatha.investimentos.viewModel.base.AppContextProvider
 import kotlinx.android.synthetic.main.activity_moedas_home.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @Suppress("UNCHECKED_CAST")
 class HomeMoedasActivity : AppCompatActivity() {
@@ -25,10 +26,7 @@ class HomeMoedasActivity : AppCompatActivity() {
         ListaMoedasAdpter(this@HomeMoedasActivity)
     }
 
-    private val viewModel: HomeViewModel by lazy {
-        HomeViewModel.HomeViewModelFactory(this, AppContextProvider)
-            .create(HomeViewModel::class.java)
-    }
+    private val viewModel by viewModel<HomeViewModel>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

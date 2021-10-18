@@ -1,10 +1,8 @@
 package br.com.brq.agatha.investimentos.viewModel
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.model.Usuario
 import br.com.brq.agatha.investimentos.repository.MoedaDbDataSource
@@ -12,9 +10,7 @@ import br.com.brq.agatha.investimentos.repository.UsuarioRepository
 import br.com.brq.agatha.investimentos.retrofit.MoedasRetrofit
 import br.com.brq.agatha.investimentos.viewModel.base.CoroutinesContextProvider
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
 class CambioViewModel(
@@ -48,7 +44,7 @@ class CambioViewModel(
             val novoSaldo: BigDecimal = usuario.calculaSaldoCompra(moeda, valor)
 
             if (novoSaldo >= BigDecimal.ZERO) {
-                eventRetorno.postValue(RetornoStadeCompraEVenda.SucessoCompra(BigDecimal(valor)))
+                eventRetorno.postValue(RetornoStadeCompraEVenda.SucessoCompra(valor))
             } else {
                 eventRetorno.postValue(
                     RetornoStadeCompraEVenda
@@ -62,8 +58,8 @@ class CambioViewModel(
         eventRetorno.value = RetornoStadeCompraEVenda.SemRetorno
     }
 
-    fun setSaldoCompra(idUsuario: Int, valorComprado: BigDecimal) {
-        repositoryUsuario.setSaldo(idUsuario, valorComprado)
+    fun setSaldoCompra(idUsuario: Int, valorComprado: BigDecimal): LiveData<BigDecimal>{
+        return repositoryUsuario.setSaldo(idUsuario, valorComprado)
     }
 
     fun setSaldoVenda(
@@ -101,26 +97,6 @@ class CambioViewModel(
                 )
             } else {
                 eventRetorno.postValue(RetornoStadeCompraEVenda.FalhaVenda("Valor inválido"))
-            }
-        }
-    }
-
-    class CambioViewModelFactory(
-        context: Context,
-        private val coroutinesContextProvider: CoroutinesContextProvider
-    ) : ViewModelProvider.Factory {
-
-        private val dataSource = MoedaDbDataSource(context)
-        private val repositoryUsuario = UsuarioRepository(context)
-
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return when {
-                modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                    CambioViewModel(dataSource, repositoryUsuario, coroutinesContextProvider) as T
-                }
-                else -> {
-                    throw IllegalArgumentException("Unknow ViewModel class")
-                }
             }
         }
     }

@@ -60,23 +60,5 @@ class HomeViewModel(
         quandoFinaliza()
     }
 
-    class HomeViewModelFactory(
-        private val context: Context,
-        private val coroutinesContextProvider: CoroutinesContextProvider
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return when {
-                modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                    HomeViewModel(
-                        dataSource = MoedaApiDataSource(context),
-                        coroutinesContextProvider, MoedaWrapper()
-                    ) as T
-                }
-                else -> {
-                    throw IllegalArgumentException("Unknow ViewModel class")
-                }
-            }
-        }
-    }
 }
 

@@ -40,6 +40,7 @@ dependencies {
     def corotines_version = "1.1.1"
     def lifecycle_version = "2.0.0"
     def room_version = "2.3.0"
+    def koin_version = "3.1.2"
 
     // Room
     implementation "androidx.room:room-runtime:$room_version"
@@ -61,9 +62,15 @@ dependencies {
     testImplementation "io.mockk:mockk:1.12.0"
     testImplementation "androidx.arch.core:core-testing:2.1.0"
 
-
     //Swiperefreshlayout
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
+    // Koin:
+    implementation "io.insert-koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-android-compat:$koin_version"
+    implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
+    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.6.0'

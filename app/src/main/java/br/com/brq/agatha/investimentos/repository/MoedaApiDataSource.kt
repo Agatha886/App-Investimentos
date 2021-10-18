@@ -1,11 +1,12 @@
 package br.com.brq.agatha.investimentos.repository
 
 import android.content.Context
+import br.com.brq.agatha.investimentos.database.dao.MoedaDao
 import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.retrofit.MoedasRetrofit
 
-open class MoedaApiDataSource(context: Context) : MoedaDbDataSource(context) {
+open class MoedaApiDataSource(moedaDao: MoedaDao) : MoedaDbDataSource(moedaDao) {
 
    fun getFinanceDaApi(): Finance? {
         val call = MoedasRetrofit().retornaFinance()

@@ -17,10 +17,5 @@ import br.com.brq.agatha.investimentos.model.Usuario
 abstract class InvestimentosDataBase :RoomDatabase(){
     abstract fun getMoedaDao(): MoedaDao
     abstract fun getUsuarioDao(): UsuarioDao
-    companion object{
-        fun getBatadaBase(context: Context): InvestimentosDataBase {
-            return Room.databaseBuilder(context, InvestimentosDataBase::class.java, NOME_BANCO)
-                .build()
-        }
-    }
+
 }

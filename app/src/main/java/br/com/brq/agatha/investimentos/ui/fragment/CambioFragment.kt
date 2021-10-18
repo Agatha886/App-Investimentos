@@ -20,8 +20,8 @@ import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.viewModel.CambioViewModel
 import br.com.brq.agatha.investimentos.viewModel.RetornoStadeCompraEVenda
-import br.com.brq.agatha.investimentos.viewModel.base.AppContextProvider
 import kotlinx.android.synthetic.main.cambio.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.math.BigDecimal
 import java.text.DecimalFormat
 
@@ -38,10 +38,9 @@ class CambioFragment : Fragment() {
 
     var quandoRecebidaMoedaInvalida: (mensagem: String?) -> Unit = {}
 
-    private val viewModel: CambioViewModel by lazy {
-        CambioViewModel.CambioViewModelFactory(requireContext(), AppContextProvider)
-            .create(CambioViewModel::class.java)
-    }
+    private val viewModel by viewModel<CambioViewModel>()
+
+    private lateinit var saldoDoUsuario: BigDecimal
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,7 +63,7 @@ class CambioFragment : Fragment() {
             when (it) {
                 is RetornoStadeCompraEVenda.SucessoCompra -> {
                     estilizaBotaoOperacaoValida(cambio_button_comprar)
-                    setClickComprar(it.valorGasto)
+                    setClickComprar(it.valorDeMoedaComprado)
                 }
                 is RetornoStadeCompraEVenda.FalhaCompra -> {
                     estilizaBotaoOperacaoInvalida(cambio_button_comprar)
@@ -82,6 +81,10 @@ class CambioFragment : Fragment() {
 
                 is RetornoStadeCompraEVenda.SemRetorno -> setBotoesQuandoInvalidos("Valor Nulo")
             }
+        })
+
+        viewModel.getSaldoDisponivel(1).observe(viewLifecycleOwner, Observer {
+            saldoDoUsuario = it
         })
 
     }
@@ -112,8 +115,8 @@ class CambioFragment : Fragment() {
     private fun setClickVender(totalMoeda: Double, valorVenda: String) {
         cambio_button_vender.setOnClickListener {
             val novoTotalDeMoedas = setTotalDeMoedasAposVenda(totalMoeda)
-            limpaCampos()
             vaiParaFragmentSucessoAposVenda(novoTotalDeMoedas, valorVenda)
+            limpaCampos()
         }
     }
 
@@ -151,27 +154,28 @@ class CambioFragment : Fragment() {
         ).show()
     }
 
-    private fun setClickComprar(valor: BigDecimal) {
+    private fun setClickComprar(valorDeMoedaComprado: String) {
         cambio_button_comprar.setOnClickListener {
-            setSaldoAposCompra(valor)
+            setSaldoAposCompra(BigDecimal(valorDeMoedaComprado))
             limpaCampos()
-            vaiParaFrgementSucessoAposCompra(valor)
         }
     }
 
-    private fun vaiParaFrgementSucessoAposCompra(valor: BigDecimal) {
+    private fun vaiParaFragmentSucessoAposCompra(valorDoSaldoDoUsuario: BigDecimal, quantidadeMoedaComprado: String) {
         quandoCompraOuVendaSucesso(
-            mensagemOperacaoSucesso(valor, "comprar ", valor.toString()),
+            mensagemOperacaoSucesso(saldo = valorDoSaldoDoUsuario, "comprar ", quantidadeMoeda = quantidadeMoedaComprado),
             TipoTranferencia.COMPRA
         )
     }
 
     private fun setSaldoAposCompra(valor: BigDecimal) {
-        viewModel.setSaldoCompra(1, valor)
         viewModel.setToltalMoedaCompra(
             moeda.name,
             cambio_quantidade.text.toString().toDouble()
         )
+        viewModel.setSaldoCompra(1, valor).observe(viewLifecycleOwner, Observer {
+            vaiParaFragmentSucessoAposCompra(it, valor.toString())
+        })
     }
 
     private fun limpaCampos() {

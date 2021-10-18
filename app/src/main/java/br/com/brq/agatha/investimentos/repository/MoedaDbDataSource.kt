@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.brq.agatha.investimentos.database.InvestimentosDataBase
+import br.com.brq.agatha.investimentos.database.dao.MoedaDao
 import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.retrofit.MoedasRetrofit
@@ -14,10 +15,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
-open class MoedaDbDataSource(context: Context){
+open class MoedaDbDataSource(private val daoMoeda: MoedaDao){
 
     private val io = CoroutineScope(Dispatchers.IO)
-    private val daoMoeda = InvestimentosDataBase.getBatadaBase(context).getMoedaDao()
 
     fun buscaMoeda(nameMoeda: String): Moeda{
         return daoMoeda.buscaMoeda(nameMoeda)

@@ -11,7 +11,7 @@ sealed class RetornoStadeApi {
 
 sealed class RetornoStadeCompraEVenda {
     data class FalhaCompra(var mensagemErro: String) : RetornoStadeCompraEVenda()
-    data class SucessoCompra(var valorGasto: BigDecimal) : RetornoStadeCompraEVenda()
+    data class SucessoCompra(var valorDeMoedaComprado: String) : RetornoStadeCompraEVenda()
 
     data class FalhaVenda(var mensagemErro: String) : RetornoStadeCompraEVenda()
     data class SucessoVenda(var totalMoedas: Double, var valorGastoNaVenda: String) : RetornoStadeCompraEVenda()
