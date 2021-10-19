@@ -10,7 +10,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
-class UsuarioRepository(private val daoUsuario:UsuarioDao, coroutinesContextProvider: CoroutinesContextProvider) {
+class UsuarioRepository(
+    private val daoUsuario: UsuarioDao,
+    coroutinesContextProvider: CoroutinesContextProvider) {
 
     private val io = CoroutineScope(coroutinesContextProvider.io)
 
@@ -40,18 +42,6 @@ class UsuarioRepository(private val daoUsuario:UsuarioDao, coroutinesContextProv
         }
     }
 
-
-    private fun tranformaSaldoEmLiveDate(
-        novoSaldo: BigDecimal
-    ): LiveData<BigDecimal> {
-        val saldoAposCompra = MutableLiveData<BigDecimal>()
-        io.launch {
-            saldoAposCompra.postValue(novoSaldo)
-        }
-        return saldoAposCompra
-    }
-
-
     fun setSaldoVendaERetornaSaldo(
         idUsuario: Int,
         moeda: Moeda,
@@ -77,10 +67,21 @@ class UsuarioRepository(private val daoUsuario:UsuarioDao, coroutinesContextProv
         return tranformaSaldoEmLiveDate(novoSaldo)
     }
 
+
     private fun modificaUsuario(usuario: Usuario) {
         io.launch {
             daoUsuario.modifica(usuario)
         }
+    }
+
+    private fun tranformaSaldoEmLiveDate(
+        novoSaldo: BigDecimal
+    ): LiveData<BigDecimal> {
+        val saldoAposCompra = MutableLiveData<BigDecimal>()
+        io.launch {
+            saldoAposCompra.postValue(novoSaldo)
+        }
+        return saldoAposCompra
     }
 
 }
