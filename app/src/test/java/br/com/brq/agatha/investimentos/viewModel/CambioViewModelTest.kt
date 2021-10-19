@@ -52,7 +52,7 @@ class CambioViewModelTest {
 
         coEvery { repository.getUsuario(usuarioDeExemplo.id) } returns usuarioDeExemplo
         viewModel.compra(usuarioDeExemplo.id,moedaDeExemplo, "10")
-        assertEquals(RetornoStadeCompraEVenda.SucessoCompra("10", BigDecimal.ZERO), viewModel.viewEventRetornoCompraEVenda.value)
+        assertEquals(RetornoStadeCompraEVenda.SucessoCompra("10"), viewModel.viewEventRetornoCompraEVenda.value)
     }
 
     @Test
@@ -69,7 +69,7 @@ class CambioViewModelTest {
 
         coEvery { repository.getUsuario(usuarioDeExemplo.id) } returns usuarioDeExemplo
         viewModel.compra(usuarioDeExemplo.id,moedaDeExemplo, "10")
-        assertEquals(RetornoStadeCompraEVenda.SucessoCompra("10", BigDecimal(50)), viewModel.viewEventRetornoCompraEVenda.value)
+        assertEquals(RetornoStadeCompraEVenda.SucessoCompra("10"), viewModel.viewEventRetornoCompraEVenda.value)
     }
 
 

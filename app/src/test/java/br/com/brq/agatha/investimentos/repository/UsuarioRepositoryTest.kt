@@ -1,11 +1,9 @@
 package br.com.brq.agatha.investimentos.repository
 
-import br.com.brq.agatha.investimentos.database.dao.UsuarioDao
 import br.com.brq.agatha.investimentos.model.Usuario
 import br.com.brq.agatha.investimentos.viewModel.base.TestContextProvider
 import io.mockk.MockKAnnotations
-import io.mockk.every
-import io.mockk.mockk
+import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -14,20 +12,20 @@ import java.math.BigDecimal
 
 
 @RunWith(JUnit4::class)
-class UsuarioRepositoryTest{
+class UsuarioRepositoryTest {
 
     private lateinit var usuarioRepository: UsuarioRepository
 
     @Before
-    fun setUp(){
+    fun setUp() {
         MockKAnnotations.init(this, relaxUnitFun = true)
-        val usuarioDao = mockk<UsuarioDao>()
-        usuarioRepository = UsuarioRepository(usuarioDao, TestContextProvider())
+//        usuarioRepository = UsuarioRepository(teste, TestContextProvider())
     }
 
     @Test
-    fun deveRetornarUsuario_quandoChamaUsario(){
+    fun deveRetornarUsuario_quandoChamaUsario() {
         val usuarioDeExemplo = Usuario(saldoDisponivel = BigDecimal(150))
-        every { usuarioRepository.getUsuario(usuarioDeExemplo.id) } returns usuarioDeExemplo
+        usuarioRepository.getUsuario(usuarioDeExemplo.id)
+        assertEquals(usuarioDeExemplo, usuarioRepository.getUsuario(usuarioDeExemplo.id))
     }
 }
