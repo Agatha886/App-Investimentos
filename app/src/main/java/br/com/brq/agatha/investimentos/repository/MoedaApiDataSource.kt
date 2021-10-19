@@ -1,12 +1,12 @@
 package br.com.brq.agatha.investimentos.repository
 
-import android.content.Context
 import br.com.brq.agatha.investimentos.database.dao.MoedaDao
 import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.retrofit.MoedasRetrofit
+import br.com.brq.agatha.investimentos.viewModel.base.AppContextProvider
 
-open class MoedaApiDataSource(moedaDao: MoedaDao) : MoedaDbDataSource(moedaDao) {
+open class MoedaApiDataSource(moedaDao: MoedaDao) : MoedaDbDataSource(moedaDao, AppContextProvider) {
 
    fun getFinanceDaApi(): Finance? {
         val call = MoedasRetrofit().retornaFinance()
@@ -23,7 +23,7 @@ open class MoedaApiDataSource(moedaDao: MoedaDao) : MoedaDbDataSource(moedaDao) 
         }
     }
 
-    fun modificaTotasAsMoedasNoBanco(finance: Finance?) {
+    private fun modificaTotasAsMoedasNoBanco(finance: Finance?) {
         finance?.results?.currencies?.usd?.let { modifica(it) }
         finance?.results?.currencies?.jpy?.let { modifica(it) }
         finance?.results?.currencies?.gbp?.let { modifica(it) }
@@ -35,7 +35,7 @@ open class MoedaApiDataSource(moedaDao: MoedaDao) : MoedaDbDataSource(moedaDao) 
         finance?.results?.currencies?.ars?.let { modifica(it) }
     }
 
-    fun adicionaTodasAsMoedasNoBanco(finance: Finance?) {
+    private fun adicionaTodasAsMoedasNoBanco(finance: Finance?) {
         finance?.results?.currencies?.usd?.let { adiciona(it) }
         finance?.results?.currencies?.jpy?.let { adiciona(it) }
         finance?.results?.currencies?.gbp?.let { adiciona(it) }

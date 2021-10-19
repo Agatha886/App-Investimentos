@@ -16,7 +16,6 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class HomeViewModelTest {
-
     @get : Rule
     val rule = InstantTaskExecutorRule()
 

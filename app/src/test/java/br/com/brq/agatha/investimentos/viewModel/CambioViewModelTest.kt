@@ -101,7 +101,7 @@ class CambioViewModelTest {
             variation = BigDecimal(1)
         )
 
-        coEvery { dataSource.buscaMoeda(moedaDeExemplo.name)} returns moedaDeExemplo
+        coEvery { dataSource.buscaMoedaNoBando(moedaDeExemplo.name)} returns moedaDeExemplo
         viewModel.venda(moedaDeExemplo.name, "10")
         assertEquals(RetornoStadeCompraEVenda.SucessoVenda(0.00, "10"), viewModel.viewEventRetornoCompraEVenda.value)
     }
@@ -117,7 +117,7 @@ class CambioViewModelTest {
             variation = BigDecimal(1)
         )
 
-        coEvery { dataSource.buscaMoeda(moedaDeExemplo.name)} returns moedaDeExemplo
+        coEvery { dataSource.buscaMoedaNoBando(moedaDeExemplo.name)} returns moedaDeExemplo
         viewModel.venda(moedaDeExemplo.name, "10")
         assertEquals(RetornoStadeCompraEVenda.SucessoVenda(40.00, "10"), viewModel.viewEventRetornoCompraEVenda.value)
     }
@@ -133,7 +133,7 @@ class CambioViewModelTest {
             variation = BigDecimal(1)
         )
 
-        coEvery { dataSource.buscaMoeda(moedaDeExemplo.name)} returns moedaDeExemplo
+        coEvery { dataSource.buscaMoedaNoBando(moedaDeExemplo.name)} returns moedaDeExemplo
         viewModel.venda(moedaDeExemplo.name, "11")
         assertEquals(RetornoStadeCompraEVenda.FalhaVenda("Valor inválido"), viewModel.viewEventRetornoCompraEVenda.value)
     }

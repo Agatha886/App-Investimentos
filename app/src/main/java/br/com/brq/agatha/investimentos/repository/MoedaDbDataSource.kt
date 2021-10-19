@@ -1,25 +1,20 @@
 package br.com.brq.agatha.investimentos.repository
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import br.com.brq.agatha.investimentos.database.InvestimentosDataBase
 import br.com.brq.agatha.investimentos.database.dao.MoedaDao
-import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
-import br.com.brq.agatha.investimentos.retrofit.MoedasRetrofit
-import br.com.brq.agatha.investimentos.viewModel.RetornoStadeApi
+import br.com.brq.agatha.investimentos.viewModel.base.CoroutinesContextProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.math.BigDecimal
 
-open class MoedaDbDataSource(private val daoMoeda: MoedaDao){
+open class MoedaDbDataSource(private val daoMoeda: MoedaDao, coroutinesContextProvider: CoroutinesContextProvider){
 
-    private val io = CoroutineScope(Dispatchers.IO)
+    private val io = CoroutineScope(coroutinesContextProvider.io)
 
-    fun buscaMoeda(nameMoeda: String): Moeda{
+    fun buscaMoedaNoBando(nameMoeda: String): Moeda{
         return daoMoeda.buscaMoeda(nameMoeda)
     }
 
@@ -47,9 +42,7 @@ open class MoedaDbDataSource(private val daoMoeda: MoedaDao){
         val liveDate = MutableLiveData<Double>()
         io.launch {
             val moeda = daoMoeda.buscaMoeda(nameMoeda)
-            withContext(Dispatchers.Main) {
-                liveDate.value = moeda.totalDeMoeda
-            }
+            liveDate.postValue(moeda.totalDeMoeda)
         }
 
         return liveDate

@@ -85,7 +85,7 @@ class CambioViewModel(
 
     fun venda(nameMoeda: String, quantidadeParaVenda: String) {
         io.launch {
-            val moeda = dbDataSource.buscaMoeda(nameMoeda)
+            val moeda = dbDataSource.buscaMoedaNoBando(nameMoeda)
             val valorTotalMoeda = moeda.totalDeMoeda.minus(BigDecimal(quantidadeParaVenda).toDouble())
 
             if (valorTotalMoeda >= 00.0) {
