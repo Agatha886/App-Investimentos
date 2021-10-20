@@ -14,7 +14,6 @@ open class MoedaApiDataSource(moedaDao: MoedaDao) : MoedaDbDataSource(moedaDao, 
         return resposta.body()
     }
 
-
      fun atualizaBancoDeDados(buscaMoedas: List<Moeda>, finance: Finance?) {
         if (buscaMoedas.isNullOrEmpty()) {
             adicionaTodasAsMoedasNoBanco(finance)

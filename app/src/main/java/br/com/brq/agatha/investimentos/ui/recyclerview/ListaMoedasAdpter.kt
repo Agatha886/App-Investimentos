@@ -45,7 +45,7 @@ class ListaMoedasAdpter(
        atualizaAoAdicionar()
     }
 
-    fun atualizaAoAdicionar() {
+    private fun atualizaAoAdicionar() {
         notifyItemRangeInserted(0, listaDeMoedas.size)
     }
 

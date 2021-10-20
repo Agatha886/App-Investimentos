@@ -1,10 +1,8 @@
 package br.com.brq.agatha.investimentos.viewModel
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource

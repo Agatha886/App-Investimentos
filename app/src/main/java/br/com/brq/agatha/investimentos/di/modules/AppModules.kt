@@ -12,7 +12,7 @@ import br.com.brq.agatha.investimentos.viewModel.CambioViewModel
 import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.MoedaWrapper
 import br.com.brq.agatha.investimentos.viewModel.base.AppContextProvider
-import br.com.brq.agatha.investimentos.viewModel.base.CoroutinesContextProvider
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val dataBaseModules = module {
@@ -30,17 +30,13 @@ val daoModules = module {
     single <UsuarioDao>{ get<InvestimentosDataBase>().getUsuarioDao() }
 }
 
-val contextProvider = module {
-    single <AppContextProvider>{ AppContextProvider }
-}
-
 val repositoryModules = module {
     single <MoedaApiDataSource>{ MoedaApiDataSource(get<MoedaDao>()) }
-    single <MoedaDbDataSource>{ MoedaDbDataSource(get<MoedaDao>(), get<AppContextProvider>()) }
-    single <UsuarioRepository>{ UsuarioRepository(get<UsuarioDao>(), get<AppContextProvider>()) }
+    single <MoedaDbDataSource>{ MoedaDbDataSource(get<MoedaDao>(), AppContextProvider) }
+    single <UsuarioRepository>{ UsuarioRepository(get<UsuarioDao>(), AppContextProvider) }
 }
 
 val viewModelModules = module {
-    single<CambioViewModel>{ CambioViewModel(get<MoedaDbDataSource>(), get<UsuarioRepository>(), get <AppContextProvider>())  }
-    single <HomeViewModel>{ HomeViewModel(get<MoedaApiDataSource>(), get <AppContextProvider>(), MoedaWrapper())  }
+    viewModel<CambioViewModel>{ CambioViewModel(get<MoedaDbDataSource>(), get<UsuarioRepository>(), AppContextProvider)}
+    viewModel<HomeViewModel>{ HomeViewModel(get<MoedaApiDataSource>(), AppContextProvider, MoedaWrapper())  }
 }
