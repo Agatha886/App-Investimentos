@@ -11,9 +11,8 @@ import br.com.brq.agatha.investimentos.CustomAssertions
 import br.com.brq.agatha.investimentos.CustomMatchers
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.ui.EspressoldlingResoruce
-import br.com.brq.agatha.investimentos.ui.recyclerview.ListaMoedasAdpter
 import br.com.brq.agatha.investimentos.ui.recyclerview.ListaMoedasAdpter.ListaMoedasViewHolder
-import org.hamcrest.Matchers.allOf
+import junit.framework.TestCase.assertEquals
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -27,13 +26,15 @@ class HomeMoedasTelaTest {
     @get : Rule
     val rule = ActivityScenarioRule(HomeMoedasActivity::class.java)
 
+    private val customMatchers = CustomMatchers()
+
     @Before
-    fun registerIdlingResorce(){
+    fun registerIdlingResorce() {
         IdlingRegistry.getInstance().register(EspressoldlingResoruce.counting)
     }
 
     @After
-    fun unregisterIdlingResorce(){
+    fun unregisterIdlingResorce() {
         IdlingRegistry.getInstance().unregister(EspressoldlingResoruce.counting)
     }
 
@@ -47,31 +48,77 @@ class HomeMoedasTelaTest {
     }
 
     @Test
-    fun deveApresentarORecyclerView_quandoAbreOApp() {
+    fun deveApresentarORecyclerView_quandoAbreATela() {
         onView(withId(R.id.home_recyclerView))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
     @Test
-    fun deveRetornarAQuantidaeDeItensNaLlistaDoRecyclerView_quandoCarregaLista(){
+    fun deveRetornarAQuantidaeDeItensNaLlistaDoRecyclerView_quandoCarregaLista() {
         onView(withId(R.id.home_recyclerView))
             .check(CustomAssertions.hasItemCount(9))
     }
 
     @Test
-    fun deveRetornarCadaAbreviacaoDaMoeda_quandoCarregaLista(){
+    fun deveVerificarCadaAbreviacaoDaMoeda_quandoCarregaAParteVisivelDaLista() {
+        onView(withId(R.id.home_recyclerView))
+            .check(
+                ViewAssertions
+                    .matches(customMatchers.apresentaMoeda("USD", 0))
+            )
+            .check(
+                ViewAssertions
+                    .matches(customMatchers.apresentaMoeda("JPY", 1))
+            )
+            .check(
+                ViewAssertions
+                    .matches(customMatchers.apresentaMoeda("GBP", 2))
+            )
+            .check(
+                ViewAssertions
+                    .matches(customMatchers.apresentaMoeda("EUR", 3))
+            )
+            .check(
+                ViewAssertions
+                    .matches(customMatchers.apresentaMoeda("CNY", 4))
+            )
+            .check(
+                ViewAssertions
+                    .matches(customMatchers.apresentaMoeda("CAD", 5))
+            )
+            .check(
+                ViewAssertions
+                    .matches(customMatchers.apresentaMoeda("BTC", 6))
+            )
+    }
+
+    @Test
+    fun deveVerificarCadaAbreviacaoDaMoeda_quandoCarregaTodaLista() {
+        deveVerificarCadaAbreviacaoDaMoeda_quandoCarregaAParteVisivelDaLista()
 
         onView(withId(R.id.home_recyclerView))
-            .check(ViewAssertions
-                .matches(CustomMatchers.withItemText("USD",0)))
-            .check(ViewAssertions
-                .matches(CustomMatchers.withItemText("JPY",1)))
-            .check(ViewAssertions
-                .matches(CustomMatchers.withItemText("GBP",2)))
-            .check(ViewAssertions
-                .matches(CustomMatchers.withItemText("EUR",3)))
-            .check(ViewAssertions
-                .matches(CustomMatchers.withItemText("CNY",4)))
+            .perform(RecyclerViewActions.scrollToPosition<ListaMoedasViewHolder>(8))
+            .check(
+                ViewAssertions
+                    .matches(customMatchers.apresentaMoeda("AUD", 7))
+            )
+            .check(
+                ViewAssertions
+                    .matches(customMatchers.apresentaMoeda("ARS", 8))
+            )
+    }
+
+    @Test
+    fun deveRetornarIndexOutOfBoundsException_quandoTesteNaoAchaOItemNaLista() {
+        try {
+            onView(withId(R.id.home_recyclerView))
+                .check(
+                    ViewAssertions
+                        .matches(customMatchers.apresentaMoeda("ITEM", 9))
+                )
+        }catch (e: IndexOutOfBoundsException){
+            assertEquals("Item na posição 9 não foi encontrado", e.message)
+        }
     }
 
 }
