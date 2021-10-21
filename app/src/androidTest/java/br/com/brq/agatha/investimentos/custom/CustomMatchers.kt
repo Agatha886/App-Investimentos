@@ -1,4 +1,4 @@
-package br.com.brq.agatha.investimentos
+package br.com.brq.agatha.investimentos.custom
 
 import android.view.View
 import android.widget.TextView
@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.matcher.BoundedMatcher
+import br.com.brq.agatha.investimentos.R
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import java.lang.IndexOutOfBoundsException

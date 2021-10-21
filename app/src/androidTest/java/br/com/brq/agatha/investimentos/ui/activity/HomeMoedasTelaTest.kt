@@ -5,11 +5,11 @@ import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import br.com.brq.agatha.investimentos.CustomAssertions
-import br.com.brq.agatha.investimentos.CustomMatchers
 import br.com.brq.agatha.investimentos.R
+import br.com.brq.agatha.investimentos.custom.CustomAssertions
+import br.com.brq.agatha.investimentos.custom.CustomMatchers
 import br.com.brq.agatha.investimentos.ui.EspressoldlingResoruce
 import br.com.brq.agatha.investimentos.ui.recyclerview.ListaMoedasAdpter.ListaMoedasViewHolder
 import junit.framework.TestCase.assertEquals
@@ -60,7 +60,7 @@ class HomeMoedasTelaTest {
     }
 
     @Test
-    fun deveVerificarCadaAbreviacaoDaMoeda_quandoCarregaAParteVisivelDaLista() {
+    fun deveVerificarCadaMoeda_quandoCarregaAParteVisivelDaLista() {
         onView(withId(R.id.home_recyclerView))
             .check(
                 ViewAssertions
@@ -93,8 +93,8 @@ class HomeMoedasTelaTest {
     }
 
     @Test
-    fun deveVerificarCadaAbreviacaoDaMoeda_quandoCarregaTodaLista() {
-        deveVerificarCadaAbreviacaoDaMoeda_quandoCarregaAParteVisivelDaLista()
+    fun deveVerificarCadaMoeda_quandoCarregaTodaLista() {
+        deveVerificarCadaMoeda_quandoCarregaAParteVisivelDaLista()
 
         onView(withId(R.id.home_recyclerView))
             .perform(RecyclerViewActions.scrollToPosition<ListaMoedasViewHolder>(8))
@@ -109,7 +109,7 @@ class HomeMoedasTelaTest {
     }
 
     @Test
-    fun deveRetornarIndexOutOfBoundsException_quandoTesteNaoAchaOItemNaLista() {
+    fun deveRetornarIndexOutOfBoundsException_quandoIndexDaMoedaIndicadoNoTesteNaoTemNaLista() {
         try {
             onView(withId(R.id.home_recyclerView))
                 .check(
@@ -120,5 +120,6 @@ class HomeMoedasTelaTest {
             assertEquals("Item na posição 9 não foi encontrado", e.message)
         }
     }
+
 
 }

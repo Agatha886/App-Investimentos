@@ -1,4 +1,4 @@
-package br.com.brq.agatha.investimentos
+package br.com.brq.agatha.investimentos.custom
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
