@@ -3,7 +3,6 @@ package br.com.brq.agatha.investimentos
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.matcher.BoundedMatcher
@@ -18,7 +17,8 @@ class CustomMatchers {
 
             //describeTo nos permite anexar nossa própria descrição ao matcher personalizado.
             override fun describeTo(description: Description?) {
-                description?.appendText("Item com a descrição: $text não foi encontrado")
+                description?.appendText("Item com a descrição: $text na posição " +
+                        "$positionItem não foi encontrado")
             }
 
             //matchSafely é onde implementamos a lógica de comparação para a contagem de itens.
@@ -26,12 +26,12 @@ class CustomMatchers {
                 val viewHolder = item?.findViewHolderForAdapterPosition(positionItem)?.itemView
                     ?: throw IndexOutOfBoundsException("Item na posição $positionItem não foi encontrado")
 
-                return verificaAbreviacaoMoeda(viewHolder, text) && verificaVariacaoMoeda(viewHolder)
+                return verificaCampoAbreviacaoMoeda(viewHolder, text) && verificaCampoVariacaoMoeda(viewHolder)
             }
         }
     }
 
-    private fun verificaAbreviacaoMoeda(
+    private fun verificaCampoAbreviacaoMoeda(
         viewHolder: View,
         text: String
     ): Boolean {
@@ -39,13 +39,13 @@ class CustomMatchers {
         return view?.text.toString() == text
     }
 
-    private fun verificaVariacaoMoeda(viewHolder: View): Boolean {
+    private fun verificaCampoVariacaoMoeda(viewHolder: View): Boolean {
         val view = viewHolder.findViewById<TextView>(R.id.cardView_home_variation_moeda)
-        if(view?.isVisible == true && verificaCorDaVariacaoMoeda(view, viewHolder)) return true
+        if(view?.isVisible == true && verificaCorDoCampoVariacaoMoeda(view, viewHolder)) return true
         else throw  NullPointerException("Campo variação do item não foi encontrado ou está com problemas")
     }
 
-    private fun verificaCorDaVariacaoMoeda(view: TextView?, viewHolder: View): Boolean {
+    private fun verificaCorDoCampoVariacaoMoeda(view: TextView?, viewHolder: View): Boolean {
         val context = viewHolder.context
         val colorRed: Int = ContextCompat.getColor(context, R.color.red)
         val colorWhite: Int = ContextCompat.getColor(context, R.color.white)
