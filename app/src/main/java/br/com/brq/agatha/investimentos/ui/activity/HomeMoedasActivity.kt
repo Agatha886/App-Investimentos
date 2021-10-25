@@ -13,7 +13,6 @@ import br.com.brq.agatha.investimentos.constantes.MENSAGEM_MOEDA_INVALIDA
 import br.com.brq.agatha.investimentos.extension.mensagem
 import br.com.brq.agatha.investimentos.extension.setMyActionBar
 import br.com.brq.agatha.investimentos.model.Moeda
-import br.com.brq.agatha.investimentos.ui.EspressoldlingResoruce
 import br.com.brq.agatha.investimentos.ui.recyclerview.ListaMoedasAdpter
 import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.RetornoStadeApi
@@ -56,7 +55,6 @@ class HomeMoedasActivity : AppCompatActivity() {
                 is RetornoStadeApi.SucessoRetornoApi -> {
                     adapter.atualiza(it.listaMoeda)
                     adapter.quandoMoedaClicado = this::vaiParaActivityCambio
-                    EspressoldlingResoruce.decrement()
                 }
                 is RetornoStadeApi.SucessoRetornoBanco-> {
                     setAdapterComBancoDeDados(it.listaMoeda)
