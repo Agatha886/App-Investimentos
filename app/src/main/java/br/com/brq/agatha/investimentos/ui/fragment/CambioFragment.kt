@@ -18,6 +18,7 @@ import br.com.brq.agatha.investimentos.constantes.TipoTranferencia
 import br.com.brq.agatha.investimentos.extension.formatoMoedaBrasileira
 import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
+import br.com.brq.agatha.investimentos.model.Usuario
 import br.com.brq.agatha.investimentos.viewModel.CambioViewModel
 import br.com.brq.agatha.investimentos.viewModel.RetornoStadeCompraEVenda
 import kotlinx.android.synthetic.main.cambio.*
@@ -52,6 +53,7 @@ class CambioFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.adicionaUsuario(Usuario(saldoDisponivel = BigDecimal(1000)))
         inicializaCampos()
         observerViewModel()
         setBotoesQuandoInvalidos("Valor nulo")

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
+import br.com.brq.agatha.investimentos.constantes.MENSAGEM_DADOS_NAO_ATUALIZADOS
 import br.com.brq.agatha.investimentos.constantes.MENSAGEM_FALHA_API
 import br.com.brq.agatha.investimentos.constantes.MENSAGEM_MOEDA_INVALIDA
 import br.com.brq.agatha.investimentos.extension.mensagem
@@ -50,7 +51,6 @@ class HomeMoedasActivity : AppCompatActivity() {
     }
 
     private fun observerViewModel() {
-        EspressoldlingResoruce.increment()
         viewModel.viewModelRetornoDaApi.observe(this, Observer {
             when (it) {
                 is RetornoStadeApi.SucessoRetornoApi -> {
@@ -60,8 +60,7 @@ class HomeMoedasActivity : AppCompatActivity() {
                 }
                 is RetornoStadeApi.SucessoRetornoBanco-> {
                     setAdapterComBancoDeDados(it.listaMoeda)
-                    adapter.quandoMoedaClicado = { mensagem("Dados não atualizados") }
-                    EspressoldlingResoruce.decrement()
+                    adapter.quandoMoedaClicado = { mensagem(MENSAGEM_DADOS_NAO_ATUALIZADOS) }
                 }
                 else -> Log.i("TAG", "observerViewModel: Entrou no else")
             }

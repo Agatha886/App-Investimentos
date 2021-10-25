@@ -25,6 +25,10 @@ class CambioViewModel(
     val viewEventRetornoCompraEVenda: LiveData<RetornoStadeCompraEVenda> = eventRetorno
 
 
+    fun adicionaUsuario(usuario: Usuario){
+        repositoryUsuario.adicionaUsuario(usuario)
+    }
+
     fun getSaldoDisponivel(idUser: Int): LiveData<BigDecimal> {
         return repositoryUsuario.getSaldoDisponivel(idUser)
     }

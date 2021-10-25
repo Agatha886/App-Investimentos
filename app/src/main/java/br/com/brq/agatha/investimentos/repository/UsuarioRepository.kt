@@ -1,5 +1,6 @@
 package br.com.brq.agatha.investimentos.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.brq.agatha.investimentos.database.dao.UsuarioDao
@@ -24,6 +25,7 @@ class UsuarioRepository(
         val liveData = MutableLiveData<BigDecimal>()
         io.launch {
             val usuario = daoUsuario.retornaUsuario(id)
+            Log.i("TAG", "getSaldoDisponivel: ${usuario.saldoDisponivel}")
             liveData.postValue(usuario.saldoDisponivel)
         }
         return liveData
@@ -32,13 +34,6 @@ class UsuarioRepository(
     fun adicionaUsuario(usuario: Usuario) {
         io.launch {
             daoUsuario.adiciona(usuario)
-        }
-    }
-
-    fun apagaTodos() {
-        io.launch {
-            val todos = daoUsuario.todos()
-            daoUsuario.delete(todos)
         }
     }
 

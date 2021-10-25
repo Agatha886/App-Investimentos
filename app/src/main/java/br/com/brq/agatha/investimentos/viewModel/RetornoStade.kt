@@ -6,7 +6,6 @@ import java.math.BigDecimal
 sealed class RetornoStadeApi {
     data class SucessoRetornoBanco(var  listaMoeda: List<Moeda>) : RetornoStadeApi()
     data class SucessoRetornoApi(var  listaMoeda: List<Moeda>) : RetornoStadeApi()
-
 }
 
 sealed class RetornoStadeCompraEVenda {
