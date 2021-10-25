@@ -5,6 +5,8 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -147,6 +149,7 @@ class HomeMoedasTelaTest : KoinTest {
 
         coEvery { dataSource.buscaMoedasNoBanco() } returns listaMoedasBanco
         every {moedaWrapper.agrupaTodasAsMoedasNaLista(finance)} returns listaMoedasApi
+
     }
 
 
@@ -258,6 +261,18 @@ class HomeMoedasTelaTest : KoinTest {
             .check(ViewAssertions.matches(isDisplayed())) // verifica SE APARECE A MENSAGEM NO TOAST
     }
 
+    @Test
+    fun deveVerificarSeVaiParaCambio_quandoCarregaListaDaApiEClicaNaMoeda(){
+        Intents.init()
+        coEvery { dataSource.getFinanceDaApi() } returns finance
+        iniciaActivity()
+
+        onView(withId(R.id.home_recyclerView))
+            .perform(RecyclerViewActions.actionOnItemAtPosition<ListaMoedasViewHolder>(0, click()))
+
+        Intents.intended(IntentMatchers.hasComponent(CambioActivity::class.java.name))
+    }
+
 
     @Test
     fun deveRetornarIndexOutOfBoundsException_quandoIndexDaMoedaIndicadoNoTesteNaoTemNaLista() {
@@ -274,6 +289,5 @@ class HomeMoedasTelaTest : KoinTest {
             assertEquals("Item na posição 9 não foi encontrado", e.message)
         }
     }
-
 
 }

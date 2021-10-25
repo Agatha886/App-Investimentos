@@ -1,9 +1,11 @@
 package br.com.brq.agatha.investimentos.viewModel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.test.espresso.intent.rule.IntentsTestRule
 import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
+import br.com.brq.agatha.investimentos.ui.activity.HomeMoedasActivity
 import br.com.brq.agatha.investimentos.viewModel.base.TestContextProvider
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -18,6 +20,9 @@ import org.junit.runners.JUnit4
 class HomeViewModelTest {
     @get : Rule
     val rule = InstantTaskExecutorRule()
+
+    @get:Rule
+    val intentsTestRule = IntentsTestRule(HomeMoedasActivity::class.java)
 
     @MockK
     private lateinit var dataSource: MoedaApiDataSource
