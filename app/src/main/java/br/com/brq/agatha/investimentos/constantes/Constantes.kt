@@ -1,6 +1,7 @@
 package br.com.brq.agatha.investimentos.constantes
 
 const val CHAVE_MOEDA = "MoedaMandada"
+
 const val CHAVE_BUSCA_API = "BuscaResultadoDaApi"
 
 const val CHAVE_RESPOSTA_MENSAGEM = "RespostaMensagem"

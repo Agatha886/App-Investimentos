@@ -8,11 +8,9 @@ import org.hamcrest.TypeSafeMatcher
 
 
 class ToastMachter : TypeSafeMatcher<Root>() {
-
     override fun describeTo(description: Description?) {
         description?.appendText("is Toast")
     }
-
     override fun matchesSafely(root: Root?): Boolean {
         val viewTitle = (root?.decorView?.layoutParams as WindowManager.LayoutParams).title
         if (viewTitle == "Toast") {
@@ -24,6 +22,4 @@ class ToastMachter : TypeSafeMatcher<Root>() {
         }
         return false
     }
-
-
 }
