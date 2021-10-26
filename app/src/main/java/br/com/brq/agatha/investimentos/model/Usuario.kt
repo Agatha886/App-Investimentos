@@ -1,7 +1,6 @@
 package br.com.brq.agatha.investimentos.model
 
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.io.Serializable
 import java.math.BigDecimal
@@ -21,8 +20,8 @@ class Usuario(
         return saldoDisponivel.add(BigDecimal(valorVendaMoeda).multiply(moeda.sell))
     }
 
-    fun calculaSaldoCompra(moeda: Moeda, valor: String): BigDecimal {
-        val valorDaCompra = BigDecimal(valor).multiply(moeda.buy)
+    fun calculaSaldoCompra(moeda: Moeda, valorComprado: String): BigDecimal {
+        val valorDaCompra = BigDecimal(valorComprado).multiply(moeda.buy)
         return saldoDisponivel.subtract(valorDaCompra)
     }
 

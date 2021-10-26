@@ -13,7 +13,8 @@ import java.math.BigDecimal
 
 class UsuarioRepository(
     private val daoUsuario: UsuarioDao,
-    coroutinesContextProvider: CoroutinesContextProvider) {
+    coroutinesContextProvider: CoroutinesContextProvider
+) {
 
     private val io = CoroutineScope(coroutinesContextProvider.io)
 
@@ -25,7 +26,6 @@ class UsuarioRepository(
         val liveData = MutableLiveData<BigDecimal>()
         io.launch {
             val usuario = daoUsuario.retornaUsuario(id)
-            Log.i("TAG", "getSaldoDisponivel: ${usuario.saldoDisponivel}")
             liveData.postValue(usuario.saldoDisponivel)
         }
         return liveData
@@ -37,46 +37,41 @@ class UsuarioRepository(
         }
     }
 
-    fun setSaldoVendaERetornaSaldo(
+    fun getSaldoAposVenda(
         idUsuario: Int,
         moeda: Moeda,
-        valorCompraMoeda: String
+        valorVendaMoeda: String
     ): LiveData<BigDecimal> {
         val saldoAposVenda = MutableLiveData<BigDecimal>()
         io.launch {
             val retornaUsuario = daoUsuario.retornaUsuario(idUsuario)
-            val novoSaldo = retornaUsuario.calculaSaldoVenda(moeda, valorCompraMoeda)
-            setSaldoERetornaSaldo(idUsuario, novoSaldo)
+            val novoSaldo = retornaUsuario.calculaSaldoVenda(moeda, valorVendaMoeda)
+            retornaUsuario.setSaldo(novoSaldo)
+            modificaUsuario(retornaUsuario)
             saldoAposVenda.postValue(novoSaldo)
         }
         return saldoAposVenda
     }
 
-    fun setSaldoERetornaSaldo(idUsuario: Int, novoSaldo: BigDecimal): LiveData<BigDecimal> {
+    fun getSaldoAposCompra(
+        idUsuario: Int,
+        valorComprado: String,
+        moeda: Moeda
+    ): LiveData<BigDecimal> {
+        val saldoAposCompra = MutableLiveData<BigDecimal>()
         io.launch {
-            val usuario = daoUsuario.retornaUsuario(idUsuario)
-            usuario.setSaldo(novoSaldo)
-            modificaUsuario(usuario)
+            val retornaUsuario = daoUsuario.retornaUsuario(idUsuario)
+            val novoSaldo = retornaUsuario.calculaSaldoCompra(moeda, valorComprado)
+            retornaUsuario.setSaldo(novoSaldo)
+            modificaUsuario(retornaUsuario)
+            saldoAposCompra.postValue(novoSaldo)
         }
-
-        return tranformaSaldoEmLiveDate(novoSaldo)
+        return saldoAposCompra
     }
 
 
     private fun modificaUsuario(usuario: Usuario) {
-        io.launch {
-            daoUsuario.modifica(usuario)
-        }
-    }
-
-    private fun tranformaSaldoEmLiveDate(
-        novoSaldo: BigDecimal
-    ): LiveData<BigDecimal> {
-        val saldoAposCompra = MutableLiveData<BigDecimal>()
-        io.launch {
-            saldoAposCompra.postValue(novoSaldo)
-        }
-        return saldoAposCompra
+        daoUsuario.modifica(usuario)
     }
 
 }

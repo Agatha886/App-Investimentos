@@ -14,6 +14,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
+import br.com.brq.agatha.investimentos.constantes.ID_USUARIO
 import br.com.brq.agatha.investimentos.constantes.TipoTranferencia
 import br.com.brq.agatha.investimentos.extension.formatoMoedaBrasileira
 import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
@@ -53,7 +54,6 @@ class CambioFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.adicionaUsuario(Usuario(saldoDisponivel = BigDecimal(1000)))
         inicializaCampos()
         observerViewModel()
         setBotoesQuandoInvalidos("Valor nulo")
@@ -85,7 +85,7 @@ class CambioFragment : Fragment() {
             }
         })
 
-        viewModel.getSaldoDisponivel(1).observe(viewLifecycleOwner, Observer {
+        viewModel.getSaldoDisponivel(ID_USUARIO).observe(viewLifecycleOwner, Observer {
             saldoDoUsuario = it
         })
 
@@ -97,7 +97,7 @@ class CambioFragment : Fragment() {
             if (texto.isBlank() || texto[0] == '0') {
                 setBotoesQuandoInvalidos("Valor Inválido")
             } else {
-                viewModel.compra(1, moeda, texto)
+                viewModel.compra(ID_USUARIO, moeda, texto)
                 viewModel.venda(moeda.name, texto)
             }
         }
@@ -124,7 +124,7 @@ class CambioFragment : Fragment() {
 
     private fun setTotalDeMoedasAposVenda(totalMoeda: Double): LiveData<BigDecimal> {
         val saldoVenda =
-            viewModel.setSaldoVenda(1, moeda, cambio_quantidade.text.toString())
+            viewModel.setSaldoVenda(ID_USUARIO, moeda, cambio_quantidade.text.toString())
         viewModel.setTotalMoedaVenda(moeda.name, totalMoeda)
         return saldoVenda
     }
@@ -158,7 +158,7 @@ class CambioFragment : Fragment() {
 
     private fun setClickComprar(valorDeMoedaComprado: String) {
         cambio_button_comprar.setOnClickListener {
-            setSaldoAposCompra(BigDecimal(valorDeMoedaComprado))
+            setSaldoAposCompra(valorDeMoedaComprado)
             limpaCampos()
         }
     }
@@ -170,12 +170,13 @@ class CambioFragment : Fragment() {
         )
     }
 
-    private fun setSaldoAposCompra(valor: BigDecimal) {
+    private fun setSaldoAposCompra(valor: String) {
         viewModel.setToltalMoedaCompra(
             moeda.name,
             cambio_quantidade.text.toString().toDouble()
         )
-        viewModel.setSaldoCompra(1, valor).observe(viewLifecycleOwner, Observer { novoValorSaldo ->
+
+        viewModel.setSaldoCompra(ID_USUARIO, valor, moeda).observe(viewLifecycleOwner, Observer { novoValorSaldo ->
             vaiParaFragmentSucessoAposCompra(novoValorSaldo, valor.toString())
         })
     }
@@ -224,7 +225,7 @@ class CambioFragment : Fragment() {
             cambio_saldo_moeda.text = ("$formatoTotalMoeda ${moeda.name} ")
         })
 
-        viewModel.getSaldoDisponivel(1).observe(viewLifecycleOwner, Observer {
+        viewModel.getSaldoDisponivel(ID_USUARIO).observe(viewLifecycleOwner, Observer {
             cambio_saldo_disponivel.text = it.formatoMoedaBrasileira()
         })
     }

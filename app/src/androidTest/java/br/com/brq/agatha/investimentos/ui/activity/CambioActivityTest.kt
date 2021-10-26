@@ -3,6 +3,7 @@ package br.com.brq.agatha.investimentos.ui.activity
 import android.content.Intent
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
@@ -49,7 +50,7 @@ class CambioActivityTest {
     }
 
     @Test
-    fun deveVerificarSeApareceAbreviacaoMoedaENome() {
+    fun deveVerificarSeApareceAbreviacaoMoedaENome_quandoCarregaATela() {
         onView(
             allOf(
                 instanceOf(TextView::class.java),
@@ -63,7 +64,7 @@ class CambioActivityTest {
     }
 
     @Test
-    fun deveVerificarSeApareceAVariacaoDaMoedaComACorDesejada(){
+    fun deveVerificarSeApareceAVariacaoDaMoedaComACorDesejada_quandoCarregaATela(){
         onView(
             allOf(
                 instanceOf(TextView::class.java),
@@ -77,4 +78,46 @@ class CambioActivityTest {
             .check(matches(withText("-1,00%")))
             .check(matches(verificaCor(R.color.red)))
     }
+
+    @Test
+    fun deveVerificarSeApareceOValorDeCompraMoeda_quandoCarregaATela(){
+        onView(
+            allOf(
+                instanceOf(TextView::class.java),
+                withId(R.id.cardView_cambio_valor_compra_moeda),
+                withParent(
+                    withParent(
+                        allOf(instanceOf(CardView::class.java), withId(R.id.cambio_cardView))
+                    )
+                )
+            )).check(matches(withText("Compra: US$ 10.00")))
+    }
+
+    @Test
+    fun deveVerificarSeApareceOValorDeVendaMoeda_quandoCarregaATela(){
+        onView(
+            allOf(
+                instanceOf(TextView::class.java),
+                withId(R.id.cardView_cambio_valor_venda_moeda),
+                withParent(
+                    withParent(
+                        allOf(instanceOf(CardView::class.java), withId(R.id.cambio_cardView))
+                    )
+                )
+            )).check(matches(withText("Venda: US$ 10.00")))
+    }
+
+    @Test
+    fun deveVerificarSeApareceOSaldoDisponivelDoUsuario_quandoCarregaATela(){
+        onView(
+            allOf(
+                instanceOf(TextView::class.java),
+                withId(R.id.cambio_saldo_disponivel),
+                withParent(
+                  instanceOf(ConstraintLayout::class.java)
+                )
+            )).check(matches(withText("R\$ 1.000,00")))
+    }
+
+
 }

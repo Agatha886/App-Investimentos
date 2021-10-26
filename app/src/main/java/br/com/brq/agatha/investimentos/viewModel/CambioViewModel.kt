@@ -62,8 +62,8 @@ class CambioViewModel(
         eventRetorno.value = RetornoStadeCompraEVenda.SemRetorno
     }
 
-    fun setSaldoCompra(idUsuario: Int, valorComprado: BigDecimal): LiveData<BigDecimal>{
-        return repositoryUsuario.setSaldoERetornaSaldo(idUsuario, valorComprado)
+    fun setSaldoCompra(idUsuario: Int, valorComprado: String, moeda: Moeda): LiveData<BigDecimal>{
+        return repositoryUsuario.getSaldoAposCompra(idUsuario = idUsuario, valorComprado = valorComprado, moeda = moeda)
     }
 
     fun setSaldoVenda(
@@ -71,7 +71,7 @@ class CambioViewModel(
         moeda: Moeda,
         valorMoedaComprado: String
     ): LiveData<BigDecimal> {
-        return repositoryUsuario.setSaldoVendaERetornaSaldo(idUsuario, moeda, valorMoedaComprado)
+        return repositoryUsuario.getSaldoAposVenda(idUsuario, moeda, valorMoedaComprado)
     }
 
 

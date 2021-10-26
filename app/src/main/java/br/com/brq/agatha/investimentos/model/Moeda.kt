@@ -76,7 +76,8 @@ class Moeda(
             val instance: Currency = Currency.getInstance(abreviacao)
             string.append(instance.symbol).append(" ").append(decimalFormat.format(valorMoeda))
         }
-        return string.toString()
+
+        return string.toString().replace(",", ".")
     }
 
 }
