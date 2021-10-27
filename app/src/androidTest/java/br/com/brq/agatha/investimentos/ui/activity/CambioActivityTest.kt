@@ -1,8 +1,6 @@
 package br.com.brq.agatha.investimentos.ui.activity
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
-import android.widget.EditText
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -11,10 +9,8 @@ import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.platform.app.InstrumentationRegistry
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
-import br.com.brq.agatha.investimentos.custom.ButtonCompraEVendaMarcher
 import br.com.brq.agatha.investimentos.custom.TextViewColorMatcher.Companion.verificaCor
 import br.com.brq.agatha.investimentos.model.Moeda
 import org.hamcrest.Matchers.allOf
