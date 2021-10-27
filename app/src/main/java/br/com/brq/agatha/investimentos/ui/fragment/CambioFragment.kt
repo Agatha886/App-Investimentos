@@ -54,6 +54,7 @@ class CambioFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        viewModel.adicionaUsuario(Usuario(saldoDisponivel = BigDecimal(1000)))
         inicializaCampos()
         observerViewModel()
         setBotoesQuandoInvalidos("Valor nulo")
@@ -212,8 +213,8 @@ class CambioFragment : Fragment() {
     private fun setCampos() {
         val decimalFormat = DecimalFormat("#0.00")
         val formatoNomeMoeda = moeda.abreviacao + " - " + moeda.name
-        val formatoValorVenda = "Venda: " + moeda.setMoedaSimbulo(moeda.sell ?: BigDecimal.ZERO)
-        val formatoValorCompra = "Compra: " + moeda.setMoedaSimbulo(moeda.buy ?: BigDecimal.ZERO)
+        val formatoValorVenda = "Venda: " + moeda.sell?.formatoMoedaBrasileira()
+        val formatoValorCompra = "Compra: " + moeda.buy?.formatoMoedaBrasileira()
 
         cardView_cambio_abreviacao_nome_moeda.text = formatoNomeMoeda
         setCampoVariation()
@@ -221,8 +222,8 @@ class CambioFragment : Fragment() {
         cardView_cambio_valor_compra_moeda.text = formatoValorCompra
 
         viewModel.getTotalMoeda(moeda.name).observe(viewLifecycleOwner, Observer {
-            val formatoTotalMoeda = decimalFormat.format(it)
-            cambio_saldo_moeda.text = ("$formatoTotalMoeda ${moeda.name} ")
+            val formatoTotalMoeda: String = decimalFormat.format(it).replace(",", ".")
+            cambio_saldo_moeda.text = (moeda.setMoedaSimbulo(it))
         })
 
         viewModel.getSaldoDisponivel(ID_USUARIO).observe(viewLifecycleOwner, Observer {

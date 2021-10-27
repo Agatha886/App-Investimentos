@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Investimento</string>
-    <string name="cambio_em_caixa">em caixa</string>
+    <string name="cambio_em_caixa">" "em caixa</string>
     <string name="cambio_quantidade">Quantidade</string>
 </resources>

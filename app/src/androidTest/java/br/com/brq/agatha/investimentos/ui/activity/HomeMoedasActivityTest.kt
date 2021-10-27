@@ -8,13 +8,12 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.*
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.constantes.MENSAGEM_DADOS_NAO_ATUALIZADOS
 import br.com.brq.agatha.investimentos.constantes.MENSAGEM_FALHA_API
 import br.com.brq.agatha.investimentos.custom.CustomAssertions
-import br.com.brq.agatha.investimentos.custom.MoedaMatcher
+import br.com.brq.agatha.investimentos.custom.ListaMoedaMatcher
 import br.com.brq.agatha.investimentos.custom.ToastMachter
 import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
@@ -44,7 +43,7 @@ import java.math.BigDecimal
 @RunWith(JUnit4::class)
 class HomeMoedasActivityTest : KoinTest {
 
-    private val moedaMatcher = MoedaMatcher()
+    private val moedaMatcher = ListaMoedaMatcher()
 
     private lateinit var mockedModule: Module
 
@@ -242,6 +241,16 @@ class HomeMoedasActivityTest : KoinTest {
         onView(ViewMatchers.withText(MENSAGEM_FALHA_API))
             .inRoot(ToastMachter()) // verifica se a hierarquia RAIZ É UM Toast
             .check(ViewAssertions.matches(isDisplayed())) // verifica SE APARECE A MENSAGEM NO TOAST
+
+    }
+
+    @Test
+    fun deveVerificarFormatacaoDaVariacao_quandoCarregaListaDoBanco(){
+        coEvery { dataSource.getFinanceDaApi() } throws Exception("Sem internet")
+        iniciaActivity()
+
+        onView(withId(R.id.home_recyclerView))
+            .check(ViewAssertions.matches(moedaMatcher.verificaVariacao("-1,00%", 0)))
 
     }
 

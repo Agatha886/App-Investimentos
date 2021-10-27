@@ -79,8 +79,8 @@ class MoedaTest : TestCase() {
     }
 
     fun testSetMoedaSimbulo() {
-        assertEquals("US$ 10,00", moedaDeExemplo.setMoedaSimbulo(BigDecimal(10.00)))
-        assertEquals("₿ 10,00", moedaDeExemplo2.setMoedaSimbulo(BigDecimal(10.00)))
-        assertEquals("€ 10,00", moedaDeExemplo3.setMoedaSimbulo(BigDecimal(10.00)))
+        assertEquals("US$ 10,00", moedaDeExemplo.setMoedaSimbulo(10.00))
+        assertEquals("₿ 10,00", moedaDeExemplo2.setMoedaSimbulo(10.00))
+        assertEquals("€ 10,00", moedaDeExemplo3.setMoedaSimbulo(10.00))
     }
 }

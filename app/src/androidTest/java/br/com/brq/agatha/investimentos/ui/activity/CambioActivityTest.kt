@@ -1,6 +1,8 @@
 package br.com.brq.agatha.investimentos.ui.activity
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
+import android.widget.EditText
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -9,8 +11,10 @@ import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.platform.app.InstrumentationRegistry
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
+import br.com.brq.agatha.investimentos.custom.ButtonCompraEVendaMarcher
 import br.com.brq.agatha.investimentos.custom.TextViewColorMatcher.Companion.verificaCor
 import br.com.brq.agatha.investimentos.model.Moeda
 import org.hamcrest.Matchers.allOf
@@ -90,7 +94,7 @@ class CambioActivityTest {
                         allOf(instanceOf(CardView::class.java), withId(R.id.cambio_cardView))
                     )
                 )
-            )).check(matches(withText("Compra: US$ 10.00")))
+            )).check(matches(withText("Compra: R\$ 10,00")))
     }
 
     @Test
@@ -104,7 +108,7 @@ class CambioActivityTest {
                         allOf(instanceOf(CardView::class.java), withId(R.id.cambio_cardView))
                     )
                 )
-            )).check(matches(withText("Venda: US$ 10.00")))
+            )).check(matches(withText("Venda: R\$ 10,00")))
     }
 
     @Test
@@ -116,8 +120,55 @@ class CambioActivityTest {
                 withParent(
                   instanceOf(ConstraintLayout::class.java)
                 )
-            )).check(matches(withText("R\$ 1.000,00")))
+            )).check(matches(withText("R\$ 5.672,33")))
     }
+
+    @Test
+    fun deveVerificarSeApareceOTotalDeMoedasNaFormatacaoDaMoeda_quandoCarregaATela(){
+        onView(
+            allOf(
+                instanceOf(TextView::class.java),
+                withId(R.id.cambio_saldo_moeda),
+                withParent(
+                    instanceOf(ConstraintLayout::class.java)
+                )
+            )).check(matches(withText("US\$ 801.00")))
+    }
+
+    @Test
+    fun deveVerificarSeApareceOEditTextQuantidadeNaTela_quandoCarregaATela(){
+        onView(
+            allOf(
+                withId(R.id.cambio_quantidade),
+                withParent(withParent(withId(R.id.activity_cambio_container))),
+                isDisplayed()
+            )
+        ).check(matches(withText("Quantidade")))
+    }
+
+    @Test
+    fun deveVerificarSeApareceOBotaoVender(){
+        onView(
+            allOf(
+                withId(R.id.cambio_button_vender), withText("VENDER"),
+                withParent(withParent(withId(R.id.activity_cambio_container))),
+                isDisplayed()
+            )
+        ).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun deveVerificarSeApareceOBotaoComprar(){
+        onView(
+            allOf(
+                withId(R.id.cambio_button_comprar), withText("COMPRAR"),
+                withParent(withParent(withId(R.id.activity_cambio_container))),
+                isDisplayed()
+            )
+        ).check(matches(isDisplayed()))
+    }
+
+
 
 
 }

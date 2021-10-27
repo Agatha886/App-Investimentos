@@ -67,7 +67,7 @@ class Moeda(
             this.totalDeMoeda = novoTotal
     }
 
-    fun setMoedaSimbulo(valorMoeda: BigDecimal): String {
+    fun setMoedaSimbulo(valorMoeda: Double): String {
         val decimalFormat = DecimalFormat("#0.00")
         val string = StringBuilder()
         if (abreviacao == "BTC") {
