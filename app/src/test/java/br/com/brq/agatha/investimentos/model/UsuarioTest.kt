@@ -19,7 +19,6 @@ class UsuarioTest : TestCase() {
     fun testSetSaldo() {
         usuarioDeExemplo.setSaldo(BigDecimal(1000))
         assertEquals(BigDecimal(1000), usuarioDeExemplo.saldoDisponivel)
-
     }
 
     fun testCalculaSaldoVenda() {

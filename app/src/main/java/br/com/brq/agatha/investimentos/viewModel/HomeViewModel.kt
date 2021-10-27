@@ -1,68 +1,62 @@
 package br.com.brq.agatha.investimentos.viewModel
 
-import android.content.Context
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
-import br.com.brq.agatha.investimentos.repository.MoedaRepository
-import br.com.brq.agatha.investimentos.retrofit.MoedasRetrofit
+import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
+import br.com.brq.agatha.investimentos.viewModel.base.CoroutinesContextProvider
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class HomeViewModel(context: Context) : ViewModel() {
+class HomeViewModel(
+    val dataSource: MoedaApiDataSource,
+    coroutinesContextProvider: CoroutinesContextProvider,
+    private val moedaWrapper: MoedaWrapper
+) : ViewModel() {
 
-    private val io = CoroutineScope(Dispatchers.IO)
+    var quandoFinaliza: () -> Unit = {}
 
-    private val repositoryMoeda: MoedaRepository = MoedaRepository(context)
-    private val listaMoedasDaApi = mutableListOf<Moeda>()
-    var quandoFinaliza:() -> Unit ={}
+    private val eventRetornoDaApi = MutableLiveData<RetornoStadeApi>()
+
+    val viewModelRetornoDaApi: LiveData<RetornoStadeApi> = eventRetornoDaApi
+
+    private val io: CoroutineScope = CoroutineScope(coroutinesContextProvider.io)
 
     fun buscaDaApi() {
-        var finance: Finance?
         io.launch {
-            val buscaMoedas = repositoryMoeda.buscaMoedas()
+            val moedasDoBanco = dataSource.buscaMoedasNoBanco()
+            var exception: Exception? = null
+            var financeDaApi: Finance? = null
             try {
-                val call = MoedasRetrofit().retornaFinance()
-                val resposta = call.execute()
-                finance = resposta.body()
-                atualizaBancoDeDados(buscaMoedas, finance)
-                agrupaTodasAsMoedasNaLista(finance)
-
-                withContext(Dispatchers.Main) {
-                    RetornoStadeApi.eventRetorno.value = RetornoStadeApi.Sucesso(listaMoedasDaApi)
-                    quandoFinaliza()
-                }
+                financeDaApi = dataSource.getFinanceDaApi()
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    RetornoStadeApi.eventRetorno.value = RetornoStadeApi.FalhaApi(buscaMoedas)
-                    quandoFinaliza()
-                }
+                exception = e
+            } finally {
+                verificaSeDeuExcecaoAoChamarDaApi(exception, financeDaApi, moedasDoBanco)
             }
         }
     }
 
-    private fun agrupaTodasAsMoedasNaLista(finance: Finance?) {
-        listaMoedasDaApi.clear()
-        finance?.results?.currencies?.usd?.let { listaMoedasDaApi.add(it) }
-        finance?.results?.currencies?.jpy?.let { listaMoedasDaApi.add(it) }
-        finance?.results?.currencies?.gbp?.let { listaMoedasDaApi.add(it) }
-        finance?.results?.currencies?.eur?.let { listaMoedasDaApi.add(it) }
-        finance?.results?.currencies?.cny?.let { listaMoedasDaApi.add(it) }
-        finance?.results?.currencies?.cad?.let { listaMoedasDaApi.add(it) }
-        finance?.results?.currencies?.btc?.let { listaMoedasDaApi.add(it) }
-        finance?.results?.currencies?.aud?.let { listaMoedasDaApi.add(it) }
-        finance?.results?.currencies?.ars?.let { listaMoedasDaApi.add(it) }
-    }
-
-    private fun atualizaBancoDeDados(buscaMoedas: List<Moeda>, finance: Finance?) {
-        if (buscaMoedas.isNullOrEmpty()) {
-            repositoryMoeda.adicionaTodasAsMoedasNoBanco(finance)
+    private fun verificaSeDeuExcecaoAoChamarDaApi(
+        exception: Exception?,
+        financeDaApi: Finance?,
+        moedasDoBanco: List<Moeda>
+    ) {
+        if (exception != null || financeDaApi == null) {
+            setEventRetornoEFinalizaBusca(RetornoStadeApi.SucessoRetornoBanco(moedasDoBanco))
         } else {
-            repositoryMoeda.modificaTotasAsMoedasNoBanco(finance)
+            dataSource.atualizaBancoDeDados(moedasDoBanco, financeDaApi)
+            val listaMoedadaApi = moedaWrapper.agrupaTodasAsMoedasNaLista(financeDaApi)
+            setEventRetornoEFinalizaBusca(RetornoStadeApi.SucessoRetornoApi(listaMoedadaApi))
         }
     }
 
+    private fun setEventRetornoEFinalizaBusca(retornoStadeApi: RetornoStadeApi) {
+        eventRetornoDaApi.postValue(retornoStadeApi)
+        quandoFinaliza()
+    }
+
 }
+

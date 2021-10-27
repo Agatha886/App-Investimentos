@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
+import br.com.brq.agatha.investimentos.constantes.MENSAGEM_DADOS_NAO_ATUALIZADOS
 import br.com.brq.agatha.investimentos.constantes.MENSAGEM_FALHA_API
 import br.com.brq.agatha.investimentos.constantes.MENSAGEM_MOEDA_INVALIDA
 import br.com.brq.agatha.investimentos.extension.mensagem
@@ -16,17 +17,17 @@ import br.com.brq.agatha.investimentos.ui.recyclerview.ListaMoedasAdpter
 import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.RetornoStadeApi
 import kotlinx.android.synthetic.main.activity_moedas_home.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @Suppress("UNCHECKED_CAST")
 class HomeMoedasActivity : AppCompatActivity() {
+
 
     private val adapter: ListaMoedasAdpter by lazy {
         ListaMoedasAdpter(this@HomeMoedasActivity)
     }
 
-    private val viewModel: HomeViewModel by lazy {
-        HomeViewModel(this)
-    }
+    private val viewModel by viewModel<HomeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,10 +50,16 @@ class HomeMoedasActivity : AppCompatActivity() {
     }
 
     private fun observerViewModel() {
-        RetornoStadeApi.eventRetorno.observe(this, Observer {
+        viewModel.viewModelRetornoDaApi.observe(this, Observer {
             when (it) {
-                is RetornoStadeApi.Sucesso -> adapter.atualiza(it.listaMoeda)
-                is RetornoStadeApi.FalhaApi-> setAdapterComBancoDeDados(it.listaMoeda)
+                is RetornoStadeApi.SucessoRetornoApi -> {
+                    adapter.atualiza(it.listaMoeda)
+                    adapter.quandoMoedaClicado = this::vaiParaActivityCambio
+                }
+                is RetornoStadeApi.SucessoRetornoBanco-> {
+                    setAdapterComBancoDeDados(it.listaMoeda)
+                    adapter.quandoMoedaClicado = { mensagem(MENSAGEM_DADOS_NAO_ATUALIZADOS) }
+                }
                 else -> Log.i("TAG", "observerViewModel: Entrou no else")
             }
         })
@@ -60,7 +67,6 @@ class HomeMoedasActivity : AppCompatActivity() {
 
     private fun configuraAdapter() {
         home_recyclerView.adapter = adapter
-        adapter.quandoMoedaClicado = this::vaiParaActivityCambio
     }
 
     private fun vaiParaActivityCambio(moeda: Moeda) {

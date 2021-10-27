@@ -1,49 +1,44 @@
 package br.com.brq.agatha.investimentos.viewModel
 
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.model.Usuario
-import br.com.brq.agatha.investimentos.repository.MoedaRepository
+import br.com.brq.agatha.investimentos.repository.MoedaDbDataSource
 import br.com.brq.agatha.investimentos.repository.UsuarioRepository
 import br.com.brq.agatha.investimentos.retrofit.MoedasRetrofit
+import br.com.brq.agatha.investimentos.viewModel.base.CoroutinesContextProvider
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
-class CambioViewModel(context: Context) : ViewModel() {
+class CambioViewModel(
+    private val dbDataSource: MoedaDbDataSource,
+    private val repositoryUsuario: UsuarioRepository,
+    coroutinesContextProvider: CoroutinesContextProvider
+) : ViewModel() {
 
-    private val io = CoroutineScope(Dispatchers.IO)
+    private val io = CoroutineScope(coroutinesContextProvider.io)
 
-    private val repositoryMoeda: MoedaRepository = MoedaRepository(context)
-    private val repositoryUsuario = UsuarioRepository(context)
     private val eventRetorno = MutableLiveData<RetornoStadeCompraEVenda>()
     val viewEventRetornoCompraEVenda: LiveData<RetornoStadeCompraEVenda> = eventRetorno
-    // Tela De Câmbio Usuario
 
-    fun adicionaUsuario(usuario: Usuario) {
+
+    fun adicionaUsuario(usuario: Usuario){
         repositoryUsuario.adicionaUsuario(usuario)
     }
 
-    fun getSaldoDisponivel(id: Int): LiveData<BigDecimal> {
-        return repositoryUsuario.getSaldoDisponivel(id)
+    fun getSaldoDisponivel(idUser: Int): LiveData<BigDecimal> {
+        return repositoryUsuario.getSaldoDisponivel(idUser)
     }
 
-    fun apagaTodos() {
-        repositoryUsuario.apagaTodos()
-    }
-
-    fun buscaMoedaDaApi(){
+    fun buscaMoedaDaApi() {
         io.launch {
             val call = MoedasRetrofit().retornaMoeda("USD")
             val resposta = call.execute()
             val finance = resposta.body()
-            Log.i("TAG", "buscaMoedaDaApi: ${finance?.results?.currencies?.name}")
+//            Log.i("TAG", "buscaMoedaDaApi: ${finance?.results?.currencies?.name}")
         }
     }
 
@@ -52,25 +47,23 @@ class CambioViewModel(context: Context) : ViewModel() {
             val usuario: Usuario = repositoryUsuario.getUsuario(idUsuario)
             val novoSaldo: BigDecimal = usuario.calculaSaldoCompra(moeda, valor)
 
-            if (novoSaldo > BigDecimal.ZERO) {
-                withContext(Dispatchers.Main) {
-                  eventRetorno.value = RetornoStadeCompraEVenda.SucessoCompra(BigDecimal(valor))
-                }
+            if (novoSaldo >= BigDecimal.ZERO) {
+                eventRetorno.postValue(RetornoStadeCompraEVenda.SucessoCompra(valor))
             } else {
-                withContext(Dispatchers.Main) {
-                    eventRetorno.value = RetornoStadeCompraEVenda
+                eventRetorno.postValue(
+                    RetornoStadeCompraEVenda
                         .FalhaCompra("Valor de Compra Inválido")
-                }
+                )
             }
         }
     }
 
-    fun setEventRetornoComoSem(){
+    fun setEventRetornoComoSem() {
         eventRetorno.value = RetornoStadeCompraEVenda.SemRetorno
     }
 
-    fun setSaldoCompra(idUsuario: Int, valorComprado: BigDecimal) {
-        repositoryUsuario.setSaldo(idUsuario, valorComprado)
+    fun setSaldoCompra(idUsuario: Int, valorComprado: String, moeda: Moeda): LiveData<BigDecimal>{
+        return repositoryUsuario.getSaldoAposCompra(idUsuario = idUsuario, valorComprado = valorComprado, moeda = moeda)
     }
 
     fun setSaldoVenda(
@@ -78,40 +71,39 @@ class CambioViewModel(context: Context) : ViewModel() {
         moeda: Moeda,
         valorMoedaComprado: String
     ): LiveData<BigDecimal> {
-        return repositoryUsuario.getSaldoVenda(idUsuario, moeda, valorMoedaComprado)
+        return repositoryUsuario.getSaldoAposVenda(idUsuario, moeda, valorMoedaComprado)
     }
 
 
-    // Tela De Câmbio Moeda
-
     fun getTotalMoeda(nameMoeda: String): LiveData<Double> {
-        return repositoryMoeda.getTotalMoeda(nameMoeda)
+        return dbDataSource.getTotalMoeda(nameMoeda)
     }
 
     fun setToltalMoedaCompra(nameMoeda: String, valorDaCompra: Double) {
-        repositoryMoeda.setTotalMoedaAposCompra(nameMoeda, valorDaCompra)
+        dbDataSource.setTotalMoedaAposCompra(nameMoeda, valorDaCompra)
     }
 
     fun setTotalMoedaVenda(nameMoeda: String, valorDaCompra: Double) {
-        repositoryMoeda.setTotalMoedaAposVenda(nameMoeda, valorDaCompra)
+        dbDataSource.setTotalMoedaAposVenda(nameMoeda, valorDaCompra)
     }
 
-    fun venda(nameMoeda: String, quantidadeVenda: String) {
+    fun venda(nameMoeda: String, quantidadeParaVenda: String) {
         io.launch {
-            val moeda = repositoryMoeda.buscaMoeda(nameMoeda)
-            val valorTotalMoeda = moeda.totalDeMoeda.minus(BigDecimal(quantidadeVenda).toDouble())
+            val moeda = dbDataSource.buscaMoedaNoBando(nameMoeda)
+            val valorTotalMoeda = moeda.totalDeMoeda.minus(BigDecimal(quantidadeParaVenda).toDouble())
 
             if (valorTotalMoeda >= 00.0) {
-                withContext(Dispatchers.Main) {
-                    eventRetorno.value = RetornoStadeCompraEVenda.SucessoVenda(valorTotalMoeda)
-                }
+                eventRetorno.postValue(
+                    RetornoStadeCompraEVenda.SucessoVenda(
+                        valorTotalMoeda,
+                        quantidadeParaVenda
+                    )
+                )
             } else {
-                withContext(Dispatchers.Main){
-                    eventRetorno.value = RetornoStadeCompraEVenda.FalhaVenda("Valor inválido")
-                }
+                eventRetorno.postValue(RetornoStadeCompraEVenda.FalhaVenda("Valor inválido"))
             }
         }
     }
-
 }
+
 
