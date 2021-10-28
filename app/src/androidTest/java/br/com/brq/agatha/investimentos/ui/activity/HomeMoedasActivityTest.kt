@@ -10,15 +10,15 @@ import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.constantes.MENSAGEM_DADOS_NAO_ATUALIZADOS
-import br.com.brq.agatha.investimentos.constantes.MENSAGEM_FALHA_API
+import br.com.brq.agatha.investimentos.util.MENSAGEM_DADOS_NAO_ATUALIZADOS
+import br.com.brq.agatha.investimentos.util.MENSAGEM_FALHA_API
 import br.com.brq.agatha.investimentos.custom.CustomAssertions
 import br.com.brq.agatha.investimentos.custom.ListaMoedaMatcher
 import br.com.brq.agatha.investimentos.custom.ToastMachter
 import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
-import br.com.brq.agatha.investimentos.ui.recyclerview.ListaMoedasAdpter.ListaMoedasViewHolder
+import br.com.brq.agatha.investimentos.ui.adapter.ListaMoedasAdpter.ListaMoedasViewHolder
 import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.MoedaWrapper
 import br.com.brq.agatha.investimentos.viewModel.base.TestContextProvider
@@ -38,7 +38,6 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.koin.test.KoinTest
 import java.math.BigDecimal
-
 
 @RunWith(JUnit4::class)
 class HomeMoedasActivityTest : KoinTest {
@@ -146,7 +145,7 @@ class HomeMoedasActivityTest : KoinTest {
             }
         }
 
-        coEvery { dataSource.buscaMoedasNoBanco() } returns listaMoedasBanco
+        coEvery { dataSource.buscaTodasMoedasNoBanco() } returns listaMoedasBanco
         every {moedaWrapper.agrupaTodasAsMoedasNaLista(finance)} returns listaMoedasApi
 
     }

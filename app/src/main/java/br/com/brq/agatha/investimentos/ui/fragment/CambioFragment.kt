@@ -13,9 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
-import br.com.brq.agatha.investimentos.constantes.ID_USUARIO
-import br.com.brq.agatha.investimentos.constantes.TipoTranferencia
+import br.com.brq.agatha.investimentos.util.CHAVE_MOEDA
+import br.com.brq.agatha.investimentos.util.ID_USUARIO
+import br.com.brq.agatha.investimentos.model.TipoTranferencia
 import br.com.brq.agatha.investimentos.extension.formatoMoedaBrasileira
 import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
@@ -57,7 +57,8 @@ class CambioFragment : Fragment() {
 //        viewModel.adicionaUsuario(Usuario(saldoDisponivel = BigDecimal(1000)))
         inicializaCampos()
         observerViewModel()
-        setBotoesQuandoInvalidos("Valor nulo")
+        estilizaBotaoOperacaoInvalida(cambio_button_comprar)
+        estilizaBotaoOperacaoInvalida(cambio_button_vender)
         setCampoQuantidadeMoeda()
     }
 
@@ -115,7 +116,7 @@ class CambioFragment : Fragment() {
         button.setTextColor(resources.getColor(R.color.white))
     }
 
-    private fun setClickVender(totalMoeda: Double, valorVenda: String) {
+    private fun setClickVender(totalMoeda: Int, valorVenda: String) {
         cambio_button_vender.setOnClickListener {
             val novoTotalDeMoedas = setTotalDeMoedasAposVenda(totalMoeda)
             vaiParaFragmentSucessoAposVenda(novoTotalDeMoedas, valorVenda)
@@ -123,7 +124,7 @@ class CambioFragment : Fragment() {
         }
     }
 
-    private fun setTotalDeMoedasAposVenda(totalMoeda: Double): LiveData<BigDecimal> {
+    private fun setTotalDeMoedasAposVenda(totalMoeda: Int): LiveData<BigDecimal> {
         val saldoVenda =
             viewModel.setSaldoVenda(ID_USUARIO, moeda, cambio_quantidade.text.toString())
         viewModel.setTotalMoedaVenda(moeda.name, totalMoeda)
@@ -174,7 +175,7 @@ class CambioFragment : Fragment() {
     private fun setSaldoAposCompra(valor: String) {
         viewModel.setToltalMoedaCompra(
             moeda.name,
-            cambio_quantidade.text.toString().toDouble()
+            cambio_quantidade.text.toString().toInt()
         )
 
         viewModel.setSaldoCompra(ID_USUARIO, valor, moeda).observe(viewLifecycleOwner, Observer { novoValorSaldo ->

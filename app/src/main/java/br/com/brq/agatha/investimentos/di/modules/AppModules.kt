@@ -1,7 +1,7 @@
 package br.com.brq.agatha.investimentos.di.modules
 
 import androidx.room.Room
-import br.com.brq.agatha.investimentos.constantes.NOME_BANCO
+import br.com.brq.agatha.investimentos.util.NOME_BANCO
 import br.com.brq.agatha.investimentos.database.InvestimentosDataBase
 import br.com.brq.agatha.investimentos.database.dao.MoedaDao
 import br.com.brq.agatha.investimentos.database.dao.UsuarioDao

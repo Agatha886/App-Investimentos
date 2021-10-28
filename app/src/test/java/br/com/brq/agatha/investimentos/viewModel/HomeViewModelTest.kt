@@ -2,6 +2,7 @@ package br.com.brq.agatha.investimentos.viewModel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.espresso.intent.rule.IntentsTestRule
+
 import br.com.brq.agatha.investimentos.model.Finance
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
@@ -44,7 +45,7 @@ class HomeViewModelTest {
     @Test
     fun deveRetornarSucessoApi_quandoConsegueBuscarDaApi() {
         val listaMoedas = listOf<Moeda>()
-        coEvery { dataSource.buscaMoedasNoBanco()} returns listaMoedas
+        coEvery { dataSource.buscaTodasMoedasNoBanco()} returns listaMoedas
         coEvery { dataSource.getFinanceDaApi()} returns finance
         every { moedaWrapper.agrupaTodasAsMoedasNaLista(finance) } returns listaMoedas
         viewModel.buscaDaApi()
@@ -55,7 +56,7 @@ class HomeViewModelTest {
     @Test
     fun deveRetornarSucessoBanco_quandoDarFalhaAoBuscarDaApi(){
         val listaMoedas = listOf<Moeda>()
-        coEvery{ dataSource.buscaMoedasNoBanco()} returns listaMoedas
+        coEvery{ dataSource.buscaTodasMoedasNoBanco()} returns listaMoedas
         coEvery { dataSource.getFinanceDaApi()} throws Exception("Deu exceção")
         viewModel.buscaDaApi()
         assertEquals(RetornoStadeApi.SucessoRetornoBanco(listaMoedas), viewModel.viewModelRetornoDaApi.value)
@@ -65,13 +66,13 @@ class HomeViewModelTest {
     @Test
     fun deveRealizarFunçoesEspecificas_quandoConsegueBuscarDaApi(){
         val listaMoedas = listOf<Moeda>()
-        coEvery { dataSource.buscaMoedasNoBanco()} returns listaMoedas
+        coEvery { dataSource.buscaTodasMoedasNoBanco()} returns listaMoedas
         coEvery { dataSource.getFinanceDaApi()} returns finance
         every { moedaWrapper.agrupaTodasAsMoedasNaLista(finance) } returns listaMoedas
         viewModel.buscaDaApi()
 
         verifySequence{
-            dataSource.buscaMoedasNoBanco()
+            dataSource.buscaTodasMoedasNoBanco()
             dataSource.getFinanceDaApi()
             dataSource.atualizaBancoDeDados(listaMoedas, finance)
             moedaWrapper.agrupaTodasAsMoedasNaLista(finance)
@@ -82,13 +83,13 @@ class HomeViewModelTest {
     @Test
     fun deveRealizarFunçoesEspecificas_quandoDarFalhaAoBuscarDaApi(){
         val listaMoedas = listOf<Moeda>()
-        coEvery{ dataSource.buscaMoedasNoBanco()} returns listaMoedas
+        coEvery{ dataSource.buscaTodasMoedasNoBanco()} returns listaMoedas
         coEvery { dataSource.getFinanceDaApi()} throws Exception("Deu exceção")
         every { moedaWrapper.agrupaTodasAsMoedasNaLista(finance) } returns listaMoedas
         viewModel.buscaDaApi()
 
         verifySequence{
-            dataSource.buscaMoedasNoBanco()
+            dataSource.buscaTodasMoedasNoBanco()
             dataSource.getFinanceDaApi()
             viewModel.quandoFinaliza
         }

@@ -6,9 +6,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
-import br.com.brq.agatha.investimentos.constantes.CHAVE_RESPOSTA_MENSAGEM
-import br.com.brq.agatha.investimentos.constantes.TipoTranferencia
+import br.com.brq.agatha.investimentos.util.CHAVE_MOEDA
+import br.com.brq.agatha.investimentos.util.CHAVE_RESPOSTA_MENSAGEM
+import br.com.brq.agatha.investimentos.model.TipoTranferencia
 import br.com.brq.agatha.investimentos.extension.setMyActionBar
 import br.com.brq.agatha.investimentos.extension.transacaoFragment
 import br.com.brq.agatha.investimentos.model.Moeda
@@ -20,7 +20,7 @@ import java.io.Serializable
 class
 CambioActivity() : AppCompatActivity() {
 
-    private var setTituloAppBar: (tipoTransferencia:TipoTranferencia) -> String = { tipoTranferencia ->
+    private var setTituloAppBar: (tipoTransferencia: TipoTranferencia) -> String = { tipoTranferencia ->
         if(tipoTranferencia == TipoTranferencia.COMPRA){"Compra"}else if(tipoTranferencia== TipoTranferencia.VENDA){"Venda"}else{"Câmbio"}
     }
 

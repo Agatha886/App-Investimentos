@@ -26,7 +26,7 @@ class HomeViewModel(
 
     fun buscaDaApi() {
         io.launch {
-            val moedasDoBanco = dataSource.buscaMoedasNoBanco()
+            val moedasDoBanco = dataSource.buscaTodasMoedasNoBanco()
             var exception: Exception? = null
             var financeDaApi: Finance? = null
             try {
@@ -46,7 +46,7 @@ class HomeViewModel(
     ) {
         if (exception != null || financeDaApi == null) {
             setEventRetornoEFinalizaBusca(RetornoStadeApi.SucessoRetornoBanco(moedasDoBanco))
-        } else {
+        }else {
             dataSource.atualizaBancoDeDados(moedasDoBanco, financeDaApi)
             val listaMoedadaApi = moedaWrapper.agrupaTodasAsMoedasNaLista(financeDaApi)
             setEventRetornoEFinalizaBusca(RetornoStadeApi.SucessoRetornoApi(listaMoedadaApi))

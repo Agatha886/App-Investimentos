@@ -75,22 +75,22 @@ class CambioViewModel(
     }
 
 
-    fun getTotalMoeda(nameMoeda: String): LiveData<Double> {
+    fun getTotalMoeda(nameMoeda: String): LiveData<Int> {
         return dbDataSource.getTotalMoeda(nameMoeda)
     }
 
-    fun setToltalMoedaCompra(nameMoeda: String, valorDaCompra: Double) {
+    fun setToltalMoedaCompra(nameMoeda: String, valorDaCompra: Int) {
         dbDataSource.setTotalMoedaAposCompra(nameMoeda, valorDaCompra)
     }
 
-    fun setTotalMoedaVenda(nameMoeda: String, valorDaCompra: Double) {
+    fun setTotalMoedaVenda(nameMoeda: String, valorDaCompra: Int) {
         dbDataSource.setTotalMoedaAposVenda(nameMoeda, valorDaCompra)
     }
 
     fun venda(nameMoeda: String, quantidadeParaVenda: String) {
         io.launch {
             val moeda = dbDataSource.buscaMoedaNoBando(nameMoeda)
-            val valorTotalMoeda = moeda.totalDeMoeda.minus(BigDecimal(quantidadeParaVenda).toDouble())
+            val valorTotalMoeda = moeda.totalDeMoeda.minus(BigDecimal(quantidadeParaVenda).toInt())
 
             if (valorTotalMoeda >= 00.0) {
                 eventRetorno.postValue(

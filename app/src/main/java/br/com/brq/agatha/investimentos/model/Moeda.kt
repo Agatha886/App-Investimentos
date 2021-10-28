@@ -22,7 +22,7 @@ class Moeda(
     var sell: BigDecimal?,
     var variation: BigDecimal,
     var abreviacao: String?,
-    var totalDeMoeda: Double = 0.00
+    var totalDeMoeda: Int = 0
 ) : Serializable {
 
     fun setAbreviacao(): String {
@@ -57,24 +57,23 @@ class Moeda(
 
     }
 
-    fun setTotalMoedaCompra(valorComprado: Double) {
-        if (valorComprado >= 0.00)
+    fun setTotalMoedaCompra(valorComprado: Int) {
+        if (valorComprado >= 0)
             this.totalDeMoeda = totalDeMoeda + valorComprado
     }
 
-    fun setTotalMoedaVenda(novoTotal: Double) {
-        if (novoTotal >= 0.00)
+    fun setTotalMoedaVenda(novoTotal: Int) {
+        if (novoTotal >= 0)
             this.totalDeMoeda = novoTotal
     }
 
-    fun setMoedaSimbulo(valorMoeda: Double): String {
-        val decimalFormat = DecimalFormat("#0.00")
+    fun setMoedaSimbulo(valorMoeda: Int): String {
         val string = StringBuilder()
         if (abreviacao == "BTC") {
-            string.append("₿ ").append(decimalFormat.format(valorMoeda))
+            string.append("₿ ").append(valorMoeda)
         } else {
             val instance: Currency = Currency.getInstance(abreviacao)
-            string.append(instance.symbol).append(" ").append(decimalFormat.format(valorMoeda))
+            string.append(instance.symbol).append(" ").append(valorMoeda)
         }
 
         return string.toString().replace(",", ".")

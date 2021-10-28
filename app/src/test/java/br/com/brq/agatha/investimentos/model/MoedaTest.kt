@@ -8,7 +8,6 @@ import io.mockk.mockk
 import junit.framework.TestCase
 import java.math.BigDecimal
 
-
 class MoedaTest : TestCase() {
 
     private val moedaDeExemplo = Moeda(

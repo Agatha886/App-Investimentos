@@ -18,7 +18,7 @@ open class MoedaDbDataSource(private val daoMoeda: MoedaDao, coroutinesContextPr
         return daoMoeda.buscaMoeda(nameMoeda)
     }
 
-    fun buscaMoedasNoBanco(): List<Moeda> {
+    fun buscaTodasMoedasNoBanco(): List<Moeda> {
         return daoMoeda.buscaTodasAsMoedas()
     }
 
@@ -38,8 +38,8 @@ open class MoedaDbDataSource(private val daoMoeda: MoedaDao, coroutinesContextPr
     }
 
 
-    fun getTotalMoeda(nameMoeda: String): LiveData<Double> {
-        val liveDate = MutableLiveData<Double>()
+    fun getTotalMoeda(nameMoeda: String): LiveData<Int> {
+        val liveDate = MutableLiveData<Int>()
         io.launch {
             val moeda = daoMoeda.buscaMoeda(nameMoeda)
             liveDate.postValue(moeda.totalDeMoeda)
@@ -48,7 +48,7 @@ open class MoedaDbDataSource(private val daoMoeda: MoedaDao, coroutinesContextPr
         return liveDate
     }
 
-    fun setTotalMoedaAposCompra(nameMoeda: String, valorDaCompra: Double) {
+    fun setTotalMoedaAposCompra(nameMoeda: String, valorDaCompra: Int) {
         io.launch {
             val moeda = daoMoeda.buscaMoeda(nameMoeda)
             moeda.setTotalMoedaCompra(valorDaCompra)
@@ -56,7 +56,7 @@ open class MoedaDbDataSource(private val daoMoeda: MoedaDao, coroutinesContextPr
         }
     }
 
-    fun setTotalMoedaAposVenda(nameMoeda: String, valorTotalAposVenda: Double) {
+    fun setTotalMoedaAposVenda(nameMoeda: String, valorTotalAposVenda: Int) {
         io.launch {
             val moeda = daoMoeda.buscaMoeda(nameMoeda)
             moeda.setTotalMoedaVenda(valorTotalAposVenda)

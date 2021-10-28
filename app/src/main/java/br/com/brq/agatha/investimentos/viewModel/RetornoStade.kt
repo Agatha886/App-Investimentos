@@ -13,7 +13,7 @@ sealed class RetornoStadeCompraEVenda {
     data class SucessoCompra(var valorDeMoedaComprado: String) : RetornoStadeCompraEVenda()
 
     data class FalhaVenda(var mensagemErro: String) : RetornoStadeCompraEVenda()
-    data class SucessoVenda(var totalMoedas: Double, var valorGastoNaVenda: String) : RetornoStadeCompraEVenda()
+    data class SucessoVenda(var totalMoedas: Int, var valorGastoNaVenda: String) : RetornoStadeCompraEVenda()
 
     object SemRetorno: RetornoStadeCompraEVenda()
 }

@@ -25,6 +25,16 @@ class UsuarioRepositoryTest {
 
     private lateinit var usuarioRepository: UsuarioRepository
 
+    private val moedaDeExemplo = Moeda(
+        name = "Dollar",
+        buy = BigDecimal.ZERO,
+        sell = BigDecimal.ZERO,
+        abreviacao = "USD",
+        totalDeMoeda = 0.00,
+        variation = BigDecimal(-1)
+    )
+
+
     @MockK
     private lateinit var usuarioDao: UsuarioDao
 
@@ -56,7 +66,7 @@ class UsuarioRepositoryTest {
         val usuarioDeExemplo = Usuario(saldoDisponivel = BigDecimal(150))
         every { usuarioDao.retornaUsuario(usuarioDeExemplo.id) } returns usuarioDeExemplo
         val saldoERetornaSaldo =
-            usuarioRepository.getSaldoAposCompra(usuarioDeExemplo.id, BigDecimal(50))
+            usuarioRepository.getSaldoAposCompra(usuarioDeExemplo.id, "50", moedaDeExemplo)
         assertEquals(BigDecimal(50), usuarioDeExemplo.saldoDisponivel)
     }
 

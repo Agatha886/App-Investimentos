@@ -10,7 +10,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.constantes.CHAVE_MOEDA
+import br.com.brq.agatha.investimentos.util.CHAVE_MOEDA
 import br.com.brq.agatha.investimentos.custom.TextViewColorMatcher.Companion.verificaCor
 import br.com.brq.agatha.investimentos.model.Moeda
 import org.hamcrest.Matchers.allOf
