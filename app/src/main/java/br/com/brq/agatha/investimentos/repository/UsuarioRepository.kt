@@ -37,7 +37,7 @@ class UsuarioRepository(
         }
     }
 
-    fun getSaldoAposVenda(
+    fun setSaldoAposVenda(
         idUsuario: Int,
         moeda: Moeda,
         valorVendaMoeda: String
@@ -45,7 +45,7 @@ class UsuarioRepository(
         val saldoAposVenda = MutableLiveData<BigDecimal>()
         io.launch {
             val retornaUsuario = daoUsuario.retornaUsuario(idUsuario)
-            val novoSaldo = retornaUsuario.calculaSaldoVenda(moeda, valorVendaMoeda)
+            val novoSaldo = calculaSaldoVenda(moeda, valorVendaMoeda, retornaUsuario)
             retornaUsuario.setSaldo(novoSaldo)
             modificaUsuario(retornaUsuario)
             saldoAposVenda.postValue(novoSaldo)
@@ -61,7 +61,7 @@ class UsuarioRepository(
         val saldoAposCompra = MutableLiveData<BigDecimal>()
         io.launch {
             val retornaUsuario = daoUsuario.retornaUsuario(idUsuario)
-            val novoSaldo = retornaUsuario.calculaSaldoCompra(moeda, valorComprado)
+            val novoSaldo = calculaSaldoCompra(moeda, valorComprado, retornaUsuario)
             retornaUsuario.setSaldo(novoSaldo)
             modificaUsuario(retornaUsuario)
             saldoAposCompra.postValue(novoSaldo)
@@ -72,6 +72,15 @@ class UsuarioRepository(
 
     private fun modificaUsuario(usuario: Usuario) {
         daoUsuario.modifica(usuario)
+    }
+
+    fun calculaSaldoCompra(moeda: Moeda, valorComprado: String, user: Usuario): BigDecimal {
+        val valorDaCompra = BigDecimal(valorComprado).multiply(moeda.buy)
+        return user.saldoDisponivel.subtract(valorDaCompra)
+    }
+
+    fun calculaSaldoVenda(moeda: Moeda, valorVendaMoeda: String, user: Usuario): BigDecimal{
+        return user.saldoDisponivel.add(BigDecimal(valorVendaMoeda).multiply(moeda.sell))
     }
 
 }

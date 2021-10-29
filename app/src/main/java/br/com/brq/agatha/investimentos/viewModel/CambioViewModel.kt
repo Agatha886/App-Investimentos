@@ -45,7 +45,7 @@ class CambioViewModel(
     fun compra(idUsuario: Int, moeda: Moeda, valor: String) {
         io.launch {
             val usuario: Usuario = repositoryUsuario.getUsuario(idUsuario)
-            val novoSaldo: BigDecimal = usuario.calculaSaldoCompra(moeda, valor)
+            val novoSaldo: BigDecimal = repositoryUsuario.calculaSaldoCompra(moeda, valor, usuario)
 
             if (novoSaldo >= BigDecimal.ZERO) {
                 eventRetorno.postValue(RetornoStadeCompraEVenda.SucessoCompra(valor))
@@ -71,7 +71,7 @@ class CambioViewModel(
         moeda: Moeda,
         valorMoedaComprado: String
     ): LiveData<BigDecimal> {
-        return repositoryUsuario.getSaldoAposVenda(idUsuario, moeda, valorMoedaComprado)
+        return repositoryUsuario.setSaldoAposVenda(idUsuario, moeda, valorMoedaComprado)
     }
 
 

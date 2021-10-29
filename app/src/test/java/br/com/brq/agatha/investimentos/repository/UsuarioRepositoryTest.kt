@@ -83,7 +83,7 @@ class UsuarioRepositoryTest {
         )
         every { usuarioDao.retornaUsuario(usuarioDeExemplo.id) } returns usuarioDeExemplo
         val retornaSaldoDoUsarioAposVenda =
-            usuarioRepository.getSaldoAposVenda(usuarioDeExemplo.id, moedaDeExemplo, "10")
+            usuarioRepository.setSaldoAposVenda(usuarioDeExemplo.id, moedaDeExemplo, "10")
         assertEquals(BigDecimal(250), retornaSaldoDoUsarioAposVenda.value)
     }
     
