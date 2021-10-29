@@ -1,4 +1,4 @@
-package br.com.brq.agatha.investimentos.extension
+package br.com.brq.agatha.investimentos.util.extension
 
 import java.lang.String.format
 import java.math.BigDecimal

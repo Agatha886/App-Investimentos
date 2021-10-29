@@ -9,8 +9,8 @@ import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.util.CHAVE_MOEDA
 import br.com.brq.agatha.investimentos.util.CHAVE_RESPOSTA_MENSAGEM
 import br.com.brq.agatha.investimentos.model.TipoTranferencia
-import br.com.brq.agatha.investimentos.extension.setMyActionBar
-import br.com.brq.agatha.investimentos.extension.transacaoFragment
+import br.com.brq.agatha.investimentos.util.extension.setMyActionBar
+import br.com.brq.agatha.investimentos.util.extension.transacaoFragment
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.ui.fragment.CambioFragment
 import br.com.brq.agatha.investimentos.ui.fragment.RespostaFragment

@@ -16,10 +16,9 @@ import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.util.CHAVE_MOEDA
 import br.com.brq.agatha.investimentos.util.ID_USUARIO
 import br.com.brq.agatha.investimentos.model.TipoTranferencia
-import br.com.brq.agatha.investimentos.extension.formatoMoedaBrasileira
-import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
+import br.com.brq.agatha.investimentos.util.extension.formatoMoedaBrasileira
+import br.com.brq.agatha.investimentos.util.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
-import br.com.brq.agatha.investimentos.model.Usuario
 import br.com.brq.agatha.investimentos.viewModel.CambioViewModel
 import br.com.brq.agatha.investimentos.viewModel.RetornoStadeCompraEVenda
 import kotlinx.android.synthetic.main.cambio.*

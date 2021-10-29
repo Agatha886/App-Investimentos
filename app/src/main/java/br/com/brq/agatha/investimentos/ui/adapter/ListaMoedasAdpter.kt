@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.extension.formatoPorcentagem
+import br.com.brq.agatha.investimentos.util.extension.formatoPorcentagem
 import br.com.brq.agatha.investimentos.model.Moeda
 import kotlinx.android.synthetic.main.item_card_moedas.view.*
 

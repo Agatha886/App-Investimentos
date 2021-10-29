@@ -10,8 +10,8 @@ import br.com.brq.agatha.investimentos.util.CHAVE_MOEDA
 import br.com.brq.agatha.investimentos.util.MENSAGEM_DADOS_NAO_ATUALIZADOS
 import br.com.brq.agatha.investimentos.util.MENSAGEM_FALHA_API
 import br.com.brq.agatha.investimentos.util.MENSAGEM_MOEDA_INVALIDA
-import br.com.brq.agatha.investimentos.extension.mensagem
-import br.com.brq.agatha.investimentos.extension.setMyActionBar
+import br.com.brq.agatha.investimentos.util.extension.mensagem
+import br.com.brq.agatha.investimentos.util.extension.setMyActionBar
 import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.ui.adapter.ListaMoedasAdpter
 import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
