@@ -33,14 +33,6 @@ class CambioViewModel(
         return repositoryUsuario.getSaldoDisponivel(idUser)
     }
 
-    fun buscaMoedaDaApi() {
-        io.launch {
-            val call = MoedasRetrofit().retornaMoeda("USD")
-            val resposta = call.execute()
-            val finance = resposta.body()
-//            Log.i("TAG", "buscaMoedaDaApi: ${finance?.results?.currencies?.name}")
-        }
-    }
 
     fun compra(idUsuario: Int, moeda: Moeda, valor: String) {
         io.launch {
