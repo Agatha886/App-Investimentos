@@ -1,8 +1,8 @@
 package br.com.brq.agatha.investimentos.viewModel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import br.com.brq.agatha.investimentos.model.Moeda
-import br.com.brq.agatha.investimentos.model.Usuario
+import br.com.brq.agatha.domain.model.Moeda
+import br.com.brq.agatha.domain.model.Usuario
 import br.com.brq.agatha.investimentos.repository.MoedaDbDataSource
 import br.com.brq.agatha.investimentos.repository.UsuarioRepository
 import br.com.brq.agatha.investimentos.viewModel.base.TestContextProvider
@@ -39,8 +39,9 @@ class CambioViewModelTest {
 
     @Test
     fun deveRetornarSucessoCompra_quandoSaldoDoUsuarioForIgualZeroAposOCalculoDeCompra(){
-        val usuarioDeExemplo = Usuario(saldoDisponivel = BigDecimal(100))
-        val moedaDeExemplo = Moeda(
+        val usuarioDeExemplo =
+            br.com.brq.agatha.domain.model.Usuario(saldoDisponivel = BigDecimal(100))
+        val moedaDeExemplo = br.com.brq.agatha.domain.model.Moeda(
             name = "Dollar",
             buy = BigDecimal.TEN,
             sell = BigDecimal.TEN,
@@ -57,8 +58,9 @@ class CambioViewModelTest {
 
     @Test
     fun deveRetornarSucessoCompra_quandoSaldoDoUsuarioForMaiorQueZeroAposOCalculoDeCompra(){
-        val usuarioDeExemplo = Usuario(saldoDisponivel = BigDecimal(150))
-        val moedaDeExemplo = Moeda(
+        val usuarioDeExemplo =
+            br.com.brq.agatha.domain.model.Usuario(saldoDisponivel = BigDecimal(150))
+        val moedaDeExemplo = br.com.brq.agatha.domain.model.Moeda(
             name = "Dollar",
             buy = BigDecimal.TEN,
             sell = BigDecimal.TEN,
@@ -75,8 +77,9 @@ class CambioViewModelTest {
 
     @Test
     fun deveRetornarFalhaCompra_quandoSaldoDoUsuarioForMenorQueZeroAposOCalculoDeCompra(){
-        val usuarioDeExemplo = Usuario(saldoDisponivel = BigDecimal(50))
-        val moedaDeExemplo = Moeda(
+        val usuarioDeExemplo =
+            br.com.brq.agatha.domain.model.Usuario(saldoDisponivel = BigDecimal(50))
+        val moedaDeExemplo = br.com.brq.agatha.domain.model.Moeda(
             name = "Dollar",
             buy = BigDecimal.TEN,
             sell = BigDecimal.TEN,
@@ -92,7 +95,7 @@ class CambioViewModelTest {
 
     @Test
     fun deveRetornarSucessoVenda_quandoValorTotalDeMoedaForIgualAZeroAposOCalculoDeVenda(){
-        val moedaDeExemplo = Moeda(
+        val moedaDeExemplo = br.com.brq.agatha.domain.model.Moeda(
             name = "Dollar",
             buy = BigDecimal.TEN,
             sell = BigDecimal.TEN,
@@ -108,7 +111,7 @@ class CambioViewModelTest {
 
     @Test
     fun deveRetornarSucessoVenda_quandoTotalDeMoedasForMaiorQueZeroAposOCalculoDeVernda(){
-        val moedaDeExemplo = Moeda(
+        val moedaDeExemplo = br.com.brq.agatha.domain.model.Moeda(
             name = "Dollar",
             buy = BigDecimal.TEN,
             sell = BigDecimal.TEN,
@@ -124,7 +127,7 @@ class CambioViewModelTest {
 
     @Test
     fun deveRetornarFalhaVenda_quandoValorTotalDeMoedasForMenorQueZeroAposOCalculoDaVenda(){
-        val moedaDeExemplo = Moeda(
+        val moedaDeExemplo = br.com.brq.agatha.domain.model.Moeda(
             name = "Dollar",
             buy = BigDecimal.TEN,
             sell = BigDecimal.TEN,

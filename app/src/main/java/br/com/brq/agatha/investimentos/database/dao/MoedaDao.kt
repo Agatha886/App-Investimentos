@@ -1,26 +1,25 @@
 package br.com.brq.agatha.investimentos.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import br.com.brq.agatha.investimentos.model.Moeda
+import br.com.brq.agatha.domain.model.Moeda
 
 @Dao
 interface MoedaDao {
 
     @Query("SELECT * FROM moeda")
-    fun buscaTodasAsMoedas(): List<Moeda>
+    fun buscaTodasAsMoedas(): List<br.com.brq.agatha.domain.model.Moeda>
 
     @Query("SELECT * FROM moeda WHERE name = :name")
-    fun buscaMoeda(name: String): Moeda
+    fun buscaMoeda(name: String): br.com.brq.agatha.domain.model.Moeda
 
     @Insert
-    fun adiciona(moeda: Moeda)
+    fun adiciona(moeda: br.com.brq.agatha.domain.model.Moeda)
 
     @Update
-    fun modifica(moeda: Moeda)
+    fun modifica(moeda: br.com.brq.agatha.domain.model.Moeda)
 
     @Delete
-    fun deleta(moeda: Moeda)
+    fun deleta(moeda: br.com.brq.agatha.domain.model.Moeda)
 
     @Query("DELETE FROM moeda")
     fun deletaTodasAsMoedas()

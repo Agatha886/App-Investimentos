@@ -6,14 +6,9 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.util.CHAVE_MOEDA
-import br.com.brq.agatha.investimentos.util.MENSAGEM_DADOS_NAO_ATUALIZADOS
-import br.com.brq.agatha.investimentos.util.MENSAGEM_FALHA_API
-import br.com.brq.agatha.investimentos.util.MENSAGEM_MOEDA_INVALIDA
-import br.com.brq.agatha.investimentos.util.extension.mensagem
-import br.com.brq.agatha.investimentos.util.extension.setMyActionBar
-import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.ui.adapter.ListaMoedasAdpter
+import br.com.brq.agatha.investimentos.util.mensagem
+import br.com.brq.agatha.investimentos.util.setMyActionBar
 import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.RetornoStadeApi
 import kotlinx.android.synthetic.main.activity_moedas_home.*
@@ -58,7 +53,7 @@ class HomeMoedasActivity : AppCompatActivity() {
                 }
                 is RetornoStadeApi.SucessoRetornoBanco-> {
                     setAdapterComBancoDeDados(it.listaMoeda)
-                    adapter.quandoMoedaClicado = { mensagem(MENSAGEM_DADOS_NAO_ATUALIZADOS) }
+                    adapter.quandoMoedaClicado = { mensagem(br.com.brq.agatha.domain.util.MENSAGEM_DADOS_NAO_ATUALIZADOS) }
                 }
                 else -> Log.i("TAG", "observerViewModel: Entrou no else")
             }
@@ -69,12 +64,12 @@ class HomeMoedasActivity : AppCompatActivity() {
         home_recyclerView.adapter = adapter
     }
 
-    private fun vaiParaActivityCambio(moeda: Moeda) {
+    private fun vaiParaActivityCambio(moeda: br.com.brq.agatha.domain.model.Moeda) {
         if (moeda.sell == null || moeda.buy == null) {
-            mensagem(MENSAGEM_MOEDA_INVALIDA)
+            mensagem(br.com.brq.agatha.domain.util.MENSAGEM_MOEDA_INVALIDA)
         } else {
             val intent = Intent(this@HomeMoedasActivity, CambioActivity::class.java)
-            intent.putExtra(CHAVE_MOEDA, moeda)
+            intent.putExtra(br.com.brq.agatha.domain.util.CHAVE_MOEDA, moeda)
             startActivity(intent)
         }
     }
@@ -83,9 +78,9 @@ class HomeMoedasActivity : AppCompatActivity() {
         viewModel.buscaDaApi()
     }
 
-    private fun setAdapterComBancoDeDados(lista: List<Moeda>) {
+    private fun setAdapterComBancoDeDados(lista: List<br.com.brq.agatha.domain.model.Moeda>) {
         adapter.atualiza(lista)
-        mensagem(MENSAGEM_FALHA_API)
+        mensagem(br.com.brq.agatha.domain.util.MENSAGEM_FALHA_API)
     }
 
 

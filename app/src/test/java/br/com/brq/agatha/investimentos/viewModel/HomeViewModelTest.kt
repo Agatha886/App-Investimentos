@@ -3,8 +3,8 @@ package br.com.brq.agatha.investimentos.viewModel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.espresso.intent.rule.IntentsTestRule
 
-import br.com.brq.agatha.investimentos.model.Finance
-import br.com.brq.agatha.investimentos.model.Moeda
+import br.com.brq.agatha.domain.model.Finance
+import br.com.brq.agatha.domain.model.Moeda
 import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
 import br.com.brq.agatha.investimentos.ui.activity.HomeMoedasActivity
 import br.com.brq.agatha.investimentos.viewModel.base.TestContextProvider
@@ -29,7 +29,7 @@ class HomeViewModelTest {
     private lateinit var dataSource: MoedaApiDataSource
 
     @MockK
-    private lateinit var finance: Finance
+    private lateinit var finance: br.com.brq.agatha.domain.model.Finance
 
     @MockK
     private lateinit var moedaWrapper: MoedaWrapper
@@ -44,7 +44,7 @@ class HomeViewModelTest {
 
     @Test
     fun deveRetornarSucessoApi_quandoConsegueBuscarDaApi() {
-        val listaMoedas = listOf<Moeda>()
+        val listaMoedas = listOf<br.com.brq.agatha.domain.model.Moeda>()
         coEvery { dataSource.buscaTodasMoedasNoBanco()} returns listaMoedas
         coEvery { dataSource.getFinanceDaApi()} returns finance
         every { moedaWrapper.agrupaTodasAsMoedasNaLista(finance) } returns listaMoedas
@@ -55,7 +55,7 @@ class HomeViewModelTest {
 
     @Test
     fun deveRetornarSucessoBanco_quandoDarFalhaAoBuscarDaApi(){
-        val listaMoedas = listOf<Moeda>()
+        val listaMoedas = listOf<br.com.brq.agatha.domain.model.Moeda>()
         coEvery{ dataSource.buscaTodasMoedasNoBanco()} returns listaMoedas
         coEvery { dataSource.getFinanceDaApi()} throws Exception("Deu exceção")
         viewModel.buscaDaApi()
@@ -65,7 +65,7 @@ class HomeViewModelTest {
 
     @Test
     fun deveRealizarFunçoesEspecificas_quandoConsegueBuscarDaApi(){
-        val listaMoedas = listOf<Moeda>()
+        val listaMoedas = listOf<br.com.brq.agatha.domain.model.Moeda>()
         coEvery { dataSource.buscaTodasMoedasNoBanco()} returns listaMoedas
         coEvery { dataSource.getFinanceDaApi()} returns finance
         every { moedaWrapper.agrupaTodasAsMoedasNaLista(finance) } returns listaMoedas
@@ -82,7 +82,7 @@ class HomeViewModelTest {
 
     @Test
     fun deveRealizarFunçoesEspecificas_quandoDarFalhaAoBuscarDaApi(){
-        val listaMoedas = listOf<Moeda>()
+        val listaMoedas = listOf<br.com.brq.agatha.domain.model.Moeda>()
         coEvery{ dataSource.buscaTodasMoedasNoBanco()} returns listaMoedas
         coEvery { dataSource.getFinanceDaApi()} throws Exception("Deu exceção")
         every { moedaWrapper.agrupaTodasAsMoedasNaLista(finance) } returns listaMoedas

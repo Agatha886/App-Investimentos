@@ -1,8 +1,8 @@
 package br.com.brq.agatha.investimentos.repository
 
+import br.com.brq.agatha.domain.model.Finance
+import br.com.brq.agatha.domain.model.Moeda
 import br.com.brq.agatha.investimentos.database.dao.MoedaDao
-import br.com.brq.agatha.investimentos.model.Finance
-import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.retrofit.MoedasRetrofit
 import br.com.brq.agatha.investimentos.viewModel.base.AppContextProvider
 

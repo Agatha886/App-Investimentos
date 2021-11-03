@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Investimento.iml" filepath="$PROJECT_DIR$/.idea/modules/Investimento.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Investimento.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Investimento.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data/Investimento.data.iml" filepath="$PROJECT_DIR$/.idea/modules/data/Investimento.data.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/Investimento.domain.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/Investimento.domain.iml" />
     </modules>
   </component>
 </project>

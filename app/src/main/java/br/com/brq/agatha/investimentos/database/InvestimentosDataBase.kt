@@ -6,10 +6,10 @@ import androidx.room.TypeConverters
 import br.com.brq.agatha.investimentos.database.converter.BigDecimalConverter
 import br.com.brq.agatha.investimentos.database.dao.MoedaDao
 import br.com.brq.agatha.investimentos.database.dao.UsuarioDao
-import br.com.brq.agatha.investimentos.model.Moeda
-import br.com.brq.agatha.investimentos.model.Usuario
+import br.com.brq.agatha.domain.model.Moeda
+import br.com.brq.agatha.domain.model.Usuario
 
-@Database(entities = [Moeda::class, Usuario::class], version = 11, exportSchema = false)
+@Database(entities = [br.com.brq.agatha.domain.model.Moeda::class, br.com.brq.agatha.domain.model.Usuario::class], version = 11, exportSchema = false)
 @TypeConverters(BigDecimalConverter::class)
 
 abstract class InvestimentosDataBase :RoomDatabase(){

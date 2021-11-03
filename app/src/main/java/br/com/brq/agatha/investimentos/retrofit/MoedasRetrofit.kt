@@ -1,6 +1,6 @@
 package br.com.brq.agatha.investimentos.retrofit
 
-import br.com.brq.agatha.investimentos.model.Finance
+import br.com.brq.agatha.domain.model.Finance
 import br.com.brq.agatha.investimentos.retrofit.service.FinanceService
 import retrofit2.Call
 import retrofit2.Retrofit

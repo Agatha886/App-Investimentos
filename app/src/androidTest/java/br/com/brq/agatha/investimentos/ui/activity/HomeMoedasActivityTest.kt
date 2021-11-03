@@ -10,13 +10,13 @@ import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.util.MENSAGEM_DADOS_NAO_ATUALIZADOS
-import br.com.brq.agatha.investimentos.util.MENSAGEM_FALHA_API
+import br.com.brq.agatha.domain.util.MENSAGEM_DADOS_NAO_ATUALIZADOS
+import br.com.brq.agatha.domain.util.MENSAGEM_FALHA_API
 import br.com.brq.agatha.investimentos.custom.CustomAssertions
 import br.com.brq.agatha.investimentos.custom.ListaMoedaMatcher
 import br.com.brq.agatha.investimentos.custom.ToastMachter
-import br.com.brq.agatha.investimentos.model.Finance
-import br.com.brq.agatha.investimentos.model.Moeda
+import br.com.brq.agatha.domain.model.Finance
+import br.com.brq.agatha.domain.model.Moeda
 import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
 import br.com.brq.agatha.investimentos.ui.adapter.ListaMoedasAdpter.ListaMoedasViewHolder
 import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
@@ -53,10 +53,10 @@ class HomeMoedasActivityTest : KoinTest {
     private lateinit var moedaWrapper: MoedaWrapper
 
     @MockK
-    private lateinit var finance: Finance
+    private lateinit var finance: br.com.brq.agatha.domain.model.Finance
 
-    private val listaMoedasBanco = listOf<Moeda>(
-        Moeda(
+    private val listaMoedasBanco = listOf<br.com.brq.agatha.domain.model.Moeda>(
+        br.com.brq.agatha.domain.model.Moeda(
             name = "Dollar",
             buy = BigDecimal.ZERO,
             sell = BigDecimal.ZERO,
@@ -66,63 +66,64 @@ class HomeMoedasActivityTest : KoinTest {
         )
     )
 
-    private val listaMoedasApi = listOf<Moeda>(
-        Moeda(
+    private val listaMoedasApi = listOf<br.com.brq.agatha.domain.model.Moeda>(
+        br.com.brq.agatha.domain.model.Moeda(
             name = "Dollar",
             buy = BigDecimal.ZERO,
             sell = BigDecimal.ZERO,
             abreviacao = null,
-            variation = BigDecimal(1)),
-        Moeda(
+            variation = BigDecimal(1)
+        ),
+        br.com.brq.agatha.domain.model.Moeda(
             name = "Japanese Yen",
             buy = BigDecimal.ZERO,
             sell = BigDecimal.ZERO,
             abreviacao = null,
             variation = BigDecimal(-1)
         ),
-        Moeda(
+        br.com.brq.agatha.domain.model.Moeda(
             name = "Pound Sterling",
             buy = BigDecimal.ZERO,
             sell = BigDecimal.ZERO,
             abreviacao = null,
             variation = BigDecimal(0)
         ),
-        Moeda(
+        br.com.brq.agatha.domain.model.Moeda(
             name = "Euro",
             buy = BigDecimal.ZERO,
             sell = BigDecimal.ZERO,
             abreviacao = null,
             variation = BigDecimal(-10)
         ),
-        Moeda(
+        br.com.brq.agatha.domain.model.Moeda(
             name = "Renminbi",
             buy = BigDecimal.ZERO,
             sell = BigDecimal.ZERO,
             abreviacao = null,
             variation = BigDecimal(10)
         ),
-        Moeda(
+        br.com.brq.agatha.domain.model.Moeda(
             name = "Canadian Dollar",
             buy = BigDecimal.ZERO,
             sell = BigDecimal.ZERO,
             abreviacao = null,
             variation = BigDecimal(0)
         ),
-        Moeda(
+        br.com.brq.agatha.domain.model.Moeda(
             name = "Bitcoin",
             buy = BigDecimal.ZERO,
             sell = BigDecimal.ZERO,
             abreviacao = null,
             variation = BigDecimal(0)
         ),
-        Moeda(
+        br.com.brq.agatha.domain.model.Moeda(
             name = "Australian Dollar",
             buy = BigDecimal.ZERO,
             sell = BigDecimal.ZERO,
             abreviacao = null,
             variation = BigDecimal(0)
         ),
-        Moeda(
+        br.com.brq.agatha.domain.model.Moeda(
             name = "Argentine Peso",
             buy = BigDecimal.ZERO,
             sell = BigDecimal.ZERO,
@@ -237,7 +238,7 @@ class HomeMoedasActivityTest : KoinTest {
         onView(withId(R.id.home_recyclerView))
             .check(CustomAssertions.hasItemCount(1))
 
-        onView(ViewMatchers.withText(MENSAGEM_FALHA_API))
+        onView(ViewMatchers.withText(br.com.brq.agatha.domain.util.MENSAGEM_FALHA_API))
             .inRoot(ToastMachter()) // verifica se a hierarquia RAIZ É UM Toast
             .check(ViewAssertions.matches(isDisplayed())) // verifica SE APARECE A MENSAGEM NO TOAST
 
@@ -264,7 +265,7 @@ class HomeMoedasActivityTest : KoinTest {
         onView(withId(R.id.home_recyclerView))
             .perform(RecyclerViewActions.actionOnItemAtPosition<ListaMoedasViewHolder>(0, click()))
 
-        onView(ViewMatchers.withText(MENSAGEM_DADOS_NAO_ATUALIZADOS))
+        onView(ViewMatchers.withText(br.com.brq.agatha.domain.util.MENSAGEM_DADOS_NAO_ATUALIZADOS))
             .inRoot(ToastMachter()) // verifica se a hierarquia RAIZ É UM Toast
             .check(ViewAssertions.matches(isDisplayed())) // verifica SE APARECE A MENSAGEM NO TOAST
     }

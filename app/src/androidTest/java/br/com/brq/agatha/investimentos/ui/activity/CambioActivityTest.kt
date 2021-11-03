@@ -10,9 +10,9 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.util.CHAVE_MOEDA
+import br.com.brq.agatha.domain.util.CHAVE_MOEDA
 import br.com.brq.agatha.investimentos.custom.TextViewColorMatcher.Companion.verificaCor
-import br.com.brq.agatha.investimentos.model.Moeda
+import br.com.brq.agatha.domain.model.Moeda
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.instanceOf
 import org.junit.Before
@@ -23,7 +23,7 @@ import java.math.BigDecimal
 
 @RunWith(JUnit4::class)
 class CambioActivityTest {
-    private val moeda = Moeda(
+    private val moeda = br.com.brq.agatha.domain.model.Moeda(
         name = "Dollar",
         buy = BigDecimal(10),
         sell = BigDecimal(10),
@@ -36,7 +36,7 @@ class CambioActivityTest {
     fun before() {
         val intentCambio =
             Intent(ApplicationProvider.getApplicationContext(), CambioActivity::class.java)
-        intentCambio.putExtra(CHAVE_MOEDA, moeda)
+        intentCambio.putExtra(br.com.brq.agatha.domain.util.CHAVE_MOEDA, moeda)
         launchActivity<CambioActivity>(intentCambio)
     }
 

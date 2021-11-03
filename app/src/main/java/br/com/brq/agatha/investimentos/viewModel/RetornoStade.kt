@@ -1,7 +1,6 @@
 package br.com.brq.agatha.investimentos.viewModel
 
-import br.com.brq.agatha.investimentos.model.Moeda
-import java.math.BigDecimal
+import br.com.brq.agatha.domain.model.Moeda
 
 sealed class RetornoStadeApi {
     data class SucessoRetornoBanco(var  listaMoeda: List<Moeda>) : RetornoStadeApi()

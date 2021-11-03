@@ -2,8 +2,8 @@ package br.com.brq.agatha.investimentos.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import br.com.brq.agatha.investimentos.database.dao.UsuarioDao
-import br.com.brq.agatha.investimentos.model.Moeda
-import br.com.brq.agatha.investimentos.model.Usuario
+import br.com.brq.agatha.domain.model.Moeda
+import br.com.brq.agatha.domain.model.Usuario
 import br.com.brq.agatha.investimentos.viewModel.base.TestContextProvider
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -25,15 +25,14 @@ class UsuarioRepositoryTest {
 
     private lateinit var usuarioRepository: UsuarioRepository
 
-    private val moedaDeExemplo = Moeda(
+    private val moedaDeExemplo = br.com.brq.agatha.domain.model.Moeda(
         name = "Dollar",
         buy = BigDecimal.ZERO,
         sell = BigDecimal.ZERO,
         abreviacao = "USD",
-        totalDeMoeda = 0.00,
+        totalDeMoeda = 0,
         variation = BigDecimal(-1)
     )
-
 
     @MockK
     private lateinit var usuarioDao: UsuarioDao
@@ -46,14 +45,16 @@ class UsuarioRepositoryTest {
 
     @Test
     fun deveRetornarUsuario_quandoChamaUsario() {
-        val usuarioDeExemplo = Usuario(saldoDisponivel = BigDecimal(150))
+        val usuarioDeExemplo =
+            br.com.brq.agatha.domain.model.Usuario(saldoDisponivel = BigDecimal(150))
         every { usuarioDao.retornaUsuario(usuarioDeExemplo.id) } returns usuarioDeExemplo
         assertEquals(usuarioDeExemplo, usuarioRepository.getUsuario(usuarioDeExemplo.id))
     }
 
     @Test
     fun deveRetornarUmLiveDateComOSaldoDoUsario_quandoChamaOGetSaldoDisponivel() {
-        val usuarioDeExemplo = Usuario(saldoDisponivel = BigDecimal(150))
+        val usuarioDeExemplo =
+            br.com.brq.agatha.domain.model.Usuario(saldoDisponivel = BigDecimal(150))
         every { usuarioDao.retornaUsuario(usuarioDeExemplo.id) } returns usuarioDeExemplo
         assertEquals(
             BigDecimal(150),
@@ -63,7 +64,8 @@ class UsuarioRepositoryTest {
 
     @Test
     fun deveSetarSaldoDoUsaurioERetornarNovoSaldo_quandoChamaFuncaoSetSaldoERetornaSaldo() {
-        val usuarioDeExemplo = Usuario(saldoDisponivel = BigDecimal(150))
+        val usuarioDeExemplo =
+            br.com.brq.agatha.domain.model.Usuario(saldoDisponivel = BigDecimal(150))
         every { usuarioDao.retornaUsuario(usuarioDeExemplo.id) } returns usuarioDeExemplo
         val saldoERetornaSaldo =
             usuarioRepository.setSaldoAposCompra(usuarioDeExemplo.id, "50", moedaDeExemplo)
@@ -72,13 +74,14 @@ class UsuarioRepositoryTest {
 
     @Test
     fun deveSetarSaldoDoUsaurioAposAVendaERetornarEsseSaldo_quandoChamaFuncaoSetSaldoVendaERetornaSaldo() {
-        val usuarioDeExemplo = Usuario(saldoDisponivel = BigDecimal(150))
-        val moedaDeExemplo = Moeda(
+        val usuarioDeExemplo =
+            br.com.brq.agatha.domain.model.Usuario(saldoDisponivel = BigDecimal(150))
+        val moedaDeExemplo = br.com.brq.agatha.domain.model.Moeda(
             name = "Dollar",
             buy = BigDecimal.TEN,
             sell = BigDecimal.TEN,
             abreviacao = "USD",
-            totalDeMoeda = 10.00,
+            totalDeMoeda = 10,
             variation = BigDecimal(1)
         )
         every { usuarioDao.retornaUsuario(usuarioDeExemplo.id) } returns usuarioDeExemplo

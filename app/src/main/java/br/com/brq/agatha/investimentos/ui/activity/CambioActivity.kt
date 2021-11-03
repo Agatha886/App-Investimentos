@@ -6,25 +6,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.util.CHAVE_MOEDA
-import br.com.brq.agatha.investimentos.util.CHAVE_RESPOSTA_MENSAGEM
-import br.com.brq.agatha.investimentos.model.TipoTranferencia
-import br.com.brq.agatha.investimentos.util.extension.setMyActionBar
-import br.com.brq.agatha.investimentos.util.extension.transacaoFragment
-import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.ui.fragment.CambioFragment
 import br.com.brq.agatha.investimentos.ui.fragment.RespostaFragment
+import br.com.brq.agatha.investimentos.util.setMyActionBar
+import br.com.brq.agatha.investimentos.util.transacaoFragment
 import java.io.Serializable
 
 @Suppress("DEPRECATION")
 class
 CambioActivity() : AppCompatActivity() {
 
-    private var setTituloAppBar: (tipoTransferencia: TipoTranferencia) -> String = { tipoTranferencia ->
-        if(tipoTranferencia == TipoTranferencia.COMPRA){"Compra"}else if(tipoTranferencia== TipoTranferencia.VENDA){"Venda"}else{"Câmbio"}
+    private var setTituloAppBar: (tipoTransferencia: br.com.brq.agatha.domain.model.TipoTranferencia) -> String = { tipoTranferencia ->
+        if(tipoTranferencia == br.com.brq.agatha.domain.model.TipoTranferencia.COMPRA){"Compra"}else if(tipoTranferencia== br.com.brq.agatha.domain.model.TipoTranferencia.VENDA){"Venda"}else{"Câmbio"}
     }
 
-    private var tipoTransferencia = TipoTranferencia.INDEFINIDO
+    private var tipoTransferencia = br.com.brq.agatha.domain.model.TipoTranferencia.INDEFINIDO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,12 +54,12 @@ CambioActivity() : AppCompatActivity() {
     }
 
     private fun setArgumentsDadosMoedas(cambioFragment: CambioFragment) {
-        if (intent.hasExtra(CHAVE_MOEDA)) {
-            val serializableExtra: Serializable? = intent.getSerializableExtra(CHAVE_MOEDA)
+        if (intent.hasExtra(br.com.brq.agatha.domain.util.CHAVE_MOEDA)) {
+            val serializableExtra: Serializable? = intent.getSerializableExtra(br.com.brq.agatha.domain.util.CHAVE_MOEDA)
             if (serializableExtra != null) {
-                val moedaRecebida = serializableExtra as Moeda
+                val moedaRecebida = serializableExtra as br.com.brq.agatha.domain.model.Moeda
                 val moedaBundle = Bundle()
-                moedaBundle.putSerializable(CHAVE_MOEDA, moedaRecebida)
+                moedaBundle.putSerializable(br.com.brq.agatha.domain.util.CHAVE_MOEDA, moedaRecebida)
                 cambioFragment.arguments = moedaBundle
             }
         }
@@ -98,7 +94,7 @@ CambioActivity() : AppCompatActivity() {
         respostaFragment: RespostaFragment
     ) {
         val dados = Bundle()
-        dados.putString(CHAVE_RESPOSTA_MENSAGEM, mensagem)
+        dados.putString(br.com.brq.agatha.domain.util.CHAVE_RESPOSTA_MENSAGEM, mensagem)
         respostaFragment.arguments = dados
         transacaoFragment {
             replace(R.id.activity_cambio_container, respostaFragment, "RESPOSTA")

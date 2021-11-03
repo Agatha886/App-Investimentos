@@ -1,14 +1,14 @@
 package br.com.brq.agatha.investimentos.di.modules
 
 import androidx.room.Room
-import br.com.brq.agatha.investimentos.util.NOME_BANCO
+import br.com.brq.agatha.domain.util.NOME_BANCO
 import br.com.brq.agatha.investimentos.database.InvestimentosDataBase
 import br.com.brq.agatha.investimentos.database.dao.MoedaDao
 import br.com.brq.agatha.investimentos.database.dao.UsuarioDao
 import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
 import br.com.brq.agatha.investimentos.repository.MoedaDbDataSource
 import br.com.brq.agatha.investimentos.repository.UsuarioRepository
-import br.com.brq.agatha.investimentos.util.ID_USUARIO
+import br.com.brq.agatha.domain.util.ID_USUARIO
 import br.com.brq.agatha.investimentos.viewModel.CambioViewModel
 import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.MoedaWrapper
@@ -21,7 +21,7 @@ val dataBaseModules = module {
         Room.databaseBuilder(
             get(),
             InvestimentosDataBase::class.java,
-            NOME_BANCO
+            br.com.brq.agatha.domain.util.NOME_BANCO
         ).build()
     }
 }
@@ -38,6 +38,8 @@ val repositoryModules = module {
 }
 
 val viewModelModules = module {
-    viewModel<CambioViewModel>{ CambioViewModel(get<MoedaDbDataSource>(), get<UsuarioRepository>(), AppContextProvider, ID_USUARIO)}
+    viewModel<CambioViewModel>{ CambioViewModel(get<MoedaDbDataSource>(), get<UsuarioRepository>(), AppContextProvider,
+        br.com.brq.agatha.domain.util.ID_USUARIO
+    )}
     viewModel<HomeViewModel>{ HomeViewModel(get<MoedaApiDataSource>(), AppContextProvider, MoedaWrapper())  }
 }

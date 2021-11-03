@@ -1,9 +1,7 @@
 package br.com.brq.agatha.investimentos.viewModel
 
-import br.com.brq.agatha.investimentos.model.Finance
-import br.com.brq.agatha.investimentos.model.Moeda
-import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
-import kotlinx.coroutines.CoroutineScope
+import br.com.brq.agatha.domain.model.Finance
+import br.com.brq.agatha.domain.model.Moeda
 
 class MoedaWrapper {
     fun agrupaTodasAsMoedasNaLista(finance: Finance?): List<Moeda>{

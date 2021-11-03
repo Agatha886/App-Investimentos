@@ -3,18 +3,16 @@ package br.com.brq.agatha.investimentos.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.brq.agatha.investimentos.database.dao.MoedaDao
-import br.com.brq.agatha.investimentos.model.Moeda
+import br.com.brq.agatha.domain.model.Moeda
 import br.com.brq.agatha.investimentos.viewModel.base.CoroutinesContextProvider
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 open class MoedaDbDataSource(private val daoMoeda: MoedaDao, coroutinesContextProvider: CoroutinesContextProvider){
 
     private val io = CoroutineScope(coroutinesContextProvider.io)
 
-    fun buscaMoedaNoBando(nameMoeda: String): Moeda{
+    fun buscaMoedaNoBando(nameMoeda: String): Moeda {
         return daoMoeda.buscaMoeda(nameMoeda)
     }
 

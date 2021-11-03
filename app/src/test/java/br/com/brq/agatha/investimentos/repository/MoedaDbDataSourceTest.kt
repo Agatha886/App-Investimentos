@@ -2,7 +2,7 @@ package br.com.brq.agatha.investimentos.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import br.com.brq.agatha.investimentos.database.dao.MoedaDao
-import br.com.brq.agatha.investimentos.model.Moeda
+import br.com.brq.agatha.domain.model.Moeda
 import br.com.brq.agatha.investimentos.viewModel.base.TestContextProvider
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -25,7 +25,7 @@ class MoedaDbDataSourceTest {
 
     private lateinit var moedaDbDataSource: MoedaDbDataSource
 
-    private val moedaDeExemplo = Moeda(
+    private val moedaDeExemplo = br.com.brq.agatha.domain.model.Moeda(
         name = "Dollar",
         buy = BigDecimal.TEN,
         sell = BigDecimal.TEN,

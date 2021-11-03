@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.util.CHAVE_RESPOSTA_MENSAGEM
+import br.com.brq.agatha.domain.util.CHAVE_RESPOSTA_MENSAGEM
 import kotlinx.android.synthetic.main.fragment_resposta.*
 
 class RespostaFragment : Fragment() {
