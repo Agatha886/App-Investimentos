@@ -1,6 +1,5 @@
 package br.com.brq.agatha.investimentos.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.brq.agatha.investimentos.database.dao.UsuarioDao
@@ -79,8 +78,14 @@ class UsuarioRepository(
         return user.saldoDisponivel.subtract(valorDaCompra)
     }
 
-    fun calculaSaldoVenda(moeda: Moeda, valorVendaMoeda: String, user: Usuario): BigDecimal{
+    private fun calculaSaldoVenda(moeda: Moeda, valorVendaMoeda: String, user: Usuario): BigDecimal{
         return user.saldoDisponivel.add(BigDecimal(valorVendaMoeda).multiply(moeda.sell))
     }
+
+    fun calculaTotalDeMoedasVenda(moeda: Moeda, quantidadeParaVenda: String): Int{
+        return moeda.totalDeMoeda.minus(BigDecimal(quantidadeParaVenda).toInt())
+    }
+
+
 
 }
