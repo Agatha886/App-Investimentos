@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.brq.agatha.domain.model.Moeda
 import br.com.brq.agatha.domain.model.Usuario
-import br.com.brq.agatha.investimentos.repository.MoedaDbDataSource
-import br.com.brq.agatha.investimentos.repository.UsuarioRepository
+import br.com.brq.agatha.data.repository.MoedaDbDataSource
+import br.com.brq.agatha.data.repository.UsuarioRepository
 import br.com.brq.agatha.investimentos.viewModel.base.CoroutinesContextProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

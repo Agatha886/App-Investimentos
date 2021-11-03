@@ -42,12 +42,7 @@ dependencies {
 
     def corotines_version = "1.5.1"
     def lifecycle_version = "2.0.0"
-    def room_version = "2.3.0"
     def koin_version = "2.2.3"
-
-    // Room
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
 
     // Corotines:
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core: $corotines_version"
@@ -56,10 +51,6 @@ dependencies {
 
     //View Model
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-
-    //Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     //MockK
     androidTestImplementation "io.mockk:mockk-android:1.12.0"

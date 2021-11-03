@@ -10,14 +10,10 @@ import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.domain.util.MENSAGEM_DADOS_NAO_ATUALIZADOS
-import br.com.brq.agatha.domain.util.MENSAGEM_FALHA_API
 import br.com.brq.agatha.investimentos.custom.CustomAssertions
 import br.com.brq.agatha.investimentos.custom.ListaMoedaMatcher
 import br.com.brq.agatha.investimentos.custom.ToastMachter
-import br.com.brq.agatha.domain.model.Finance
-import br.com.brq.agatha.domain.model.Moeda
-import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
+import br.com.brq.agatha.data.repository.MoedaApiDataSource
 import br.com.brq.agatha.investimentos.ui.adapter.ListaMoedasAdpter.ListaMoedasViewHolder
 import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.MoedaWrapper

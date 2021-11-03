@@ -3,9 +3,7 @@ package br.com.brq.agatha.investimentos.viewModel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.espresso.intent.rule.IntentsTestRule
 
-import br.com.brq.agatha.domain.model.Finance
-import br.com.brq.agatha.domain.model.Moeda
-import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
+import br.com.brq.agatha.data.repository.MoedaApiDataSource
 import br.com.brq.agatha.investimentos.ui.activity.HomeMoedasActivity
 import br.com.brq.agatha.investimentos.viewModel.base.TestContextProvider
 import io.mockk.*

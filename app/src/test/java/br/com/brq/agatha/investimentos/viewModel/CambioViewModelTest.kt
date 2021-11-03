@@ -1,10 +1,8 @@
 package br.com.brq.agatha.investimentos.viewModel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import br.com.brq.agatha.domain.model.Moeda
-import br.com.brq.agatha.domain.model.Usuario
-import br.com.brq.agatha.investimentos.repository.MoedaDbDataSource
-import br.com.brq.agatha.investimentos.repository.UsuarioRepository
+import br.com.brq.agatha.data.repository.MoedaDbDataSource
+import br.com.brq.agatha.data.repository.UsuarioRepository
 import br.com.brq.agatha.investimentos.viewModel.base.TestContextProvider
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery

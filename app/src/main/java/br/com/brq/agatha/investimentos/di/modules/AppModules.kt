@@ -1,14 +1,12 @@
 package br.com.brq.agatha.investimentos.di.modules
 
 import androidx.room.Room
-import br.com.brq.agatha.domain.util.NOME_BANCO
-import br.com.brq.agatha.investimentos.database.InvestimentosDataBase
-import br.com.brq.agatha.investimentos.database.dao.MoedaDao
-import br.com.brq.agatha.investimentos.database.dao.UsuarioDao
-import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
-import br.com.brq.agatha.investimentos.repository.MoedaDbDataSource
-import br.com.brq.agatha.investimentos.repository.UsuarioRepository
-import br.com.brq.agatha.domain.util.ID_USUARIO
+import br.com.brq.agatha.data.database.InvestimentosDataBase
+import br.com.brq.agatha.data.database.dao.MoedaDao
+import br.com.brq.agatha.data.database.dao.UsuarioDao
+import br.com.brq.agatha.data.repository.MoedaApiDataSource
+import br.com.brq.agatha.data.repository.MoedaDbDataSource
+import br.com.brq.agatha.data.repository.UsuarioRepository
 import br.com.brq.agatha.investimentos.viewModel.CambioViewModel
 import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.MoedaWrapper
