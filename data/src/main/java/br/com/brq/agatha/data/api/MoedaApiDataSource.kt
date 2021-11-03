@@ -1,20 +1,18 @@
-package br.com.brq.agatha.data.repository
+package br.com.brq.agatha.data.api
 
 import br.com.brq.agatha.domain.model.Finance
 import br.com.brq.agatha.domain.model.Moeda
 import br.com.brq.agatha.data.database.dao.MoedaDao
 import br.com.brq.agatha.data.retrofit.MoedasRetrofit
-import br.com.brq.agatha.investimentos.viewModel.base.AppContextProvider
 
-open class MoedaApiDataSource(moedaDao: MoedaDao) : MoedaDbDataSource(moedaDao, AppContextProvider) {
-
+open class MoedaApiDataSource(moedaDao: MoedaDao) : MoedaDbDataSource(moedaDao) {
    fun getFinanceDaApi(): Finance? {
         val call = MoedasRetrofit().retornaFinance()
         val resposta = call.execute()
         return resposta.body()
     }
 
-     fun atualizaBancoDeDados(buscaMoedas: List<Moeda>, finance: Finance?) {
+    suspend fun atualizaBancoDeDados(buscaMoedas: List<Moeda>, finance: Finance?) {
         if (buscaMoedas.isNullOrEmpty()) {
             adicionaTodasAsMoedasNoBanco(finance)
         } else {
@@ -22,7 +20,7 @@ open class MoedaApiDataSource(moedaDao: MoedaDao) : MoedaDbDataSource(moedaDao, 
         }
     }
 
-    private fun modificaTotasAsMoedasNoBanco(finance: Finance?) {
+    private suspend fun  modificaTotasAsMoedasNoBanco(finance: Finance?) {
         finance?.results?.currencies?.usd?.let { modifica(it) }
         finance?.results?.currencies?.jpy?.let { modifica(it) }
         finance?.results?.currencies?.gbp?.let { modifica(it) }
@@ -34,7 +32,7 @@ open class MoedaApiDataSource(moedaDao: MoedaDao) : MoedaDbDataSource(moedaDao, 
         finance?.results?.currencies?.ars?.let { modifica(it) }
     }
 
-    private fun adicionaTodasAsMoedasNoBanco(finance: Finance?) {
+    private suspend fun adicionaTodasAsMoedasNoBanco(finance: Finance?) {
         finance?.results?.currencies?.usd?.let { adiciona(it) }
         finance?.results?.currencies?.jpy?.let { adiciona(it) }
         finance?.results?.currencies?.gbp?.let { adiciona(it) }

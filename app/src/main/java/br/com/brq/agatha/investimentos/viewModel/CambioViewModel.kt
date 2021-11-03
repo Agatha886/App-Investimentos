@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.brq.agatha.domain.model.Moeda
 import br.com.brq.agatha.domain.model.Usuario
-import br.com.brq.agatha.data.repository.MoedaDbDataSource
-import br.com.brq.agatha.data.repository.UsuarioRepository
+import br.com.brq.agatha.data.api.MoedaDbDataSource
+import br.com.brq.agatha.data.api.UsuarioRepository
 import br.com.brq.agatha.investimentos.viewModel.base.CoroutinesContextProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -26,11 +26,18 @@ class CambioViewModel(
 
 
     fun adicionaUsuario(usuario: Usuario){
-        repositoryUsuario.adicionaUsuario(usuario)
+        io.launch {
+            repositoryUsuario.adicionaUsuario(usuario)
+        }
     }
 
     fun getSaldoDisponivel(): LiveData<BigDecimal> {
-        return repositoryUsuario.getSaldoDisponivel(idUsuario)
+        val liveData = MutableLiveData<BigDecimal>()
+        io.launch {
+            val usuario = repositoryUsuario.getUsuario(idUsuario)
+            liveData.postValue(usuario.saldoDisponivel)
+        }
+        return liveData
     }
 
 
@@ -55,28 +62,52 @@ class CambioViewModel(
     }
 
     fun setSaldoCompra(valorComprado: String, moeda: Moeda): LiveData<BigDecimal>{
-        return repositoryUsuario.setSaldoAposCompra(idUsuario = idUsuario, valorComprado = valorComprado, moeda = moeda)
+        val saldoAposCompra = MutableLiveData<BigDecimal>()
+        io.launch {
+            val retornaUsuario = repositoryUsuario.getUsuario(idUsuario)
+            val novoSaldo = repositoryUsuario.calculaSaldoCompra(moeda, valorComprado, retornaUsuario)
+            retornaUsuario.setSaldo(novoSaldo)
+            repositoryUsuario.modificaUsuario(retornaUsuario)
+            saldoAposCompra.postValue(novoSaldo)
+        }
+        return saldoAposCompra
     }
 
-    fun setSaldoVenda(
+    fun setSaldoAposVenda(
         idUsuario: Int,
         moeda: Moeda,
-        valorMoedaComprado: String
+        valorVendaMoeda: String
     ): LiveData<BigDecimal> {
-        return repositoryUsuario.setSaldoAposVenda(idUsuario, moeda, valorMoedaComprado)
+        val saldoAposVenda = MutableLiveData<BigDecimal>()
+        io.launch {
+            val retornaUsuario = repositoryUsuario.getUsuario(idUsuario)
+            val novoSaldo = repositoryUsuario.calculaSaldoVenda(moeda, valorVendaMoeda, retornaUsuario)
+            retornaUsuario.setSaldo(novoSaldo)
+            repositoryUsuario.modificaUsuario(retornaUsuario)
+            saldoAposVenda.postValue(novoSaldo)
+        }
+        return saldoAposVenda
     }
 
-
     fun getTotalMoeda(nameMoeda: String): LiveData<Int> {
-        return dbDataSource.getTotalMoeda(nameMoeda)
+        val liveDate = MutableLiveData<Int>()
+        io.launch {
+            val moeda = dbDataSource.buscaMoedaNoBando(nameMoeda)
+            liveDate.postValue(moeda.totalDeMoeda)
+        }
+        return liveDate
     }
 
     fun setToltalMoedaCompra(nameMoeda: String, valorDaCompra: Int) {
-        dbDataSource.setTotalMoedaAposCompra(nameMoeda, valorDaCompra)
+        io.launch {
+            dbDataSource.setTotalMoedaAposCompra(nameMoeda, valorDaCompra)
+        }
     }
 
     fun setTotalMoedaVenda(nameMoeda: String, valorDaCompra: Int) {
-        dbDataSource.setTotalMoedaAposVenda(nameMoeda, valorDaCompra)
+        io.launch {
+            dbDataSource.setTotalMoedaAposVenda(nameMoeda, valorDaCompra)
+        }
     }
 
     fun venda(nameMoeda: String, quantidadeParaVenda: String) {

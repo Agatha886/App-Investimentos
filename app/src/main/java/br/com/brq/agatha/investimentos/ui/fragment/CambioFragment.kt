@@ -121,7 +121,7 @@ class CambioFragment : Fragment() {
 
     private fun setTotalDeMoedasAposVenda(totalMoeda: Int): LiveData<BigDecimal> {
         val saldoVenda =
-            viewModel.setSaldoVenda(ID_USUARIO, moeda, cambio_quantidade.text.toString())
+            viewModel.setSaldoAposVenda(ID_USUARIO, moeda, cambio_quantidade.text.toString())
         viewModel.setTotalMoedaVenda(moeda.name, totalMoeda)
         return saldoVenda
     }

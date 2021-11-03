@@ -1,8 +1,9 @@
 package br.com.brq.agatha.investimentos.viewModel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import br.com.brq.agatha.data.repository.MoedaDbDataSource
-import br.com.brq.agatha.data.repository.UsuarioRepository
+import br.com.brq.agatha.data.api.MoedaDbDataSource
+import br.com.brq.agatha.data.api.UsuarioRepository
+import br.com.brq.agatha.domain.util.ID_USUARIO
 import br.com.brq.agatha.investimentos.viewModel.base.TestContextProvider
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -32,7 +33,7 @@ class CambioViewModelTest {
     @Before
     fun setUp(){
         MockKAnnotations.init(this, relaxUnitFun = true) // Inicializa todas as anotações e relaxUnitFun faz com que todas as funções já retornem nada
-        viewModel = CambioViewModel(dbDataSource = dataSource, repositoryUsuario= repository, coroutinesContextProvider = TestContextProvider()) // Cria instancia da ViewModel
+        viewModel = CambioViewModel(dbDataSource = dataSource, repositoryUsuario= repository, coroutinesContextProvider = TestContextProvider(), ID_USUARIO) // Cria instancia da ViewModel
     }
 
     @Test
@@ -44,13 +45,13 @@ class CambioViewModelTest {
             buy = BigDecimal.TEN,
             sell = BigDecimal.TEN,
             abreviacao = "USD",
-            totalDeMoeda = 10.00,
+            totalDeMoeda = 10,
             variation = BigDecimal(1)
         )
 
 
         coEvery { repository.getUsuario(usuarioDeExemplo.id) } returns usuarioDeExemplo
-        viewModel.compra(usuarioDeExemplo.id,moedaDeExemplo, "10")
+        viewModel.compra(moedaDeExemplo, "10")
         assertEquals(RetornoStadeCompraEVenda.SucessoCompra("10"), viewModel.viewEventRetornoCompraEVenda.value)
     }
 
@@ -63,12 +64,12 @@ class CambioViewModelTest {
             buy = BigDecimal.TEN,
             sell = BigDecimal.TEN,
             abreviacao = "USD",
-            totalDeMoeda = 10.00,
+            totalDeMoeda = 10,
             variation = BigDecimal(1)
         )
 
         coEvery { repository.getUsuario(usuarioDeExemplo.id) } returns usuarioDeExemplo
-        viewModel.compra(usuarioDeExemplo.id,moedaDeExemplo, "10")
+        viewModel.compra(moedaDeExemplo, "10")
         assertEquals(RetornoStadeCompraEVenda.SucessoCompra("10"), viewModel.viewEventRetornoCompraEVenda.value)
     }
 
@@ -82,12 +83,12 @@ class CambioViewModelTest {
             buy = BigDecimal.TEN,
             sell = BigDecimal.TEN,
             abreviacao = "USD",
-            totalDeMoeda = 10.00,
+            totalDeMoeda = 10,
             variation = BigDecimal(1)
         )
 
         coEvery { repository.getUsuario(usuarioDeExemplo.id) } returns usuarioDeExemplo
-        viewModel.compra(usuarioDeExemplo.id,moedaDeExemplo, "10")
+        viewModel.compra(moedaDeExemplo, "10")
         assertEquals(RetornoStadeCompraEVenda.FalhaCompra("Valor de Compra Inválido"), viewModel.viewEventRetornoCompraEVenda.value)
     }
 
@@ -98,13 +99,13 @@ class CambioViewModelTest {
             buy = BigDecimal.TEN,
             sell = BigDecimal.TEN,
             abreviacao = "USD",
-            totalDeMoeda = 10.00,
+            totalDeMoeda = 10,
             variation = BigDecimal(1)
         )
 
         coEvery { dataSource.buscaMoedaNoBando(moedaDeExemplo.name)} returns moedaDeExemplo
         viewModel.venda(moedaDeExemplo.name, "10")
-        assertEquals(RetornoStadeCompraEVenda.SucessoVenda(0.00, "10"), viewModel.viewEventRetornoCompraEVenda.value)
+        assertEquals(RetornoStadeCompraEVenda.SucessoVenda(0, "10"), viewModel.viewEventRetornoCompraEVenda.value)
     }
 
     @Test
@@ -114,13 +115,13 @@ class CambioViewModelTest {
             buy = BigDecimal.TEN,
             sell = BigDecimal.TEN,
             abreviacao = "USD",
-            totalDeMoeda = 50.00,
+            totalDeMoeda = 50,
             variation = BigDecimal(1)
         )
 
         coEvery { dataSource.buscaMoedaNoBando(moedaDeExemplo.name)} returns moedaDeExemplo
         viewModel.venda(moedaDeExemplo.name, "10")
-        assertEquals(RetornoStadeCompraEVenda.SucessoVenda(40.00, "10"), viewModel.viewEventRetornoCompraEVenda.value)
+        assertEquals(RetornoStadeCompraEVenda.SucessoVenda(40, "10"), viewModel.viewEventRetornoCompraEVenda.value)
     }
 
     @Test
@@ -130,7 +131,7 @@ class CambioViewModelTest {
             buy = BigDecimal.TEN,
             sell = BigDecimal.TEN,
             abreviacao = "USD",
-            totalDeMoeda = 10.00,
+            totalDeMoeda = 10,
             variation = BigDecimal(1)
         )
 

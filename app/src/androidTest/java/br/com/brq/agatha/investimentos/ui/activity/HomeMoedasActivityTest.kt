@@ -13,7 +13,7 @@ import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.custom.CustomAssertions
 import br.com.brq.agatha.investimentos.custom.ListaMoedaMatcher
 import br.com.brq.agatha.investimentos.custom.ToastMachter
-import br.com.brq.agatha.data.repository.MoedaApiDataSource
+import br.com.brq.agatha.data.api.MoedaApiDataSource
 import br.com.brq.agatha.investimentos.ui.adapter.ListaMoedasAdpter.ListaMoedasViewHolder
 import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.MoedaWrapper
@@ -57,7 +57,7 @@ class HomeMoedasActivityTest : KoinTest {
             buy = BigDecimal.ZERO,
             sell = BigDecimal.ZERO,
             abreviacao = "FAKE DO BANCO",
-            totalDeMoeda = 0.00,
+            totalDeMoeda = 0,
             variation = BigDecimal(-1)
         )
     )

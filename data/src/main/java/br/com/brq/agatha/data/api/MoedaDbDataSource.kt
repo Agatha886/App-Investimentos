@@ -1,18 +1,11 @@
-package br.com.brq.agatha.data.repository
+package br.com.brq.agatha.data.api
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import br.com.brq.agatha.data.database.dao.MoedaDao
 import br.com.brq.agatha.domain.model.Moeda
-import br.com.brq.agatha.investimentos.viewModel.base.CoroutinesContextProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
-open class MoedaDbDataSource(private val daoMoeda: MoedaDao, coroutinesContextProvider: CoroutinesContextProvider){
+open class MoedaDbDataSource(private val daoMoeda: MoedaDao) {
 
-    private val io = CoroutineScope(coroutinesContextProvider.io)
-
-    fun buscaMoedaNoBando(nameMoeda: String): Moeda {
+    suspend fun buscaMoedaNoBando(nameMoeda: String): Moeda {
         return daoMoeda.buscaMoeda(nameMoeda)
     }
 
@@ -20,46 +13,31 @@ open class MoedaDbDataSource(private val daoMoeda: MoedaDao, coroutinesContextPr
         return daoMoeda.buscaTodasAsMoedas()
     }
 
-    protected fun modifica(moedaNova: Moeda) {
-        io.launch {
-            val moeda = daoMoeda.buscaMoeda(moedaNova.name)
-            moedaNova.id = moeda.id
-            moedaNova.totalDeMoeda = moeda.totalDeMoeda
-            daoMoeda.modifica(moedaNova)
-        }
+    protected suspend fun modifica(moedaNova: Moeda) {
+        val moeda = daoMoeda.buscaMoeda(moedaNova.name)
+        moedaNova.id = moeda.id
+        moedaNova.totalDeMoeda = moeda.totalDeMoeda
+        daoMoeda.modifica(moedaNova)
+
     }
 
-    protected fun adiciona(moeda: Moeda) {
-        io.launch {
-            daoMoeda.adiciona(moeda)
-        }
+    protected suspend fun adiciona(moeda: Moeda) {
+        daoMoeda.adiciona(moeda)
+
     }
 
+    suspend fun setTotalMoedaAposCompra(nameMoeda: String, valorDaCompra: Int) {
+        val moeda = daoMoeda.buscaMoeda(nameMoeda)
+        moeda.setTotalMoedaCompra(valorDaCompra)
+        daoMoeda.modifica(moeda)
 
-    fun getTotalMoeda(nameMoeda: String): LiveData<Int> {
-        val liveDate = MutableLiveData<Int>()
-        io.launch {
-            val moeda = daoMoeda.buscaMoeda(nameMoeda)
-            liveDate.postValue(moeda.totalDeMoeda)
-        }
-
-        return liveDate
     }
 
-    fun setTotalMoedaAposCompra(nameMoeda: String, valorDaCompra: Int) {
-        io.launch {
-            val moeda = daoMoeda.buscaMoeda(nameMoeda)
-            moeda.setTotalMoedaCompra(valorDaCompra)
-            daoMoeda.modifica(moeda)
-        }
-    }
+    suspend fun setTotalMoedaAposVenda(nameMoeda: String, valorTotalAposVenda: Int) {
+        val moeda = daoMoeda.buscaMoeda(nameMoeda)
+        moeda.setTotalMoedaVenda(valorTotalAposVenda)
+        daoMoeda.modifica(moeda)
 
-    fun setTotalMoedaAposVenda(nameMoeda: String, valorTotalAposVenda: Int) {
-        io.launch {
-            val moeda = daoMoeda.buscaMoeda(nameMoeda)
-            moeda.setTotalMoedaVenda(valorTotalAposVenda)
-            daoMoeda.modifica(moeda)
-        }
     }
 
 }

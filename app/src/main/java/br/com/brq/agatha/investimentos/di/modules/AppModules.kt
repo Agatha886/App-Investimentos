@@ -4,9 +4,9 @@ import androidx.room.Room
 import br.com.brq.agatha.data.database.InvestimentosDataBase
 import br.com.brq.agatha.data.database.dao.MoedaDao
 import br.com.brq.agatha.data.database.dao.UsuarioDao
-import br.com.brq.agatha.data.repository.MoedaApiDataSource
-import br.com.brq.agatha.data.repository.MoedaDbDataSource
-import br.com.brq.agatha.data.repository.UsuarioRepository
+import br.com.brq.agatha.data.api.MoedaApiDataSource
+import br.com.brq.agatha.data.api.MoedaDbDataSource
+import br.com.brq.agatha.data.api.UsuarioRepository
 import br.com.brq.agatha.investimentos.viewModel.CambioViewModel
 import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.MoedaWrapper
@@ -31,8 +31,8 @@ val daoModules = module {
 
 val repositoryModules = module {
     single <MoedaApiDataSource>{ MoedaApiDataSource(get<MoedaDao>()) }
-    single <MoedaDbDataSource>{ MoedaDbDataSource(get<MoedaDao>(), AppContextProvider) }
-    single <UsuarioRepository>{ UsuarioRepository(get<UsuarioDao>(), AppContextProvider) }
+    single <MoedaDbDataSource>{ MoedaDbDataSource(get<MoedaDao>()) }
+    single <UsuarioRepository>{ UsuarioRepository(get<UsuarioDao>()) }
 }
 
 val viewModelModules = module {

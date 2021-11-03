@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.brq.agatha.domain.model.Finance
 import br.com.brq.agatha.domain.model.Moeda
-import br.com.brq.agatha.data.repository.MoedaApiDataSource
+import br.com.brq.agatha.data.api.MoedaApiDataSource
 import br.com.brq.agatha.investimentos.viewModel.base.CoroutinesContextProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    val dataSource: MoedaApiDataSource,
+    private val dataSource: MoedaApiDataSource,
     coroutinesContextProvider: CoroutinesContextProvider,
     private val moedaWrapper: MoedaWrapper
 ) : ViewModel() {
@@ -39,7 +39,7 @@ class HomeViewModel(
         }
     }
 
-    private fun verificaSeDeuExcecaoAoChamarDaApi(
+    private suspend fun verificaSeDeuExcecaoAoChamarDaApi(
         exception: Exception?,
         financeDaApi: Finance?,
         moedasDoBanco: List<Moeda>

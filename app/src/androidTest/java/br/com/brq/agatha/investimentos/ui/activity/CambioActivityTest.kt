@@ -28,7 +28,7 @@ class CambioActivityTest {
         buy = BigDecimal(10),
         sell = BigDecimal(10),
         abreviacao = "USD",
-        totalDeMoeda = 0.00,
+        totalDeMoeda = 0,
         variation = BigDecimal(-1)
     )
 

@@ -1,8 +1,7 @@
-package br.com.brq.agatha.data.repository
+package br.com.brq.agatha.data.api
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import br.com.brq.agatha.data.database.dao.MoedaDao
-import br.com.brq.agatha.investimentos.viewModel.base.TestContextProvider
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -29,33 +28,28 @@ class MoedaDbDataSourceTest {
         buy = BigDecimal.TEN,
         sell = BigDecimal.TEN,
         abreviacao = "USD",
-        totalDeMoeda = 10.00,
+        totalDeMoeda = 10,
         variation = BigDecimal(1)
     )
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this, relaxUnitFun = true)
-        moedaDbDataSource = MoedaDbDataSource(moedaDao, TestContextProvider())
+        moedaDbDataSource = MoedaDbDataSource(moedaDao)
     }
 
-    @Test
-    fun deveRetornarUmLiveDateComOTotalDeMoedas_quandoChamaFuncaoGetTotalMoeda() {
-        coEvery { moedaDao.buscaMoeda(moedaDeExemplo.name)} returns moedaDeExemplo
-        assertEquals(10.00, moedaDbDataSource.getTotalMoeda(moedaDeExemplo.name).value)
-    }
 
     @Test
     fun deveSetarOTotalDeMoeda_quandoChamaAFuncaoSetTotalMoedaAposCompra(){
         coEvery { moedaDao.buscaMoeda(moedaDeExemplo.name)} returns moedaDeExemplo
-        moedaDbDataSource.setTotalMoedaAposCompra(moedaDeExemplo.name, 5.00)
+        coEvery {  moedaDbDataSource.setTotalMoedaAposCompra(moedaDeExemplo.name, 5) }
         assertEquals(15.00, moedaDeExemplo.totalDeMoeda)
     }
 
     @Test
     fun deveSetarOTotalDeMoeda_quandoChamaAFuncaoSetTotalMoedaAposVenda(){
         coEvery { moedaDao.buscaMoeda(moedaDeExemplo.name)} returns moedaDeExemplo
-        moedaDbDataSource.setTotalMoedaAposVenda(moedaDeExemplo.name, 5.00)
+        coEvery { moedaDbDataSource.setTotalMoedaAposVenda(moedaDeExemplo.name, 5) }
         assertEquals(5.00, moedaDeExemplo.totalDeMoeda)
     }
 
