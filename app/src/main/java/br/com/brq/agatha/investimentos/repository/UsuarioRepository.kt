@@ -82,5 +82,9 @@ class UsuarioRepository(
     fun calculaSaldoVenda(moeda: Moeda, valorVendaMoeda: String, user: Usuario): BigDecimal{
         return user.saldoDisponivel.add(BigDecimal(valorVendaMoeda).multiply(moeda.sell))
     }
+    fun calculaTotalDeMoedasVenda(moeda: Moeda, quantidadeParaVenda: String): Int{
+        return moeda.totalDeMoeda.minus(BigDecimal(quantidadeParaVenda).toInt())
+    }
+
 
 }
