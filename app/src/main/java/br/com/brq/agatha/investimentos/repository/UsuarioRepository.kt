@@ -52,7 +52,7 @@ class UsuarioRepository(
         return saldoAposVenda
     }
 
-    fun getSaldoAposCompra(
+    fun setSaldoAposCompra(
         idUsuario: Int,
         valorComprado: String,
         moeda: Moeda
@@ -85,7 +85,5 @@ class UsuarioRepository(
     fun calculaTotalDeMoedasVenda(moeda: Moeda, quantidadeParaVenda: String): Int{
         return moeda.totalDeMoeda.minus(BigDecimal(quantidadeParaVenda).toInt())
     }
-
-
 
 }

@@ -8,6 +8,7 @@ import br.com.brq.agatha.investimentos.database.dao.UsuarioDao
 import br.com.brq.agatha.investimentos.repository.MoedaApiDataSource
 import br.com.brq.agatha.investimentos.repository.MoedaDbDataSource
 import br.com.brq.agatha.investimentos.repository.UsuarioRepository
+import br.com.brq.agatha.investimentos.util.ID_USUARIO
 import br.com.brq.agatha.investimentos.viewModel.CambioViewModel
 import br.com.brq.agatha.investimentos.viewModel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.MoedaWrapper
@@ -37,6 +38,6 @@ val repositoryModules = module {
 }
 
 val viewModelModules = module {
-    viewModel<CambioViewModel>{ CambioViewModel(get<MoedaDbDataSource>(), get<UsuarioRepository>(), AppContextProvider)}
+    viewModel<CambioViewModel>{ CambioViewModel(get<MoedaDbDataSource>(), get<UsuarioRepository>(), AppContextProvider, ID_USUARIO)}
     viewModel<HomeViewModel>{ HomeViewModel(get<MoedaApiDataSource>(), AppContextProvider, MoedaWrapper())  }
 }

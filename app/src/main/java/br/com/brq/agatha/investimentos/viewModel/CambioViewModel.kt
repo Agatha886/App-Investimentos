@@ -7,7 +7,6 @@ import br.com.brq.agatha.investimentos.model.Moeda
 import br.com.brq.agatha.investimentos.model.Usuario
 import br.com.brq.agatha.investimentos.repository.MoedaDbDataSource
 import br.com.brq.agatha.investimentos.repository.UsuarioRepository
-import br.com.brq.agatha.investimentos.retrofit.MoedasRetrofit
 import br.com.brq.agatha.investimentos.viewModel.base.CoroutinesContextProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -16,7 +15,8 @@ import java.math.BigDecimal
 class CambioViewModel(
     private val dbDataSource: MoedaDbDataSource,
     private val repositoryUsuario: UsuarioRepository,
-    coroutinesContextProvider: CoroutinesContextProvider
+    coroutinesContextProvider: CoroutinesContextProvider,
+    private val idUsuario: Int
 ) : ViewModel() {
 
     private val io = CoroutineScope(coroutinesContextProvider.io)
@@ -29,12 +29,12 @@ class CambioViewModel(
         repositoryUsuario.adicionaUsuario(usuario)
     }
 
-    fun getSaldoDisponivel(idUser: Int): LiveData<BigDecimal> {
-        return repositoryUsuario.getSaldoDisponivel(idUser)
+    fun getSaldoDisponivel(): LiveData<BigDecimal> {
+        return repositoryUsuario.getSaldoDisponivel(idUsuario)
     }
 
 
-    fun compra(idUsuario: Int, moeda: Moeda, valor: String) {
+    fun compra(moeda: Moeda, valor: String) {
         io.launch {
             val usuario: Usuario = repositoryUsuario.getUsuario(idUsuario)
             val novoSaldo: BigDecimal = repositoryUsuario.calculaSaldoCompra(moeda, valor, usuario)
@@ -54,8 +54,8 @@ class CambioViewModel(
         eventRetorno.value = RetornoStadeCompraEVenda.SemRetorno
     }
 
-    fun setSaldoCompra(idUsuario: Int, valorComprado: String, moeda: Moeda): LiveData<BigDecimal>{
-        return repositoryUsuario.getSaldoAposCompra(idUsuario = idUsuario, valorComprado = valorComprado, moeda = moeda)
+    fun setSaldoCompra(valorComprado: String, moeda: Moeda): LiveData<BigDecimal>{
+        return repositoryUsuario.setSaldoAposCompra(idUsuario = idUsuario, valorComprado = valorComprado, moeda = moeda)
     }
 
     fun setSaldoVenda(
