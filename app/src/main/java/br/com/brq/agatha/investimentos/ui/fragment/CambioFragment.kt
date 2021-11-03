@@ -86,10 +86,6 @@ class CambioFragment : Fragment() {
             }
         })
 
-        viewModel.getSaldoDisponivel(ID_USUARIO).observe(viewLifecycleOwner, Observer {
-            saldoDoUsuario = it
-        })
-
     }
 
     private fun setCampoQuantidadeMoeda() {
@@ -98,7 +94,7 @@ class CambioFragment : Fragment() {
             if (texto.isBlank() || texto[0] == '0') {
                 setBotoesQuandoInvalidos("Valor Inválido")
             } else {
-                viewModel.compra(ID_USUARIO, moeda, texto)
+                viewModel.compra(moeda, texto)
                 viewModel.venda(moeda.name, texto)
             }
         }
@@ -177,7 +173,7 @@ class CambioFragment : Fragment() {
             cambio_quantidade.text.toString().toInt()
         )
 
-        viewModel.setSaldoCompra(ID_USUARIO, valor, moeda).observe(viewLifecycleOwner, Observer { novoValorSaldo ->
+        viewModel.setSaldoCompra(valor, moeda).observe(viewLifecycleOwner, Observer { novoValorSaldo ->
             vaiParaFragmentSucessoAposCompra(novoValorSaldo, valor.toString())
         })
     }
@@ -225,7 +221,7 @@ class CambioFragment : Fragment() {
             cambio_saldo_moeda.text = (moeda.setMoedaSimbulo(it))
         })
 
-        viewModel.getSaldoDisponivel(ID_USUARIO).observe(viewLifecycleOwner, Observer {
+        viewModel.getSaldoDisponivel().observe(viewLifecycleOwner, Observer {
             cambio_saldo_disponivel.text = it.formatoMoedaBrasileira()
         })
     }

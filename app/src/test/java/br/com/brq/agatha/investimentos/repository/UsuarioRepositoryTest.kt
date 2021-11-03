@@ -66,7 +66,7 @@ class UsuarioRepositoryTest {
         val usuarioDeExemplo = Usuario(saldoDisponivel = BigDecimal(150))
         every { usuarioDao.retornaUsuario(usuarioDeExemplo.id) } returns usuarioDeExemplo
         val saldoERetornaSaldo =
-            usuarioRepository.getSaldoAposCompra(usuarioDeExemplo.id, "50", moedaDeExemplo)
+            usuarioRepository.setSaldoAposCompra(usuarioDeExemplo.id, "50", moedaDeExemplo)
         assertEquals(BigDecimal(50), usuarioDeExemplo.saldoDisponivel)
     }
 
