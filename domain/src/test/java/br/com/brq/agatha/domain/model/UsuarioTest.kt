@@ -5,7 +5,7 @@ import java.math.BigDecimal
 
 class UsuarioTest : TestCase() {
 
-    private val moedaDeExemplo = br.com.brq.agatha.domain.model.Moeda(
+    private val moedaDeExemplo = Moeda(
         name = "Dollar",
         buy = BigDecimal(5),
         sell = BigDecimal(2),
@@ -15,7 +15,7 @@ class UsuarioTest : TestCase() {
     )
 
     private val usuarioDeExemplo =
-        br.com.brq.agatha.domain.model.Usuario(saldoDisponivel = BigDecimal.ZERO)
+        Usuario(saldoDisponivel = BigDecimal.ZERO)
 
     fun testSetSaldo() {
         usuarioDeExemplo.setSaldo(BigDecimal(1000))

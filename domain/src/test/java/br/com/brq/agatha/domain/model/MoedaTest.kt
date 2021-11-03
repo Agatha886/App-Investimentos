@@ -2,7 +2,7 @@ package br.com.brq.agatha.domain.model
 
 import android.content.Context
 import androidx.core.content.ContextCompat
-import br.com.brq.agatha.investimentos.R
+import br.com.brq.agatha.domain.R
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase
@@ -10,29 +10,29 @@ import java.math.BigDecimal
 
 class MoedaTest : TestCase() {
 
-    private val moedaDeExemplo = br.com.brq.agatha.domain.model.Moeda(
+    private val moedaDeExemplo = Moeda(
         name = "Dollar",
         buy = BigDecimal.ZERO,
         sell = BigDecimal.ZERO,
         abreviacao = "USD",
-        totalDeMoeda = 0.00,
+        totalDeMoeda = 0,
         variation = BigDecimal(-1)
     )
 
-    private val moedaDeExemplo2 = br.com.brq.agatha.domain.model.Moeda(
+    private val moedaDeExemplo2 = Moeda(
         name = "Bitcoin",
         buy = BigDecimal.ZERO,
         sell = BigDecimal.ZERO,
         abreviacao = "BTC",
-        totalDeMoeda = 0.00,
+        totalDeMoeda = 0,
         variation = BigDecimal.ZERO
     )
-    private val moedaDeExemplo3 = br.com.brq.agatha.domain.model.Moeda(
+    private val moedaDeExemplo3 = Moeda(
         name = "Euro",
         buy = BigDecimal.ZERO,
         sell = BigDecimal.ZERO,
         abreviacao = "EUR",
-        totalDeMoeda = 0.00,
+        totalDeMoeda = 0,
         variation = BigDecimal(10)
     )
 
@@ -56,30 +56,30 @@ class MoedaTest : TestCase() {
     }
 
     fun testSetTotalMoedaCompra() {
-        moedaDeExemplo.setTotalMoedaCompra(10.00)
+        moedaDeExemplo.setTotalMoedaCompra(10)
         assertEquals(10.00, moedaDeExemplo.totalDeMoeda)
 
-        moedaDeExemplo.setTotalMoedaCompra(-1.00)
+        moedaDeExemplo.setTotalMoedaCompra(-1)
         assertEquals(10.00, moedaDeExemplo.totalDeMoeda)
 
-        moedaDeExemplo.setTotalMoedaCompra(0.00)
+        moedaDeExemplo.setTotalMoedaCompra(0)
         assertEquals(10.00, moedaDeExemplo.totalDeMoeda)
     }
 
     fun testSetTotalMoedaVenda() {
-        moedaDeExemplo.setTotalMoedaVenda(11.00)
+        moedaDeExemplo.setTotalMoedaVenda(11)
         assertEquals(11.00, moedaDeExemplo.totalDeMoeda)
 
-        moedaDeExemplo.setTotalMoedaVenda(0.00)
+        moedaDeExemplo.setTotalMoedaVenda(0)
         assertEquals(0.00, moedaDeExemplo.totalDeMoeda)
 
-        moedaDeExemplo.setTotalMoedaVenda(-1.00)
+        moedaDeExemplo.setTotalMoedaVenda(-1)
         assertEquals(0.00, moedaDeExemplo.totalDeMoeda)
     }
 
     fun testSetMoedaSimbulo() {
-        assertEquals("US$ 10,00", moedaDeExemplo.setMoedaSimbulo(10.00))
-        assertEquals("₿ 10,00", moedaDeExemplo2.setMoedaSimbulo(10.00))
-        assertEquals("€ 10,00", moedaDeExemplo3.setMoedaSimbulo(10.00))
+        assertEquals("US$ 10,00", moedaDeExemplo.setMoedaSimbulo(10))
+        assertEquals("₿ 10,00", moedaDeExemplo2.setMoedaSimbulo(10))
+        assertEquals("€ 10,00", moedaDeExemplo3.setMoedaSimbulo(10))
     }
 }
