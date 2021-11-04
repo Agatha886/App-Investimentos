@@ -1,4 +1,4 @@
-package br.com.brq.agatha.base.api
+package br.com.brq.agatha.base.repository
 
 import android.util.Log
 import br.com.brq.agatha.base.database.dao.UsuarioDao

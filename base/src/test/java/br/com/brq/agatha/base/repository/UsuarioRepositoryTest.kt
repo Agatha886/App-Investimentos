@@ -1,4 +1,4 @@
-package br.com.brq.agatha.base.api
+package br.com.brq.agatha.base.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import br.com.brq.agatha.base.database.dao.UsuarioDao

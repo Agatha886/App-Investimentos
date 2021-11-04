@@ -1,6 +1,6 @@
 package br.com.brq.agatha.investimentos.modules
 
-import br.com.brq.agatha.base.api.MoedaApiDataSource
+import br.com.brq.agatha.base.repository.MoedaApiDataSource
 import br.com.brq.agatha.base.util.AppContextProvider
 import br.com.brq.agatha.investimentos.viewModel.MoedaWrapper
 import br.com.brq.agatha.investimentos.viewmodel.HomeViewModel

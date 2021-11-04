@@ -1,4 +1,4 @@
-package br.com.brq.agatha.base.api
+package br.com.brq.agatha.base.repository
 
 import br.com.brq.agatha.base.database.dao.MoedaDao
 import br.com.brq.agatha.domain.model.Moeda

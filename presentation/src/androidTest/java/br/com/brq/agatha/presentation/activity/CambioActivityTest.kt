@@ -1,4 +1,4 @@
-package br.com.brq.agatha.presentation.ui.activity
+package br.com.brq.agatha.presentation.activity
 
 import android.content.Intent
 import android.widget.TextView
@@ -11,6 +11,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.custom.TextViewColorMatcher.Companion.verificaCor
+import br.com.brq.agatha.presentation.ui.activity.CambioActivity
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.instanceOf
 import org.junit.Before
@@ -33,9 +34,9 @@ class CambioActivityTest {
     @Before
     fun before() {
         val intentCambio =
-            Intent(ApplicationProvider.getApplicationContext(), br.com.brq.agatha.presentation.ui.activity.CambioActivity::class.java)
+            Intent(ApplicationProvider.getApplicationContext(), CambioActivity::class.java)
         intentCambio.putExtra(br.com.brq.agatha.domain.util.CHAVE_MOEDA, moeda)
-        launchActivity<br.com.brq.agatha.presentation.ui.activity.CambioActivity>(intentCambio)
+        launchActivity<CambioActivity>(intentCambio)
     }
 
     @Test

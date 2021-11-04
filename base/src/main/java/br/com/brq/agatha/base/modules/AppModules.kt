@@ -4,9 +4,9 @@ import androidx.room.Room
 import br.com.brq.agatha.base.database.InvestimentosDataBase
 import br.com.brq.agatha.base.database.dao.MoedaDao
 import br.com.brq.agatha.base.database.dao.UsuarioDao
-import br.com.brq.agatha.base.api.MoedaApiDataSource
-import br.com.brq.agatha.base.api.MoedaDbDataSource
-import br.com.brq.agatha.base.api.UsuarioRepository
+import br.com.brq.agatha.base.repository.MoedaApiDataSource
+import br.com.brq.agatha.base.repository.MoedaDbDataSource
+import br.com.brq.agatha.base.repository.UsuarioRepository
 import org.koin.dsl.module
 
 val dataBaseModules = module {

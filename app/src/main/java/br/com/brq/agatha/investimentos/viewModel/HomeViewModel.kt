@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.brq.agatha.domain.model.Finance
 import br.com.brq.agatha.domain.model.Moeda
-import br.com.brq.agatha.base.api.MoedaApiDataSource
+import br.com.brq.agatha.base.repository.MoedaApiDataSource
 import br.com.brq.agatha.base.util.CoroutinesContextProvider
 import br.com.brq.agatha.investimentos.viewModel.MoedaWrapper
 import br.com.brq.agatha.investimentos.viewModel.RetornoStadeApi

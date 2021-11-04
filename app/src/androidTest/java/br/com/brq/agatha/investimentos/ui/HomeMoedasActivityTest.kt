@@ -1,4 +1,4 @@
-package br.com.brq.agatha.presentation.ui.activity
+package br.com.brq.agatha.investimentos.ui
 
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
@@ -13,12 +13,12 @@ import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.investimentos.custom.CustomAssertions
 import br.com.brq.agatha.investimentos.custom.ListaMoedaMatcher
 import br.com.brq.agatha.investimentos.custom.ToastMachter
-import br.com.brq.agatha.base.api.MoedaApiDataSource
-import br.com.brq.agatha.investimentos.ui.HomeMoedasActivity
+import br.com.brq.agatha.base.repository.MoedaApiDataSource
+import br.com.brq.agatha.base.util.TestContextProvider
 import br.com.brq.agatha.investimentos.ui.adapter.ListaMoedasAdpter.ListaMoedasViewHolder
 import br.com.brq.agatha.investimentos.viewmodel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.MoedaWrapper
-import br.com.brq.agatha.investimentos.viewModel.base.TestContextProvider
+import br.com.brq.agatha.presentation.ui.activity.CambioActivity
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -276,7 +276,7 @@ class HomeMoedasActivityTest : KoinTest {
         onView(withId(R.id.home_recyclerView))
             .perform(RecyclerViewActions.actionOnItemAtPosition<ListaMoedasViewHolder>(0, click()))
 
-        Intents.intended(IntentMatchers.hasComponent(br.com.brq.agatha.presentation.ui.activity.CambioActivity::class.java.name))
+        Intents.intended(IntentMatchers.hasComponent(CambioActivity::class.java.name))
     }
 
 
