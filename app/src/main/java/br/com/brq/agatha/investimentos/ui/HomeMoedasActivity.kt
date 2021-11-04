@@ -11,7 +11,7 @@ import br.com.brq.agatha.base.util.mensagem
 import br.com.brq.agatha.base.util.setMyActionBar
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.presentation.ui.activity.CambioActivity
-import br.com.brq.agatha.investimentos.ui.adapter.ListaMoedasAdpter
+import br.com.brq.agatha.presentation.adapter.ListaMoedasAdpter
 import br.com.brq.agatha.investimentos.viewmodel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.RetornoStadeApi
 import org.koin.androidx.viewmodel.ext.android.viewModel

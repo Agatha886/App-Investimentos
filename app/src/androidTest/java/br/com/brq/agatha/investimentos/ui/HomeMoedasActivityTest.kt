@@ -15,7 +15,7 @@ import br.com.brq.agatha.investimentos.custom.ListaMoedaMatcher
 import br.com.brq.agatha.investimentos.custom.ToastMachter
 import br.com.brq.agatha.base.repository.MoedaApiDataSource
 import br.com.brq.agatha.base.util.TestContextProvider
-import br.com.brq.agatha.investimentos.ui.adapter.ListaMoedasAdpter.ListaMoedasViewHolder
+import br.com.brq.agatha.presentation.adapter.ListaMoedasAdpter.ListaMoedasViewHolder
 import br.com.brq.agatha.investimentos.viewmodel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.MoedaWrapper
 import br.com.brq.agatha.presentation.ui.activity.CambioActivity

@@ -1,26 +1,34 @@
 package br.com.brq.agatha.presentation.ui.activity
 
+import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import br.com.brq.agatha.base.R.id.*
-import br.com.brq.agatha.base.R.layout.*
+import br.com.brq.agatha.base.R.id.activity_cambio_container
+import br.com.brq.agatha.base.R.layout.activity_cambio
+import br.com.brq.agatha.base.util.setMyActionBar
+import br.com.brq.agatha.base.util.transacaoFragment
 import br.com.brq.agatha.domain.model.TipoTranferencia
 import br.com.brq.agatha.presentation.ui.fragment.CambioFragment
 import br.com.brq.agatha.presentation.ui.fragment.RespostaFragment
-import br.com.brq.agatha.base.util.setMyActionBar
-import br.com.brq.agatha.base.util.transacaoFragment
 import java.io.Serializable
 
 @Suppress("DEPRECATION")
 class
 CambioActivity() : AppCompatActivity() {
 
-    private var setTituloAppBar: (tipoTransferencia: TipoTranferencia) -> String = { tipoTranferencia ->
-        if(tipoTranferencia == TipoTranferencia.COMPRA){"Compra"}else if(tipoTranferencia== TipoTranferencia.VENDA){"Venda"}else{"Câmbio"}
-    }
+    private var setTituloAppBar: (tipoTransferencia: TipoTranferencia) -> String =
+        { tipoTranferencia ->
+            if (tipoTranferencia == TipoTranferencia.COMPRA) {
+                "Compra"
+            } else if (tipoTranferencia == TipoTranferencia.VENDA) {
+                "Venda"
+            } else {
+                "Câmbio"
+            }
+        }
 
     private var tipoTransferencia = TipoTranferencia.INDEFINIDO
 
@@ -39,7 +47,7 @@ CambioActivity() : AppCompatActivity() {
                 })
                 configuraFragmentsCambio(fragment)
             }
-            is RespostaFragment ->{
+            is RespostaFragment -> {
                 setMyActionBar(setTituloAppBar(tipoTransferencia), true, setOnClickButtonVoltar = {
                     onBackPressed()
                 })
@@ -57,11 +65,15 @@ CambioActivity() : AppCompatActivity() {
 
     private fun setArgumentsDadosMoedas(cambioFragment: CambioFragment) {
         if (intent.hasExtra(br.com.brq.agatha.domain.util.CHAVE_MOEDA)) {
-            val serializableExtra: Serializable? = intent.getSerializableExtra(br.com.brq.agatha.domain.util.CHAVE_MOEDA)
+            val serializableExtra: Serializable? =
+                intent.getSerializableExtra(br.com.brq.agatha.domain.util.CHAVE_MOEDA)
             if (serializableExtra != null) {
                 val moedaRecebida = serializableExtra as br.com.brq.agatha.domain.model.Moeda
                 val moedaBundle = Bundle()
-                moedaBundle.putSerializable(br.com.brq.agatha.domain.util.CHAVE_MOEDA, moedaRecebida)
+                moedaBundle.putSerializable(
+                    br.com.brq.agatha.domain.util.CHAVE_MOEDA,
+                    moedaRecebida
+                )
                 cambioFragment.arguments = moedaBundle
             }
         }
@@ -71,7 +83,7 @@ CambioActivity() : AppCompatActivity() {
         super.onBackPressed()
         if (supportFragmentManager.backStackEntryCount > 1) {
             supportFragmentManager.popBackStack()
-        }else{
+        } else {
             setMyActionBar("Câmbio", true, setOnClickButtonVoltar = {
                 voltaParaTelaDeMoedas()
             })
@@ -116,10 +128,15 @@ CambioActivity() : AppCompatActivity() {
     }
 
     private fun voltaParaTelaDeMoedas() {
-//        val intent = Intent(this, HomeMoedasActivity::class.java)
-//        intent.flags =
-//            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_ANIMATION
-//        startActivity(intent)
+        val intent = Intent()
+        intent.component = ComponentName(
+            "br.com.brq.agatha.investimentos",
+            "br.com.brq.agatha.investimentos.ui.HomeMoedasActivity"
+        )
+        intent.flags =
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_ANIMATION
+        startActivity(intent)
+        finish()
     }
 
 }

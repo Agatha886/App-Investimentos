@@ -1,6 +1,5 @@
 package br.com.brq.agatha.presentation.modules
 
-
 import br.com.brq.agatha.base.repository.MoedaDbDataSource
 import br.com.brq.agatha.base.repository.UsuarioRepository
 import br.com.brq.agatha.base.util.AppContextProvider

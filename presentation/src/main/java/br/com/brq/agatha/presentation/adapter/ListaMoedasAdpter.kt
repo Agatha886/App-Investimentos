@@ -1,4 +1,4 @@
-package br.com.brq.agatha.investimentos.ui.adapter
+package br.com.brq.agatha.presentation.adapter
 
 import android.content.Context
 import android.util.Log
@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.brq.agatha.base.R.id.*
-import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.domain.model.Moeda
 import br.com.brq.agatha.domain.util.formatoPorcentagem
+import br.com.brq.agatha.presentation.R
 
 class ListaMoedasAdpter(
     private val context: Context) :
