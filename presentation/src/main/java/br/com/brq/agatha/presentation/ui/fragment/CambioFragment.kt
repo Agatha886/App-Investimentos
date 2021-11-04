@@ -145,7 +145,7 @@ class CambioFragment : Fragment() {
 
     private fun setTotalDeMoedasAposVenda(totalMoeda: Int): LiveData<BigDecimal> {
         val saldoVenda =
-            viewModel.setSaldoAposVenda(ID_USUARIO, moeda, btnVender.text.toString())
+            viewModel.setSaldoAposVenda(ID_USUARIO, moeda, campoQuantidade.text.toString())
         viewModel.setTotalMoedaVenda(moeda.name, totalMoeda)
         return saldoVenda
     }
@@ -206,7 +206,7 @@ class CambioFragment : Fragment() {
 
         viewModel.setSaldoCompra(valor, moeda)
             .observe(viewLifecycleOwner, Observer { novoValorSaldo ->
-                vaiParaFragmentSucessoAposCompra(novoValorSaldo, valor.toString())
+                vaiParaFragmentSucessoAposCompra(novoValorSaldo, valor)
             })
     }
 

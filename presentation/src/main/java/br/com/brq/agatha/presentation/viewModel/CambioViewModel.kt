@@ -25,7 +25,7 @@ class CambioViewModel(
     val viewEventRetornoCompraEVenda: LiveData<RetornoStadeCompraEVenda> = eventRetorno
 
 
-    fun adicionaUsuario(usuario: Usuario){
+    suspend fun adicionaUsuario(usuario: Usuario){
         io.launch {
             repositoryUsuario.adicionaUsuario(usuario)
         }

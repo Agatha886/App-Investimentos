@@ -10,16 +10,15 @@ class UsuarioRepository(
     private val daoUsuario: UsuarioDao,
 ) {
 
-    fun getUsuario(idUsuario: Int): Usuario {
+    suspend fun getUsuario(idUsuario: Int): Usuario {
         return daoUsuario.retornaUsuario(idUsuario)
     }
-
 
     suspend fun adicionaUsuario(usuario: Usuario) {
         daoUsuario.adiciona(usuario)
     }
 
-    fun modificaUsuario(usuario: Usuario) {
+    suspend fun modificaUsuario(usuario: Usuario) {
         daoUsuario.modifica(usuario)
     }
 
