@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/black">
+    android:background="@color/black"
+    tools:theme="@style/Theme.Investimento">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cambio_cardView"

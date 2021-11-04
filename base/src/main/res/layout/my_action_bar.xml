@@ -34,6 +34,7 @@
         android:layout_marginLeft="5dp"
         android:background="@drawable/ic_voltar"
         android:theme="@style/TemaButtonToolBar"
+
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

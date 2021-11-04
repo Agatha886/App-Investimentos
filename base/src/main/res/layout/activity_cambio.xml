@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context="br.com.brq.agatha.presentation.ui.activity.CambioActivity">
+    tools:theme="@style/Theme.Investimento">
 
     <include
         android:id="@+id/include_my_toolbar"
