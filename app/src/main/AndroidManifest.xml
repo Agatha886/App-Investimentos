@@ -13,9 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Investimento">
-        <activity android:name=".ui.activity.CambioActivity"></activity>
+        <activity android:name="br.com.brq.agatha.presentation.ui.activity.CambioActivity" />
         <activity
-            android:name=".ui.activity.HomeMoedasActivity"
+            android:name=".ui.HomeMoedasActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

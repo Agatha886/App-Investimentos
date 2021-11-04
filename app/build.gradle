@@ -38,21 +38,11 @@ android {
 
 dependencies {
     implementation project(path: ':domain')
-    implementation project(path: ':data')
+    implementation project(path: ':base')
+    implementation project(path: ':presentation')
 
-    def corotines_version = "1.5.1"
     def lifecycle_version = "2.0.0"
-    def room_version = "2.3.0"
     def koin_version = "2.2.3"
-
-    // Room
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-
-    // Corotines:
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core: $corotines_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$corotines_version"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1"
 
     //View Model
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"

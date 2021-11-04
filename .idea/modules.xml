@@ -4,8 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Investimento.iml" filepath="$PROJECT_DIR$/.idea/modules/Investimento.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Investimento.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Investimento.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data/Investimento.data.iml" filepath="$PROJECT_DIR$/.idea/modules/data/Investimento.data.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data/Investimento.base.iml" filepath="$PROJECT_DIR$/.idea/modules/data/Investimento.base.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/Investimento.domain.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/Investimento.domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/presentation/Investimento.presentation.iml" filepath="$PROJECT_DIR$/.idea/modules/presentation/Investimento.presentation.iml" />
     </modules>
   </component>
 </project>

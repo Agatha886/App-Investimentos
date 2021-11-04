@@ -5,11 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import br.com.brq.agatha.base.R.id.*
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.domain.model.Moeda
 import br.com.brq.agatha.domain.util.formatoPorcentagem
-import kotlinx.android.synthetic.main.item_card_moedas.view.*
 
 class ListaMoedasAdpter(
     private val context: Context) :
@@ -50,6 +51,8 @@ class ListaMoedasAdpter(
 
     inner class ListaMoedasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private lateinit var moeda: Moeda
+        private lateinit var nomeMoeda: TextView
+        private lateinit var variacaoMoeda: TextView
 
         init {
             itemView.setOnClickListener {
@@ -61,13 +64,15 @@ class ListaMoedasAdpter(
 
         fun vincula(moeda: Moeda) {
             this.moeda = moeda
-            itemView.cardView_home_nome_moeda.text = moeda.setAbreviacao()
+            nomeMoeda = itemView.findViewById(cardView_home_nome_moeda)
+            nomeMoeda.text = moeda.setAbreviacao()
             setCampoVariation(moeda)
         }
 
         private fun setCampoVariation(moeda: Moeda) {
-            itemView.cardView_home_variation_moeda.text = moeda.variation.formatoPorcentagem()
-            itemView.cardView_home_variation_moeda.setTextColor(moeda.retornaCor(context))
+            variacaoMoeda = itemView.findViewById(cardView_home_variation_moeda)
+            variacaoMoeda.text = moeda.variation.formatoPorcentagem()
+            variacaoMoeda.setTextColor(moeda.retornaCor(context))
         }
 
     }

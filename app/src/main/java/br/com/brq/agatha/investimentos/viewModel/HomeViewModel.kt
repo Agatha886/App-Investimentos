@@ -1,12 +1,14 @@
-package br.com.brq.agatha.investimentos.viewModel
+package br.com.brq.agatha.investimentos.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.brq.agatha.domain.model.Finance
 import br.com.brq.agatha.domain.model.Moeda
-import br.com.brq.agatha.data.api.MoedaApiDataSource
-import br.com.brq.agatha.investimentos.viewModel.base.CoroutinesContextProvider
+import br.com.brq.agatha.base.api.MoedaApiDataSource
+import br.com.brq.agatha.base.util.CoroutinesContextProvider
+import br.com.brq.agatha.investimentos.viewModel.MoedaWrapper
+import br.com.brq.agatha.investimentos.viewModel.RetornoStadeApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

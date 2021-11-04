@@ -3,9 +3,10 @@ package br.com.brq.agatha.investimentos.viewModel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.espresso.intent.rule.IntentsTestRule
 
-import br.com.brq.agatha.data.api.MoedaApiDataSource
-import br.com.brq.agatha.investimentos.ui.activity.HomeMoedasActivity
+import br.com.brq.agatha.base.api.MoedaApiDataSource
+import br.com.brq.agatha.investimentos.ui.HomeMoedasActivity
 import br.com.brq.agatha.investimentos.viewModel.base.TestContextProvider
+import br.com.brq.agatha.investimentos.viewmodel.HomeViewModel
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.Assert.assertEquals
