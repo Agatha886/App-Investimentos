@@ -1,4 +1,4 @@
-package br.com.brq.agatha.investimentos.viewModel
+package br.com.brq.agatha.presentation.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,6 +8,7 @@ import br.com.brq.agatha.domain.model.Usuario
 import br.com.brq.agatha.base.repository.MoedaDbDataSource
 import br.com.brq.agatha.base.repository.UsuarioRepository
 import br.com.brq.agatha.base.util.CoroutinesContextProvider
+import br.com.brq.agatha.base.util.RetornoStadeCompraEVenda
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.math.BigDecimal

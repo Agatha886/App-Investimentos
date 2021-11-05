@@ -7,8 +7,8 @@ import br.com.brq.agatha.domain.model.Finance
 import br.com.brq.agatha.domain.model.Moeda
 import br.com.brq.agatha.base.repository.MoedaApiDataSource
 import br.com.brq.agatha.base.util.CoroutinesContextProvider
-import br.com.brq.agatha.investimentos.viewModel.MoedaWrapper
-import br.com.brq.agatha.investimentos.viewModel.RetornoStadeApi
+import br.com.brq.agatha.base.util.RetornoStadeApi
+import br.com.brq.agatha.presentation.viewModel.MoedaWrapper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

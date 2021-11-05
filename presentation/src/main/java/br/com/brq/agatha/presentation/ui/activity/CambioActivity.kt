@@ -6,11 +6,15 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import br.com.brq.agatha.base.R.id.activity_cambio_container
 import br.com.brq.agatha.base.R.layout.activity_cambio
+import br.com.brq.agatha.base.util.QuandoSucessoCompraOuVenda
 import br.com.brq.agatha.base.util.setMyActionBar
 import br.com.brq.agatha.base.util.transacaoFragment
 import br.com.brq.agatha.domain.model.TipoTranferencia
+import br.com.brq.agatha.domain.util.CHAVE_RESPOSTA_MENSAGEM
 import br.com.brq.agatha.presentation.ui.fragment.CambioFragment
 import br.com.brq.agatha.presentation.ui.fragment.RespostaFragment
 import java.io.Serializable
@@ -31,6 +35,8 @@ CambioActivity() : AppCompatActivity() {
         }
 
     private var tipoTransferencia = TipoTranferencia.INDEFINIDO
+
+    private var retornoCompraEVenda = MutableLiveData<QuandoSucessoCompraOuVenda>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +62,7 @@ CambioActivity() : AppCompatActivity() {
     }
 
     private fun iniciaComFragmentCambio() {
-        val cambioFragment = CambioFragment()
+        val cambioFragment = CambioFragment(retornoCompraEVenda)
         setArgumentsDadosMoedas(cambioFragment)
         transacaoFragment {
             replace(activity_cambio_container, cambioFragment, "CAMBIO")
@@ -97,10 +103,12 @@ CambioActivity() : AppCompatActivity() {
 
     private fun vaiParaFragmentRespostaQuandoCompraOuVenda(fragment: CambioFragment) {
         val respostaFragment = RespostaFragment()
-        fragment.quandoCompraOuVendaSucesso = { mensagem, tipoTranferencia ->
-            replaceParaFragmentSucesso(mensagem, respostaFragment)
-            tipoTransferencia = tipoTranferencia
-        }
+        retornoCompraEVenda.observe(this, Observer {
+            when(it){
+                is QuandoSucessoCompraOuVenda.compraSucesso -> replaceParaFragmentSucesso(it.mensagem, respostaFragment)
+                is QuandoSucessoCompraOuVenda.vendaSucesso -> replaceParaFragmentSucesso(it.mensagem, respostaFragment)
+            }
+        })
     }
 
     private fun replaceParaFragmentSucesso(
@@ -108,7 +116,7 @@ CambioActivity() : AppCompatActivity() {
         respostaFragment: RespostaFragment
     ) {
         val dados = Bundle()
-        dados.putString(br.com.brq.agatha.domain.util.CHAVE_RESPOSTA_MENSAGEM, mensagem)
+        dados.putString(CHAVE_RESPOSTA_MENSAGEM, mensagem)
         respostaFragment.arguments = dados
         transacaoFragment {
             replace(activity_cambio_container, respostaFragment, "RESPOSTA")

@@ -1,4 +1,4 @@
-package br.com.brq.agatha.investimentos.viewModel
+package br.com.brq.agatha.presentation.viewModel
 
 import br.com.brq.agatha.domain.model.Finance
 import br.com.brq.agatha.domain.model.Moeda
