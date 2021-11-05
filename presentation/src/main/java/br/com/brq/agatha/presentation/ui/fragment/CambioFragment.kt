@@ -35,7 +35,7 @@ class CambioFragment : Fragment() {
     private lateinit var btnComprar: Button
     private lateinit var btnVender: Button
     private lateinit var campoQuantidade: EditText
-    private lateinit var moedaAbreviacao: TextView
+    private lateinit var moedaAbreviacaoENome: TextView
     private lateinit var moedaValorVenda: TextView
     private lateinit var moedaVariacao: TextView
     private lateinit var moedaValorCompra: TextView
@@ -66,7 +66,7 @@ class CambioFragment : Fragment() {
         btnComprar = view.findViewById(R.id.cambio_button_comprar)
         btnVender = view.findViewById(R.id.cambio_button_vender)
         campoQuantidade = view.findViewById(R.id.cambio_quantidade)
-        moedaAbreviacao = view.findViewById(R.id.cardView_cambio_abreviacao_nome_moeda)
+        moedaAbreviacaoENome = view.findViewById(R.id.cardView_cambio_abreviacao_nome_moeda)
         moedaValorVenda = view.findViewById(R.id.cardView_cambio_valor_venda_moeda)
         moedaValorCompra = view.findViewById(R.id.cardView_cambio_valor_compra_moeda)
         saldoUsuario = view.findViewById(R.id.cambio_saldo_disponivel)
@@ -241,8 +241,8 @@ class CambioFragment : Fragment() {
     }
 
     private fun setCampos() {
-        val formatoNomeMoeda = moeda.abreviacao + " - " + moeda.name
-        moedaAbreviacao.text = formatoNomeMoeda
+
+        configuraCampoNomeEAbreviacaoMoeda()
         setCampoVariation()
         configuraCampoVendaECompra()
 
@@ -253,6 +253,11 @@ class CambioFragment : Fragment() {
         viewModel.getSaldoDisponivel().observe(viewLifecycleOwner, Observer {
             saldoUsuario.text = it.formatoMoedaBrasileira()
         })
+    }
+
+    private fun configuraCampoNomeEAbreviacaoMoeda() {
+        val formatoNomeMoeda = moeda.abreviacao + " - " + moeda.name
+        moedaAbreviacaoENome.text = formatoNomeMoeda
     }
 
     private fun configuraCampoVendaECompra() {
