@@ -105,8 +105,14 @@ CambioActivity() : AppCompatActivity() {
         val respostaFragment = RespostaFragment()
         retornoCompraEVenda.observe(this, Observer {
             when(it){
-                is QuandoSucessoCompraOuVenda.compraSucesso -> replaceParaFragmentSucesso(it.mensagem, respostaFragment)
-                is QuandoSucessoCompraOuVenda.vendaSucesso -> replaceParaFragmentSucesso(it.mensagem, respostaFragment)
+                is QuandoSucessoCompraOuVenda.compraSucesso -> {
+                    replaceParaFragmentSucesso(it.mensagem, respostaFragment)
+                    tipoTransferencia = TipoTranferencia.COMPRA
+                }
+                is QuandoSucessoCompraOuVenda.vendaSucesso -> {
+                    replaceParaFragmentSucesso(it.mensagem, respostaFragment)
+                    tipoTransferencia = TipoTranferencia.VENDA
+                }
             }
         })
     }

@@ -19,7 +19,6 @@
         android:paddingRight="24dp"
         tools:text="Parabéns!
         Você acabou de comprar 100 USD"
-        android:maxLines="5"
         android:textAlignment="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

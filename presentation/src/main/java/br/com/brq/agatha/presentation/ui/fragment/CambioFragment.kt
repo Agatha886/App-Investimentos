@@ -14,7 +14,6 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import br.com.brq.agatha.base.R
 import br.com.brq.agatha.base.R.color.cinza
 import br.com.brq.agatha.base.R.color.white
@@ -32,7 +31,8 @@ import br.com.brq.agatha.presentation.viewModel.CambioViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.math.BigDecimal
 
-class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCompraOuVenda>) : Fragment() {
+class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCompraOuVenda>) :
+    Fragment() {
     private lateinit var btnComprar: Button
     private lateinit var btnVender: Button
     private lateinit var campoQuantidade: EditText
@@ -121,8 +121,14 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
             if (texto.isBlank() || texto[0] == '0') {
                 setBotoesQuandoInvalidos("Valor Inválido")
             } else {
-                viewModel.compra(moeda, texto)
-                viewModel.venda(moeda.name, texto)
+                if (validoBoaoComprar) {
+                    viewModel.compra(moeda, texto)
+
+                }
+
+                if (validoBoaoVender) {
+                    viewModel.venda(moeda.name, texto)
+                }
             }
         }
     }
@@ -139,14 +145,10 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
     }
 
     private fun setClickVender(totalMoeda: Int, valorVenda: String) {
-        if (validoBoaoVender) {
-            btnVender.setOnClickListener {
-                val novoTotalDeMoedas = setTotalDeMoedasAposVenda(totalMoeda)
-                vaiParaFragmentSucessoAposVenda(novoTotalDeMoedas, valorVenda)
-                limpaCampos()
-            }
-        } else {
-            estilizaBotaoOperacaoInvalida(btnVender, "Valor de venda inválido")
+        btnVender.setOnClickListener {
+            val novoTotalDeMoedas = setTotalDeMoedasAposVenda(totalMoeda)
+            vaiParaFragmentSucessoAposVenda(novoTotalDeMoedas, valorVenda)
+            limpaCampos()
         }
     }
 
@@ -162,7 +164,13 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
         valorVenda: String
     ) {
         saldoVenda.observe(viewLifecycleOwner, {
-            retornoSucesso.value = QuandoSucessoCompraOuVenda.vendaSucesso(mensagemOperacaoSucesso(it,"vender ", valorVenda))
+            retornoSucesso.value = QuandoSucessoCompraOuVenda.vendaSucesso(
+                mensagemOperacaoSucesso(
+                    it,
+                    "vender ",
+                    valorVenda
+                )
+            )
         })
     }
 
@@ -182,13 +190,9 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
     }
 
     private fun setClickComprar(valorDeMoedaComprado: String) {
-        if (validoBoaoComprar) {
-            btnComprar.setOnClickListener {
-                setSaldoAposCompra(valorDeMoedaComprado)
-                limpaCampos()
-            }
-        } else {
-            estilizaBotaoOperacaoInvalida(btnComprar, "Valor de compra inválido")
+        btnComprar.setOnClickListener {
+            setSaldoAposCompra(valorDeMoedaComprado)
+            limpaCampos()
         }
     }
 
@@ -201,8 +205,9 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
         viewModel.setSaldoCompra(valor, moeda)
             .observe(viewLifecycleOwner, { novoValorSaldo ->
                 retornoSucesso.value = QuandoSucessoCompraOuVenda.compraSucesso(
-                    mensagemOperacaoSucesso(novoValorSaldo, "comprar ", valor))
-        })
+                    mensagemOperacaoSucesso(novoValorSaldo, "comprar ", valor)
+                )
+            })
     }
 
     private fun limpaCampos() {
@@ -217,10 +222,12 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
     ): String {
         val saldoFormatado = saldo.formatoMoedaBrasileira()
         val resposta = StringBuilder()
+
         resposta.append("Parabéns! \n Você acabou de ").append(nomeOperacao)
             .append(quantidadeMoeda).append(" ").append(moeda.abreviacao)
             .append(" - ")
-            .append(moeda.name).append(", totalizando \n").append(saldoFormatado)
+            .append(moeda.name).append(", totalizando ").append(saldoFormatado)
+
         return resposta.toString()
     }
 
@@ -254,6 +261,14 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
     }
 
     private fun configuraCampoVendaECompra() {
+        verificaSeValorDeCompraOuVendaInvalido()
+        val formatoValorVenda = "Venda: " + moeda.sell?.formatoMoedaBrasileira()
+        val formatoValorCompra = "Compra: " + moeda.buy?.formatoMoedaBrasileira()
+        moedaValorVenda.text = formatoValorVenda
+        moedaValorCompra.text = formatoValorCompra
+    }
+
+    private fun verificaSeValorDeCompraOuVendaInvalido() {
         if (moeda.buy == BigDecimal.ZERO) {
             moedaValorCompra.setTextColor(resources.getColor(R.color.red))
             textCompraInvalida.visibility = VISIBLE
@@ -263,10 +278,6 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
             textVendaInvalida.visibility = VISIBLE
             validoBoaoVender = false
         }
-        val formatoValorVenda = "Venda: " + moeda.sell?.formatoMoedaBrasileira()
-        val formatoValorCompra = "Compra: " + moeda.buy?.formatoMoedaBrasileira()
-        moedaValorVenda.text = formatoValorVenda
-        moedaValorCompra.text = formatoValorCompra
     }
 
     private fun setCampoVariation() {
