@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import br.com.brq.agatha.base.util.mensagem
 import br.com.brq.agatha.base.util.setMyActionBar
+import br.com.brq.agatha.domain.util.MENSAGEM_MOEDA_INVALIDA
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.presentation.ui.activity.CambioActivity
 import br.com.brq.agatha.presentation.adapter.ListaMoedasAdpter
 import br.com.brq.agatha.investimentos.viewmodel.HomeViewModel
 import br.com.brq.agatha.investimentos.viewModel.RetornoStadeApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.math.BigDecimal
 
 @Suppress("UNCHECKED_CAST")
 class HomeMoedasActivity : AppCompatActivity() {
@@ -75,9 +77,14 @@ class HomeMoedasActivity : AppCompatActivity() {
     }
 
     private fun vaiParaActivityCambio(moeda: br.com.brq.agatha.domain.model.Moeda) {
-        if (moeda.sell == null || moeda.buy == null) {
-            mensagem(br.com.brq.agatha.domain.util.MENSAGEM_MOEDA_INVALIDA)
+        if (moeda.sell == null && moeda.buy == null) {
+            mensagem(MENSAGEM_MOEDA_INVALIDA)
         } else {
+            if (moeda.sell == null) {
+                moeda.sell = BigDecimal.ZERO
+            }else if (moeda.buy == null){
+                moeda.buy = BigDecimal.ZERO
+            }
             val intent = Intent(this@HomeMoedasActivity, CambioActivity::class.java)
             intent.putExtra(br.com.brq.agatha.domain.util.CHAVE_MOEDA, moeda)
             startActivity(intent)
