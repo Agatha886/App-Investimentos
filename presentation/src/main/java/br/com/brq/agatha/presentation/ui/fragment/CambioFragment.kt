@@ -32,7 +32,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.math.BigDecimal
 
 class CambioFragment : Fragment() {
-
     private lateinit var btnComprar: Button
     private lateinit var btnVender: Button
     private lateinit var campoQuantidade: EditText
@@ -42,6 +41,8 @@ class CambioFragment : Fragment() {
     private lateinit var moedaValorCompra: TextView
     private lateinit var saldoUsuario: TextView
     private lateinit var totalMoeda: TextView
+    private lateinit var textCompraInvalida: TextView
+    private lateinit var textVendaInvalida: TextView
 
     private val moeda: Moeda by lazy {
         val moedaSerializable = arguments?.getSerializable(CHAVE_MOEDA)
@@ -71,7 +72,8 @@ class CambioFragment : Fragment() {
         saldoUsuario = view.findViewById(R.id.cambio_saldo_disponivel)
         totalMoeda = view.findViewById(R.id.cambio_saldo_moeda)
         moedaVariacao = view.findViewById(R.id.cardView_cambio_variation_moeda)
-
+        textCompraInvalida = view.findViewById(R.id.cardView_cambio_mensagem_compra_invalida)
+        textVendaInvalida = view.findViewById(R.id.cardView_cambio_mensagem_venda_invalida)
         return view
     }
 
@@ -145,7 +147,7 @@ class CambioFragment : Fragment() {
 
     private fun setTotalDeMoedasAposVenda(totalMoeda: Int): LiveData<BigDecimal> {
         val saldoVenda =
-            viewModel.setSaldoAposVenda(ID_USUARIO, moeda, campoQuantidade.text.toString())
+        viewModel.setSaldoAposVenda(ID_USUARIO, moeda, campoQuantidade.text.toString())
         viewModel.setTotalMoedaVenda(moeda.name, totalMoeda)
         return saldoVenda
     }
@@ -240,13 +242,9 @@ class CambioFragment : Fragment() {
 
     private fun setCampos() {
         val formatoNomeMoeda = moeda.abreviacao + " - " + moeda.name
-        val formatoValorVenda = "Venda: " + moeda.sell?.formatoMoedaBrasileira()
-        val formatoValorCompra = "Compra: " + moeda.buy?.formatoMoedaBrasileira()
-
         moedaAbreviacao.text = formatoNomeMoeda
         setCampoVariation()
-        moedaValorVenda.text = formatoValorVenda
-        moedaValorCompra.text = formatoValorCompra
+        configuraCampoVendaECompra()
 
         viewModel.getTotalMoeda(moeda.name).observe(viewLifecycleOwner, Observer {
             totalMoeda.text = (moeda.setMoedaSimbulo(it))
@@ -255,6 +253,20 @@ class CambioFragment : Fragment() {
         viewModel.getSaldoDisponivel().observe(viewLifecycleOwner, Observer {
             saldoUsuario.text = it.formatoMoedaBrasileira()
         })
+    }
+
+    private fun configuraCampoVendaECompra() {
+        if (moeda.buy == BigDecimal.ZERO) {
+            moedaValorCompra.setTextColor(resources.getColor(R.color.red))
+            textCompraInvalida.visibility = VISIBLE
+        } else if (moeda.sell == BigDecimal.ZERO) {
+            moedaValorVenda.setTextColor(resources.getColor(R.color.red))
+            textVendaInvalida.visibility = VISIBLE
+        }
+        val formatoValorVenda = "Venda: " + moeda.sell?.formatoMoedaBrasileira()
+        val formatoValorCompra = "Compra: " + moeda.buy?.formatoMoedaBrasileira()
+        moedaValorVenda.text = formatoValorVenda
+        moedaValorCompra.text = formatoValorCompra
     }
 
     private fun setCampoVariation() {

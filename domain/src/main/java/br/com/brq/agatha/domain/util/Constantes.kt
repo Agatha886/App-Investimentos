@@ -9,7 +9,7 @@ const val CHAVE_RESPOSTA_MENSAGEM = "RespostaMensagem"
 const val NOME_BANCO = "investimentos.db"
 
 const val MENSAGEM_MOEDA_INVALIDA =
-"Moeda com valor de compra ou venda inválido"
+"Moeda com valor de compra e venda inválidos"
 
 const val MENSAGEM_FALHA_API =
     "Não é possivel atualizar dados. Por favor verifique sua conexão com a internet"
