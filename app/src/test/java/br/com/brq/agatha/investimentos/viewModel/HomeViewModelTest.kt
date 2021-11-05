@@ -4,9 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.espresso.intent.rule.IntentsTestRule
 
 import br.com.brq.agatha.base.repository.MoedaApiDataSource
+import br.com.brq.agatha.base.util.RetornoStadeApi
 import br.com.brq.agatha.base.util.TestContextProvider
 import br.com.brq.agatha.investimentos.ui.HomeMoedasActivity
 import br.com.brq.agatha.investimentos.viewmodel.HomeViewModel
+import br.com.brq.agatha.presentation.viewModel.MoedaWrapper
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.Assert.assertEquals
