@@ -3,6 +3,7 @@ package br.com.brq.agatha.base.repository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import br.com.brq.agatha.base.database.dao.UsuarioDao
 import io.mockk.MockKAnnotations
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import junit.framework.Assert.assertEquals
@@ -37,7 +38,7 @@ class UsuarioRepositoryTest {
         val usuarioDeExemplo =
             br.com.brq.agatha.domain.model.Usuario(saldoDisponivel = BigDecimal(150))
         every { usuarioDao.retornaUsuario(usuarioDeExemplo.id) } returns usuarioDeExemplo
-        assertEquals(usuarioDeExemplo, usuarioRepository.getUsuario(usuarioDeExemplo.id))
+        coEvery { assertEquals(usuarioDeExemplo, usuarioRepository.getUsuario(usuarioDeExemplo.id)) }
     }
 
 }

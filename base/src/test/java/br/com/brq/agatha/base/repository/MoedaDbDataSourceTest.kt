@@ -41,8 +41,9 @@ class MoedaDbDataSourceTest {
 
     @Test
     fun deveSetarOTotalDeMoeda_quandoChamaAFuncaoSetTotalMoedaAposCompra(){
+        coEvery { moedaDao.modifica(moedaDeExemplo) }
         coEvery { moedaDao.buscaMoeda(moedaDeExemplo.name)} returns moedaDeExemplo
-        coEvery {  moedaDbDataSource.setTotalMoedaAposCompra(moedaDeExemplo.name, 5) }
+        coEvery { moedaDbDataSource.setTotalMoedaAposCompra(moedaDeExemplo.name, 5) }
         assertEquals(15.00, moedaDeExemplo.totalDeMoeda)
     }
 

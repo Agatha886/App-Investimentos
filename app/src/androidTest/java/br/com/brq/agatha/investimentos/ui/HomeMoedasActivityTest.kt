@@ -10,9 +10,9 @@ import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.custom.CustomAssertions
-import br.com.brq.agatha.investimentos.custom.ListaMoedaMatcher
-import br.com.brq.agatha.investimentos.custom.ToastMachter
+import br.com.brq.agatha.base.custom.CustomAssertions
+import br.com.brq.agatha.base.custom.ListaMoedaMatcher
+import br.com.brq.agatha.base.custom.ToastMachter
 import br.com.brq.agatha.base.repository.MoedaApiDataSource
 import br.com.brq.agatha.base.util.TestContextProvider
 import br.com.brq.agatha.presentation.adapter.ListaMoedasAdpter.ListaMoedasViewHolder

@@ -9,8 +9,9 @@ import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import br.com.brq.agatha.investimentos.R
-import br.com.brq.agatha.investimentos.custom.TextViewColorMatcher.Companion.verificaCor
+import br.com.brq.agatha.base.R.color.*
+import br.com.brq.agatha.base.R.id.*
+import br.com.brq.agatha.base.custom.TextViewColorMatcher.Companion.verificaCor
 import br.com.brq.agatha.presentation.ui.activity.CambioActivity
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.instanceOf
@@ -41,7 +42,7 @@ class CambioActivityTest {
 
     @Test
     fun deveVerificarOTituloDaAppBar_quandoCarregaATela() {
-        onView(withId(R.id.include_my_toolbar))
+        onView(withId(include_my_toolbar))
             .check(matches(isDisplayed()))
 
         onView(withText("Câmbio"))
@@ -53,10 +54,10 @@ class CambioActivityTest {
         onView(
             allOf(
                 instanceOf(TextView::class.java),
-                withId(R.id.cardView_cambio_abreviacao_nome_moeda),
+                withId(cardView_cambio_abreviacao_nome_moeda),
                 withParent(
                     withParent(
-                        allOf(instanceOf(CardView::class.java), withId(R.id.cambio_cardView))
+                        allOf(instanceOf(CardView::class.java), withId(cambio_cardView))
                     )
                 )
             )).check(matches(withText("USD - Dollar")))
@@ -67,15 +68,15 @@ class CambioActivityTest {
         onView(
             allOf(
                 instanceOf(TextView::class.java),
-                withId(R.id.cardView_cambio_variation_moeda),
+                withId(cardView_cambio_variation_moeda),
                 withParent(
                     withParent(
-                        allOf(instanceOf(CardView::class.java), withId(R.id.cambio_cardView))
+                        allOf(instanceOf(CardView::class.java), withId(cambio_cardView))
                     )
                 )
             ))
             .check(matches(withText("-1,00%")))
-            .check(matches(verificaCor(R.color.red)))
+            .check(matches(verificaCor(red)))
     }
 
     @Test
@@ -83,10 +84,10 @@ class CambioActivityTest {
         onView(
             allOf(
                 instanceOf(TextView::class.java),
-                withId(R.id.cardView_cambio_valor_compra_moeda),
+                withId(cardView_cambio_valor_compra_moeda),
                 withParent(
                     withParent(
-                        allOf(instanceOf(CardView::class.java), withId(R.id.cambio_cardView))
+                        allOf(instanceOf(CardView::class.java), withId(cambio_cardView))
                     )
                 )
             )).check(matches(withText("Compra: R\$ 10,00")))
@@ -97,10 +98,10 @@ class CambioActivityTest {
         onView(
             allOf(
                 instanceOf(TextView::class.java),
-                withId(R.id.cardView_cambio_valor_venda_moeda),
+                withId(cardView_cambio_valor_venda_moeda),
                 withParent(
                     withParent(
-                        allOf(instanceOf(CardView::class.java), withId(R.id.cambio_cardView))
+                        allOf(instanceOf(CardView::class.java), withId(cambio_cardView))
                     )
                 )
             )).check(matches(withText("Venda: R\$ 10,00")))
@@ -111,7 +112,7 @@ class CambioActivityTest {
         onView(
             allOf(
                 instanceOf(TextView::class.java),
-                withId(R.id.cambio_saldo_disponivel),
+                withId(cambio_saldo_disponivel),
                 withParent(
                   instanceOf(ConstraintLayout::class.java)
                 )
@@ -123,7 +124,7 @@ class CambioActivityTest {
         onView(
             allOf(
                 instanceOf(TextView::class.java),
-                withId(R.id.cambio_saldo_moeda),
+                withId(cambio_saldo_moeda),
                 withParent(
                     instanceOf(ConstraintLayout::class.java)
                 )
@@ -134,8 +135,8 @@ class CambioActivityTest {
     fun deveVerificarSeApareceOEditTextQuantidadeNaTela_quandoCarregaATela(){
         onView(
             allOf(
-                withId(R.id.cambio_quantidade),
-                withParent(withParent(withId(R.id.activity_cambio_container))),
+                withId(cambio_quantidade),
+                withParent(withParent(withId(activity_cambio_container))),
                 isDisplayed()
             )
         ).check(matches(withText("Quantidade")))
@@ -145,8 +146,8 @@ class CambioActivityTest {
     fun deveVerificarSeApareceOBotaoVender(){
         onView(
             allOf(
-                withId(R.id.cambio_button_vender), withText("VENDER"),
-                withParent(withParent(withId(R.id.activity_cambio_container))),
+                withId(cambio_button_vender), withText("VENDER"),
+                withParent(withParent(withId(activity_cambio_container))),
                 isDisplayed()
             )
         ).check(matches(isDisplayed()))
@@ -156,8 +157,8 @@ class CambioActivityTest {
     fun deveVerificarSeApareceOBotaoComprar(){
         onView(
             allOf(
-                withId(R.id.cambio_button_comprar), withText("COMPRAR"),
-                withParent(withParent(withId(R.id.activity_cambio_container))),
+                withId(cambio_button_comprar), withText("COMPRAR"),
+                withParent(withParent(withId(activity_cambio_container))),
                 isDisplayed()
             )
         ).check(matches(isDisplayed()))

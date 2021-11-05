@@ -10,6 +10,6 @@
     <color name="azul">#3C8DBC</color>
     <color name="azul_apagado">#7A3C8DBC</color>
     <color name="white">#FFFFFFFF</color>
-<!--    <color name="verde">#7ED321</color>-->
-<!--    <color name="red">#D0021B</color>-->
+    <color name="verde">#7ED321</color>
+    <color name="red">#D0021B</color>
 </resources>

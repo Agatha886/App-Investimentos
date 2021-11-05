@@ -1,4 +1,4 @@
-package br.com.brq.agatha.investimentos.custom
+package br.com.brq.agatha.base.custom
 
 import android.os.IBinder
 import android.view.WindowManager

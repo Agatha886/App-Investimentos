@@ -4,8 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.espresso.intent.rule.IntentsTestRule
 
 import br.com.brq.agatha.base.repository.MoedaApiDataSource
+import br.com.brq.agatha.base.util.TestContextProvider
 import br.com.brq.agatha.investimentos.ui.HomeMoedasActivity
-import br.com.brq.agatha.investimentos.viewModel.base.TestContextProvider
 import br.com.brq.agatha.investimentos.viewmodel.HomeViewModel
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -38,7 +38,7 @@ class HomeViewModelTest {
     @Before
     fun setUp(){
         MockKAnnotations.init(this, relaxUnitFun = true)
-        viewModel = HomeViewModel(dataSource,TestContextProvider(),moedaWrapper)
+        viewModel = HomeViewModel(dataSource, TestContextProvider(),moedaWrapper)
     }
 
     @Test
