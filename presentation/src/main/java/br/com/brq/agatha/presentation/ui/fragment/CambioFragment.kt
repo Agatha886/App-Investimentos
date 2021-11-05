@@ -83,8 +83,7 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
 //        viewModel.adicionaUsuario(Usuario(saldoDisponivel = BigDecimal(1000)))
         inicializaCampos()
         observerViewModel()
-        estilizaBotaoOperacaoInvalida(btnComprar, "Operação Inválida")
-        estilizaBotaoOperacaoInvalida(btnVender, "Operação Inválida")
+        setBotoesQuandoInvalidos("Valor inválido")
         setCampoQuantidadeMoeda()
     }
 
@@ -96,7 +95,7 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
                     setClickComprar(it.valorDeMoedaComprado)
                 }
                 is RetornoStadeCompraEVenda.FalhaCompra -> {
-                    estilizaBotaoOperacaoInvalida(btnComprar, "Operação Inválida")
+                    estilizaBotaoOperacaoInvalida(btnComprar)
                     Log.e("ERRO AO COMPRAR", "observerViewModel: ${it.mensagemErro}")
                 }
 
@@ -105,11 +104,11 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
                     setClickVender(it.totalMoedas, it.valorGastoNaVenda)
                 }
                 is RetornoStadeCompraEVenda.FalhaVenda -> {
-                    estilizaBotaoOperacaoInvalida(btnVender, "Operação Inválida")
+                    estilizaBotaoOperacaoInvalida(btnVender)
                     Log.e("ERRO AO VENDER", "observerViewModel: ${it.mensagemErro}")
                 }
 
-                is RetornoStadeCompraEVenda.SemRetorno -> setBotoesQuandoInvalidos("Valor Nulo")
+                is RetornoStadeCompraEVenda.SemRetorno -> setBotoesQuandoInvalidos("Valor inválido")
             }
         })
 
@@ -133,10 +132,10 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
         }
     }
 
-    private fun estilizaBotaoOperacaoInvalida(button: Button, mensagem: String) {
+    private fun estilizaBotaoOperacaoInvalida(button: Button) {
         button.setBackgroundResource(button_cambio_apagado)
         button.setTextColor(resources.getColor(cinza))
-        button.setOnClickListener { toastMensagem(mensagem) }
+        button.setOnClickListener { toastMensagem("Operação Inválida") }
     }
 
     private fun estilizaBotaoOperacaoValida(button: Button) {
@@ -175,9 +174,12 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
     }
 
     private fun setBotoesQuandoInvalidos(mensgem: String) {
-        btnComprar.visibility = VISIBLE
-        btnVender.visibility = VISIBLE
+        btnComprar.setBackgroundResource(button_cambio_apagado)
+        btnComprar.setTextColor(resources.getColor(cinza))
         btnComprar.setOnClickListener { toastMensagem(mensgem) }
+
+        btnVender.setBackgroundResource(button_cambio_apagado)
+        btnVender.setTextColor(resources.getColor(cinza))
         btnVender.setOnClickListener { toastMensagem(mensgem) }
     }
 
