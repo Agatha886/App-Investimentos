@@ -123,10 +123,14 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
                 if (validoBoaoComprar) {
                     viewModel.compra(moeda, texto)
 
+                }else{
+                    estilizaBotaoOperacaoInvalida(btnComprar)
                 }
 
                 if (validoBoaoVender) {
                     viewModel.venda(moeda.name, texto)
+                }else{
+                  estilizaBotaoOperacaoInvalida(btnVender)
                 }
             }
         }
