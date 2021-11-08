@@ -1,0 +1,63 @@
+ext{
+    corotines_version = "1.5.1"
+    lifecycle_version = "2.0.0"
+    room_version = "2.3.0"
+    koin_version = "2.2.3"
+
+    dependencies = [
+
+            // Room
+            room  :"androidx.room:room-runtime:$room_version",
+
+//            kapt "androidx.room:room-compiler:$room_version"
+            kapt: "androidx.room:room-compiler:$room_version",
+
+            // Corotines:
+            corotinesVersionCore : "org.jetbrains.kotlinx:kotlinx-coroutines-core: $corotines_version",
+            corotinesVersion : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$corotines_version",
+            corotinestest :"org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1",
+
+            //View Model
+            viewModel :"androidx.lifecycle:lifecycle-extensions:$lifecycle_version",
+
+            //Retrofit
+            retrofit1: 'com.squareup.retrofit2:retrofit:2.9.0',
+            retrofit2 : 'com.squareup.retrofit2:converter-gson:2.9.0',
+
+            //Swiperefreshlayout
+            swiperefreshlayout: ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"),
+
+            // Koin:
+            koin1 : "io.insert-koin:koin-androidx-scope:$koin_version",
+            koin2 : "io.insert-koin:koin-androidx-viewmodel:$koin_version",
+            koinTest :"io.insert-koin:koin-test:$koin_version",
+
+            // Base
+            core: 'androidx.core:core-ktx:1.6.0',
+            kotlin: "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+            appcompat: 'androidx.appcompat:appcompat:1.3.1',
+            material: 'com.google.android.material:material:1.4.0',
+            constraintlayout: 'androidx.constraintlayout:constraintlayout:2.1.1'
+    ]
+
+    testDependecies = [
+            // Testes
+            coreTest: 'androidx.test:core-ktx:1.4.0',
+            junit:  'junit:junit:4.+',
+            junit2: 'androidx.test.ext:junit:1.1.3',
+            runner: 'androidx.test:runner:1.4.0',
+            rules: 'androidx.test:rules:1.4.0',
+
+            //MockK
+            mockk1: "io.mockk:mockk-android:1.12.0",
+            mockk2: "androidx.arch.core:core-testing:2.1.0",
+
+            // Espresso
+            espresso1:  'androidx.test.espresso:espresso-core:3.4.0',
+            espresso2:('androidx.test.espresso:espresso-contrib:3.4.0'),
+            espresso3: 'androidx.test.espresso:espresso-intents:3.4.0'
+    ]
+
+}
+
+
