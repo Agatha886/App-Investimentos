@@ -7,10 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import br.com.brq.agatha.base.util.RetornoStadeApi
-import br.com.brq.agatha.base.util.mensagem
-import br.com.brq.agatha.base.util.setMyActionBar
-import br.com.brq.agatha.domain.util.MENSAGEM_MOEDA_INVALIDA
+import br.com.brq.agatha.base.util.*
 import br.com.brq.agatha.investimentos.R
 import br.com.brq.agatha.presentation.ui.activity.CambioActivity
 import br.com.brq.agatha.presentation.adapter.ListaMoedasAdpter
@@ -65,7 +62,7 @@ class HomeMoedasActivity : AppCompatActivity() {
                 }
                 is RetornoStadeApi.SucessoRetornoBanco-> {
                     setAdapterComBancoDeDados(it.listaMoeda)
-                    adapter.quandoMoedaClicado = { mensagem(br.com.brq.agatha.domain.util.MENSAGEM_DADOS_NAO_ATUALIZADOS) }
+                    adapter.quandoMoedaClicado = { mensagem(MENSAGEM_DADOS_NAO_ATUALIZADOS) }
                 }
                 else -> Log.i("TAG", "observerViewModel: Entrou no else")
             }
@@ -86,7 +83,7 @@ class HomeMoedasActivity : AppCompatActivity() {
                 moeda.buy = BigDecimal.ZERO
             }
             val intent = Intent(this@HomeMoedasActivity, CambioActivity::class.java)
-            intent.putExtra(br.com.brq.agatha.domain.util.CHAVE_MOEDA, moeda)
+            intent.putExtra(CHAVE_MOEDA, moeda)
             startActivity(intent)
         }
     }
@@ -97,7 +94,7 @@ class HomeMoedasActivity : AppCompatActivity() {
 
     private fun setAdapterComBancoDeDados(lista: List<br.com.brq.agatha.domain.model.Moeda>) {
         adapter.atualiza(lista)
-        mensagem(br.com.brq.agatha.domain.util.MENSAGEM_FALHA_API)
+        mensagem(MENSAGEM_FALHA_API)
     }
 
 

@@ -1,4 +1,4 @@
-package br.com.brq.agatha.domain.util
+package br.com.brq.agatha.base.util
 
 import java.lang.String.format
 import java.math.BigDecimal

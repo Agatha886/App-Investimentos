@@ -7,6 +7,7 @@ import br.com.brq.agatha.base.database.dao.UsuarioDao
 import br.com.brq.agatha.base.repository.MoedaApiDataSource
 import br.com.brq.agatha.base.repository.MoedaDbDataSource
 import br.com.brq.agatha.base.repository.UsuarioRepository
+import br.com.brq.agatha.base.util.NOME_BANCO
 import org.koin.dsl.module
 
 val dataBaseModules = module {
@@ -14,7 +15,7 @@ val dataBaseModules = module {
         Room.databaseBuilder(
             get(),
             InvestimentosDataBase::class.java,
-            br.com.brq.agatha.domain.util.NOME_BANCO
+            NOME_BANCO
         ).build()
     }
 }

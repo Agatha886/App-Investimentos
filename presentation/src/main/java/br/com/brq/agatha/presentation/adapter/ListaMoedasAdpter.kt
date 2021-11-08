@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.brq.agatha.base.R.id.*
 import br.com.brq.agatha.domain.model.Moeda
-import br.com.brq.agatha.domain.util.formatoPorcentagem
+import br.com.brq.agatha.base.util.formatoPorcentagem
 import br.com.brq.agatha.presentation.R
 
 class ListaMoedasAdpter(

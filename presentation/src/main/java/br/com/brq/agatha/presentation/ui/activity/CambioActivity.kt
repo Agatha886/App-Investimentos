@@ -10,13 +10,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import br.com.brq.agatha.base.R.id.activity_cambio_container
 import br.com.brq.agatha.base.R.layout.activity_cambio
-import br.com.brq.agatha.base.util.QuandoSucessoCompraOuVenda
-import br.com.brq.agatha.base.util.setMyActionBar
-import br.com.brq.agatha.base.util.transacaoFragment
+import br.com.brq.agatha.base.util.*
 import br.com.brq.agatha.domain.model.Moeda
 import br.com.brq.agatha.domain.model.TipoTranferencia
-import br.com.brq.agatha.domain.util.CHAVE_MOEDA
-import br.com.brq.agatha.domain.util.CHAVE_RESPOSTA_MENSAGEM
 import br.com.brq.agatha.presentation.ui.fragment.CambioFragment
 import br.com.brq.agatha.presentation.ui.fragment.RespostaFragment
 import java.io.Serializable
@@ -42,7 +38,7 @@ CambioActivity : AppCompatActivity() {
 
     private var tipoTransferencia = TipoTranferencia.INDEFINIDO
 
-    private var retornoCompraEVenda = MutableLiveData<QuandoSucessoCompraOuVenda>()
+    private var retornoCompraEVenda = MutableLiveData<RetornoStadeFragments>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +53,8 @@ CambioActivity : AppCompatActivity() {
                 setMyActionBar("Câmbio", true, setOnClickButtonVoltar = {
                     voltaParaTelaDeMoedas()
                 })
-                configuraFragmentsCambio(fragment)
+
+                configuraFragmentsCambio()
             }
             is RespostaFragment -> {
                 setMyActionBar(setTituloAppBar(tipoTransferencia), true, setOnClickButtonVoltar = {
@@ -102,22 +99,28 @@ CambioActivity : AppCompatActivity() {
         }
     }
 
-    private fun configuraFragmentsCambio(fragment: CambioFragment) {
-        setAcaoQuandoMoedaInvalida(fragment)
+    private fun configuraFragmentsCambio() {
         vaiParaFragmentRespostaQuandoCompraOuVenda()
     }
 
     private fun vaiParaFragmentRespostaQuandoCompraOuVenda() {
         val respostaFragment = RespostaFragment()
         retornoCompraEVenda.observe(this, Observer {
-            tipoTransferencia = when(it){
-                is QuandoSucessoCompraOuVenda.compraSucesso -> {
+
+            tipoTransferencia = when (it) {
+                is RetornoStadeFragments.VaiParaFragmentSucessoQuandoCompraSucesso -> {
                     replaceParaFragmentSucesso(it.mensagem, respostaFragment)
                     TipoTranferencia.COMPRA
                 }
-                is QuandoSucessoCompraOuVenda.vendaSucesso -> {
+
+                is RetornoStadeFragments.VaiParaFragmentSucessoQuandoVendaSucesso -> {
                     replaceParaFragmentSucesso(it.mensagem, respostaFragment)
                     TipoTranferencia.VENDA
+                }
+
+                is RetornoStadeFragments.VaiParaHomeQuandoMoedaRecebidaInvalida -> {
+                    setAcaoQuandoMoedaInvalida(it.mensagem)
+                    TipoTranferencia.INDEFINIDO
                 }
             }
         })
@@ -136,15 +139,13 @@ CambioActivity : AppCompatActivity() {
         }
     }
 
-    private fun setAcaoQuandoMoedaInvalida(fragment: CambioFragment) {
-        fragment.quandoRecebidaMoedaInvalida = {
-            voltaParaTelaDeMoedas()
-            Toast.makeText(
-                this,
-                it,
-                Toast.LENGTH_LONG
-            ).show()
-        }
+    private fun setAcaoQuandoMoedaInvalida(mensagem: String) {
+        voltaParaTelaDeMoedas()
+        Toast.makeText(
+            this,
+            mensagem,
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     private fun voltaParaTelaDeMoedas() {

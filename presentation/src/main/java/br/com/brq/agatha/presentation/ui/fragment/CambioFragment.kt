@@ -20,18 +20,18 @@ import br.com.brq.agatha.base.R.color.white
 import br.com.brq.agatha.base.R.drawable.button_cambio
 import br.com.brq.agatha.base.R.drawable.button_cambio_apagado
 import br.com.brq.agatha.base.R.layout.cambio
-import br.com.brq.agatha.base.util.QuandoSucessoCompraOuVenda
+import br.com.brq.agatha.base.util.RetornoStadeFragments
 import br.com.brq.agatha.base.util.RetornoStadeCompraEVenda
 import br.com.brq.agatha.domain.model.Moeda
-import br.com.brq.agatha.domain.util.CHAVE_MOEDA
-import br.com.brq.agatha.domain.util.ID_USUARIO
-import br.com.brq.agatha.domain.util.formatoMoedaBrasileira
-import br.com.brq.agatha.domain.util.formatoPorcentagem
+import br.com.brq.agatha.base.util.CHAVE_MOEDA
+import br.com.brq.agatha.base.util.ID_USUARIO
+import br.com.brq.agatha.base.util.formatoMoedaBrasileira
+import br.com.brq.agatha.base.util.formatoPorcentagem
 import br.com.brq.agatha.presentation.viewModel.CambioViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.math.BigDecimal
 
-class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCompraOuVenda>) :
+class CambioFragment(private var retornoSucesso: MutableLiveData<RetornoStadeFragments>) :
     Fragment() {
     private lateinit var btnComprar: Button
     private lateinit var btnVender: Button
@@ -54,7 +54,7 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
     private var validoBoaoVender: Boolean = true
     private var validoBoaoComprar: Boolean = true
 
-    var quandoRecebidaMoedaInvalida: (mensagem: String?) -> Unit = {}
+
 
     private val viewModel by viewModel<CambioViewModel>()
 
@@ -167,7 +167,7 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
         valorVenda: String
     ) {
         saldoVenda.observe(viewLifecycleOwner, {
-            retornoSucesso.value = QuandoSucessoCompraOuVenda.vendaSucesso(
+            retornoSucesso.value = RetornoStadeFragments.VaiParaFragmentSucessoQuandoVendaSucesso(
                 mensagemOperacaoSucesso(
                     it,
                     "vender ",
@@ -210,7 +210,7 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
 
         viewModel.setSaldoCompra(valor, moeda)
             .observe(viewLifecycleOwner, { novoValorSaldo ->
-                retornoSucesso.value = QuandoSucessoCompraOuVenda.compraSucesso(
+                retornoSucesso.value = RetornoStadeFragments.VaiParaFragmentSucessoQuandoCompraSucesso(
                     mensagemOperacaoSucesso(novoValorSaldo, "comprar ", valor)
                 )
             })
@@ -241,7 +241,10 @@ class CambioFragment(private var retornoSucesso: MutableLiveData<QuandoSucessoCo
         try {
             setCampos()
         } catch (e: Exception) {
-            quandoRecebidaMoedaInvalida(e.message)
+            retornoSucesso.value = e.message?.let {
+                RetornoStadeFragments.VaiParaHomeQuandoMoedaRecebidaInvalida(it)
+            }
+
             Log.e("ERRO MOEDA", "onViewCreated: ${e.message}")
         }
     }

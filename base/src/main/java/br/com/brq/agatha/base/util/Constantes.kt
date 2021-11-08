@@ -1,4 +1,4 @@
-package br.com.brq.agatha.domain.util
+package br.com.brq.agatha.base.util
 
 const val CHAVE_MOEDA = "MoedaMandada"
 
